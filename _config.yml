@@ -7,7 +7,7 @@
 
 # Site settings
 title: Ted Spectrum
-email: info@tedspectrum.co.uk
+email: 
 description: > # this means to ignore newlines until "baseurl:"
   My awesome website
 baseurl: "" # the subpath of your site, e.g. /blog
