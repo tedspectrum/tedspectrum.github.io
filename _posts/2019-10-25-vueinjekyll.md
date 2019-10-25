@@ -1,6 +1,7 @@
 ---
 layout: post
 title:  "Web apps in Jekyll"
+categories: [web apps]
 ---
 
 # Setup for styles at top, scripts at bottom

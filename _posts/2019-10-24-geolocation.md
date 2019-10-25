@@ -1,6 +1,7 @@
 ---
 layout: post
 title:  "Adding Geolocation post"
+categories: [web apps, geolocation]
 ---
 
 # Geolocation post
