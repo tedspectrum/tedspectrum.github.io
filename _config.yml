@@ -17,3 +17,8 @@ github_username: tedspectrum
 
 # Build settings
 markdown: kramdown
+
+# Plugin settings
+gems: [jekyll-paginate]
+
+paginate: 3
