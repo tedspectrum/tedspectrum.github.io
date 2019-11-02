@@ -1,0 +1,18 @@
+---
+layout: post
+title:  "Binary Search Tree"
+scripts: 
+  - url: "https://cdn.jsdelivr.net/npm/vue@2.6.0/dist/vue.js"
+    type: "absolute"
+  - url: "/assets/bst/bst.js"
+    type: "relative"
+  - url: "/assets/bst/main.js"
+    type: "relative"
+categories: [web apps, geolocation]
+---
+{% raw %}
+<div id="app" class="app">
+  <p v-for="msg in logger">{{ msg }}</p>
+  <button class="app-button" @click.prevent="run()">Run</button>
+</div>
+{% endraw %}

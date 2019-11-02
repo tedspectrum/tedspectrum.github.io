@@ -6,13 +6,24 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>Post Categories</title>
-  <meta name="description" content="My awesome website
-">
+  <title>Binary Search Tree</title>
+  <meta name="description" content="  {{ msg }}  Run">
 
   <link rel="stylesheet" href="/css/main.css">
-  <link rel="canonical" href="http://tedspectrum.github.io/categories/">
+  <link rel="canonical" href="http://tedspectrum.github.io/web%20apps/geolocation/2019/10/31/binarysearchtree.html">
   <link rel="alternate" type="application/rss+xml" title="Ted Spectrum" href="http://tedspectrum.github.io/feed.xml">
+  
+  
+  
+  <script defer src="https://cdn.jsdelivr.net/npm/vue@2.6.0/dist/vue.js"></script>
+  
+  
+  
+  <script defer src="/assets/bst/bst.js"></script>
+  
+  
+  
+  <script defer src="/assets/bst/main.js"></script>
   
   
 </head>
@@ -65,66 +76,20 @@
 
     <div class="page-content">
       <div class="wrapper">
-        <article class="post">
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
 
   <header class="post-header">
-    <h1 class="post-title">Post Categories</h1>
+    <h1 class="post-title" itemprop="name headline">Binary Search Tree</h1>
+    <p class="post-meta"><time datetime="2019-10-31T00:00:00+00:00" itemprop="datePublished">Oct 31, 2019</time></p>
   </header>
 
-  <div class="post-content">
-    <div>
-  
-  
-  <h3>geolocation</h3>
-  <ul>
+  <div class="post-content" itemprop="articleBody">
     
-    <li><a href="/web%20apps/geolocation/2019/10/31/binarysearchtree.html">Binary Search Tree</a></li>
-    
-    <li><a href="/web%20apps/geolocation/2019/10/24/geolocation.html">Adding Geolocation post</a></li>
-    
-    <li><a href="/web%20apps/geolocation/2019/10/24/geolocate.html">Geolocation</a></li>
-    
-  </ul>
-  
-  <h3>jekyll</h3>
-  <ul>
-    
-    <li><a href="/jekyll/update/2019/06/16/welcome-to-jekyll.html">Welcome to Jekyll!</a></li>
-    
-  </ul>
-  
-  <h3>tickertext</h3>
-  <ul>
-    
-    <li><a href="/web%20apps/tickertext/2019/10/26/tickertext001.html">Ticker text</a></li>
-    
-  </ul>
-  
-  <h3>update</h3>
-  <ul>
-    
-    <li><a href="/jekyll/update/2019/06/16/welcome-to-jekyll.html">Welcome to Jekyll!</a></li>
-    
-  </ul>
-  
-  <h3>web apps</h3>
-  <ul>
-    
-    <li><a href="/web%20apps/2019/10/31/webapp2.html">Web apps in Jekyll - updated</a></li>
-    
-    <li><a href="/web%20apps/geolocation/2019/10/31/binarysearchtree.html">Binary Search Tree</a></li>
-    
-    <li><a href="/web%20apps/tickertext/2019/10/26/tickertext001.html">Ticker text</a></li>
-    
-    <li><a href="/web%20apps/2019/10/25/vueinjekyll.html">Web apps in Jekyll</a></li>
-    
-    <li><a href="/web%20apps/geolocation/2019/10/24/geolocation.html">Adding Geolocation post</a></li>
-    
-    <li><a href="/web%20apps/geolocation/2019/10/24/geolocate.html">Geolocation</a></li>
-    
-  </ul>
-  
+<div id="app" class="app">
+  <p v-for="msg in logger">{{ msg }}</p>
+  <button class="app-button" @click.prevent="run()">Run</button>
 </div>
+
   </div>
 
 </article>
