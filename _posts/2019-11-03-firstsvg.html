@@ -1,0 +1,76 @@
+---
+layout: post
+title:  "First SVG in Jekyll"
+categories: [drawing, svg]
+---
+{% raw %}
+<div id="app" class="app">
+	<svg xml:space="preserve" width="600" height="100" viewBox="0 0 600 100" zoomAndPan="disable">
+		<title>Tedspectrum logo</title>
+		<desc>10 circles in each of the colors of the rainbow</desc>
+		<defs>
+		<circle id="circ" :cx="-radius" :cy="-radius" :r="radius"/>
+		<circle id="smallcirc" :cx="-smallradius" :cy="-smallradius" :r="smallradius" />
+		</defs>
+		<g v-for="circ in circles" :transform="circ.transform">
+			<use :width="radius * 2" :height="radius * 2" xlink:href="#circ" :style="circ.style"/>
+			<use v-for="smallcirc in circ.smallcircles"
+				:x="smallcirc.x" :y="smallcirc.y"
+				:width="smallradius * 2" :height="smallradius * 2" 
+				xlink:href="#smallcirc" style="fill: white; stroke: black;"/>
+		</g>
+	</svg>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/vue@2.6.0/dist/vue.js"></script>
+<script>
+const app = new Vue({
+	el: '#app',
+	data: {
+		'radius': 20,
+		'smallradius': 5,
+		'spacing': 10,
+		'circles': [],
+		'colours': [
+			'#000000',
+			'#ffffff',
+			'#ff0000',
+			'#ff7f00',
+			'#ffff00',
+			'#00ff00',
+			'#00ffff',
+			'#0000ff',
+			'#4b0082',
+			'#8b00ff'
+		]
+	},
+	mounted: function() {
+		let cx = 0, 
+			cy = 50, 
+			diameter = 2 * this.radius,
+			centx = -this.radius + this.smallradius,
+			centy = -this.radius + this.smallradius,
+			portion = Math.PI * 2 / 12,
+			smallcircles;
+		for(let i = 0; i < 10; i++) {
+			cx = ((i + 1) * diameter) + (i * this.spacing);
+			smallcircles = [];
+			if(i === 0) {
+				smallcircles.push({x: centx, y: centy}); 
+			} else {
+				for(let j = 1; j <= i; j++) {
+					smallcircles.push({
+						x: Math.floor(centx + (this.radius * Math.sin(portion * j))),
+						y: Math.floor(centy - (this.radius * Math.cos(portion * j)))
+					});				
+				}	
+			}
+			this.circles.push({
+				'transform': 'translate(' + cx + ',' + cy + ')',
+				'style': 'fill: ' + this.colours[i] + '; stroke: black;',
+				'smallcircles': smallcircles
+			});
+		}
+	}
+})
+</script>
+{% endraw %}
