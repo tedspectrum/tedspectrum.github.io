@@ -21,4 +21,4 @@ markdown: kramdown
 # Plugin settings
 gems: [jekyll-paginate]
 
-paginate: 3
+paginate: 6

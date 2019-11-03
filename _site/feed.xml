@@ -6,13 +6,97 @@
 </description>
     <link>http://tedspectrum.github.io/</link>
     <atom:link href="http://tedspectrum.github.io/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sat, 02 Nov 2019 13:56:39 +0000</pubDate>
-    <lastBuildDate>Sat, 02 Nov 2019 13:56:39 +0000</lastBuildDate>
+    <pubDate>Sun, 03 Nov 2019 17:38:38 +0000</pubDate>
+    <lastBuildDate>Sun, 03 Nov 2019 17:38:38 +0000</lastBuildDate>
     <generator>Jekyll v3.1.6</generator>
     
       <item>
+        <title>First SVG in Jekyll</title>
+        <description>
+&lt;div id=&quot;app&quot; class=&quot;app&quot;&gt;
+	&lt;svg xml:space=&quot;preserve&quot; width=&quot;600&quot; height=&quot;100&quot; viewBox=&quot;0 0 600 100&quot; zoomAndPan=&quot;disable&quot;&gt;
+		&lt;title&gt;Tedspectrum logo&lt;/title&gt;
+		&lt;desc&gt;10 circles in each of the colors of the rainbow&lt;/desc&gt;
+		&lt;defs&gt;
+		&lt;circle id=&quot;circ&quot; :cx=&quot;-radius&quot; :cy=&quot;-radius&quot; :r=&quot;radius&quot;/&gt;
+		&lt;circle id=&quot;smallcirc&quot; :cx=&quot;-smallradius&quot; :cy=&quot;-smallradius&quot; :r=&quot;smallradius&quot; /&gt;
+		&lt;/defs&gt;
+		&lt;g v-for=&quot;circ in circles&quot; :transform=&quot;circ.transform&quot;&gt;
+			&lt;use :width=&quot;radius * 2&quot; :height=&quot;radius * 2&quot; xlink:href=&quot;#circ&quot; :style=&quot;circ.style&quot;/&gt;
+			&lt;use v-for=&quot;smallcirc in circ.smallcircles&quot;
+				:x=&quot;smallcirc.x&quot; :y=&quot;smallcirc.y&quot;
+				:width=&quot;smallradius * 2&quot; :height=&quot;smallradius * 2&quot; 
+				xlink:href=&quot;#smallcirc&quot; style=&quot;fill: white; stroke: black;&quot;/&gt;
+		&lt;/g&gt;
+	&lt;/svg&gt;
+&lt;/div&gt;
+&lt;script src=&quot;https://cdn.jsdelivr.net/npm/vue@2.6.0/dist/vue.js&quot;&gt;&lt;/script&gt;
+&lt;script&gt;
+const app = new Vue({
+	el: &#39;#app&#39;,
+	data: {
+		&#39;radius&#39;: 20,
+		&#39;smallradius&#39;: 5,
+		&#39;spacing&#39;: 10,
+		&#39;circles&#39;: [],
+		&#39;colours&#39;: [
+			&#39;#000000&#39;,
+			&#39;#ffffff&#39;,
+			&#39;#ff0000&#39;,
+			&#39;#ff7f00&#39;,
+			&#39;#ffff00&#39;,
+			&#39;#00ff00&#39;,
+			&#39;#00ffff&#39;,
+			&#39;#0000ff&#39;,
+			&#39;#4b0082&#39;,
+			&#39;#8b00ff&#39;
+		]
+	},
+	mounted: function() {
+		let cx = 0, 
+			cy = 50, 
+			diameter = 2 * this.radius,
+			centx = -this.radius + this.smallradius,
+			centy = -this.radius + this.smallradius,
+			portion = Math.PI * 2 / 12,
+			smallcircles;
+		for(let i = 0; i &lt; 10; i++) {
+			cx = ((i + 1) * diameter) + (i * this.spacing);
+			smallcircles = [];
+			if(i === 0) {
+				smallcircles.push({x: centx, y: centy}); 
+			} else {
+				for(let j = 1; j &lt;= i; j++) {
+					smallcircles.push({
+						x: Math.floor(centx + (this.radius * Math.sin(portion * j))),
+						y: Math.floor(centy - (this.radius * Math.cos(portion * j)))
+					});				
+				}	
+			}
+			this.circles.push({
+				&#39;transform&#39;: &#39;translate(&#39; + cx + &#39;,&#39; + cy + &#39;)&#39;,
+				&#39;style&#39;: &#39;fill: &#39; + this.colours[i] + &#39;; stroke: black;&#39;,
+				&#39;smallcircles&#39;: smallcircles
+			});
+		}
+	}
+})
+&lt;/script&gt;
+</description>
+        <pubDate>Sun, 03 Nov 2019 00:00:00 +0000</pubDate>
+        <link>http://tedspectrum.github.io/drawing/svg/2019/11/03/firstsvg.html</link>
+        <guid isPermaLink="true">http://tedspectrum.github.io/drawing/svg/2019/11/03/firstsvg.html</guid>
+        
+        
+        <category>drawing</category>
+        
+        <category>svg</category>
+        
+      </item>
+    
+      <item>
         <title>Web apps in Jekyll - updated</title>
-        <description>&lt;h1 id=&quot;setup-for-styles-at-top-scripts-at-bottom&quot;&gt;Setup for styles at top, scripts at bottom&lt;/h1&gt;
+        <description>&lt;h1 id=&quot;setup-for-styles-and-scripts-at-top-nothing-added-at-bottom&quot;&gt;Setup for styles and scripts at top, nothing added at bottom&lt;/h1&gt;
 
 &lt;p&gt;To setup Jekyll so that posts can have both scripts and styles added in the header, 
 amend the &lt;strong&gt;head.html&lt;/strong&gt; file in the &lt;strong&gt;_includes&lt;/strong&gt; directory.&lt;/p&gt;
