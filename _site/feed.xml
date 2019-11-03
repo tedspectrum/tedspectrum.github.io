@@ -6,27 +6,36 @@
 </description>
     <link>http://tedspectrum.github.io/</link>
     <atom:link href="http://tedspectrum.github.io/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sun, 03 Nov 2019 17:38:38 +0000</pubDate>
-    <lastBuildDate>Sun, 03 Nov 2019 17:38:38 +0000</lastBuildDate>
+    <pubDate>Sun, 03 Nov 2019 19:23:29 +0000</pubDate>
+    <lastBuildDate>Sun, 03 Nov 2019 19:23:29 +0000</lastBuildDate>
     <generator>Jekyll v3.1.6</generator>
     
       <item>
         <title>First SVG in Jekyll</title>
         <description>
 &lt;div id=&quot;app&quot; class=&quot;app&quot;&gt;
-	&lt;svg xml:space=&quot;preserve&quot; width=&quot;600&quot; height=&quot;100&quot; viewBox=&quot;0 0 600 100&quot; zoomAndPan=&quot;disable&quot;&gt;
+	&lt;svg xml:space=&quot;preserve&quot; 
+		:width=&quot;(20 * radius) + (9 * spacing) + (2 * padding)&quot; 
+		:height=&quot;(2 * radius) + (2 * padding)&quot; zoomAndPan=&quot;disable&quot;&gt;
 		&lt;title&gt;Tedspectrum logo&lt;/title&gt;
 		&lt;desc&gt;10 circles in each of the colors of the rainbow&lt;/desc&gt;
 		&lt;defs&gt;
-		&lt;circle id=&quot;circ&quot; :cx=&quot;-radius&quot; :cy=&quot;-radius&quot; :r=&quot;radius&quot;/&gt;
+		&lt;circle id=&quot;circ&quot; :cx=&quot;0&quot; :cy=&quot;0&quot; :r=&quot;radius&quot;/&gt;
 		&lt;circle id=&quot;smallcirc&quot; :cx=&quot;-smallradius&quot; :cy=&quot;-smallradius&quot; :r=&quot;smallradius&quot; /&gt;
 		&lt;/defs&gt;
-		&lt;g v-for=&quot;circ in circles&quot; :transform=&quot;circ.transform&quot;&gt;
+		&lt;g v-for=&quot;(circ, index) in circles&quot; :transform=&quot;circ.transform&quot;&gt;
 			&lt;use :width=&quot;radius * 2&quot; :height=&quot;radius * 2&quot; xlink:href=&quot;#circ&quot; :style=&quot;circ.style&quot;/&gt;
 			&lt;use v-for=&quot;smallcirc in circ.smallcircles&quot;
 				:x=&quot;smallcirc.x&quot; :y=&quot;smallcirc.y&quot;
 				:width=&quot;smallradius * 2&quot; :height=&quot;smallradius * 2&quot; 
-				xlink:href=&quot;#smallcirc&quot; style=&quot;fill: white; stroke: black;&quot;/&gt;
+				xlink:href=&quot;#smallcirc&quot; :style=&quot;smallcirc.style&quot;/&gt;
+			&lt;line
+				v-if=&quot;(index !== 0)&quot; 
+				:x1=&quot;0&quot; :y1=&quot;0&quot; 
+				:x2=&quot;0&quot; :y2=&quot;(-0.6 * radius)&quot;
+				:style=&quot;circ.handStyle&quot;
+				:transform=&quot;circ.handTransform&quot; 
+				/&gt;
 		&lt;/g&gt;
 	&lt;/svg&gt;
 &lt;/div&gt;
@@ -37,7 +46,8 @@ const app = new Vue({
 	data: {
 		&#39;radius&#39;: 20,
 		&#39;smallradius&#39;: 5,
-		&#39;spacing&#39;: 10,
+		&#39;padding&#39;: 7.5,
+		&#39;spacing&#39;: 20,
 		&#39;circles&#39;: [],
 		&#39;colours&#39;: [
 			&#39;#000000&#39;,
@@ -54,28 +64,32 @@ const app = new Vue({
 	},
 	mounted: function() {
 		let cx = 0, 
-			cy = 50, 
+			cy = this.radius + this.padding,
 			diameter = 2 * this.radius,
-			centx = -this.radius + this.smallradius,
-			centy = -this.radius + this.smallradius,
-			portion = Math.PI * 2 / 12,
-			smallcircles;
-		for(let i = 0; i &lt; 10; i++) {
-			cx = ((i + 1) * diameter) + (i * this.spacing);
+			portion = 0,
 			smallcircles = [];
+		for(let i = 0; i &lt; 10; i++) {
+			cx = ((i) * diameter) + ((i + 1) * this.spacing) + this.padding;
+			smallcircles = [];
+			// create small circles
 			if(i === 0) {
-				smallcircles.push({x: centx, y: centy}); 
+				smallcircles.push({x: this.smallradius, y: this.smallradius}); 
 			} else {
+				portion = Math.PI * 2 / i;
 				for(let j = 1; j &lt;= i; j++) {
 					smallcircles.push({
-						x: Math.floor(centx + (this.radius * Math.sin(portion * j))),
-						y: Math.floor(centy - (this.radius * Math.cos(portion * j)))
-					});				
-				}	
+						x: this.smallradius + Math.floor(this.radius * Math.sin(portion * j)),
+						y: this.smallradius - Math.floor(this.radius * Math.cos(portion * j)),
+						style: &#39;fill: &#39; + this.colours[i] + &#39;; stroke: black;&#39;
+					})				
+				}
 			}
+			// create everything in one main array
 			this.circles.push({
+				&#39;handStyle&#39;: &#39;stroke-width: 2px; stroke: black;&#39;,
+				&#39;handTransform&#39;: &#39;rotate(&#39; + (360 / 12 * i) + &#39;)&#39;,
 				&#39;transform&#39;: &#39;translate(&#39; + cx + &#39;,&#39; + cy + &#39;)&#39;,
-				&#39;style&#39;: &#39;fill: &#39; + this.colours[i] + &#39;; stroke: black;&#39;,
+				&#39;style&#39;: &#39;fill: &#39; + this.colours[i] + &#39;; opacity: 0.75; stroke: gray;&#39;,
 				&#39;smallcircles&#39;: smallcircles
 			});
 		}
