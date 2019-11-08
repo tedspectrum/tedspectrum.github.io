@@ -2,6 +2,66 @@
 layout: post
 title:  "First SVG in Jekyll"
 categories: [drawing, svg]
+scripts: 
+  - url: "https://cdn.jsdelivr.net/npm/vue@2.6.0/dist/vue.min.js"
+    type: "absolute"
+inlinescript: >
+  <script>
+  const app = new Vue({
+    el: '#app',
+    data: {
+      'radius': 20,
+      'smallradius': 5,
+      'padding': 7.5,
+      'spacing': 20,
+      'circles': [],
+      'colours': [
+        '#000000',
+        '#ffffff',
+        '#ff0000',
+        '#ff7f00',
+        '#ffff00',
+        '#00ff00',
+        '#00ffff',
+        '#0000ff',
+        '#4b0082',
+        '#8b00ff'
+      ]
+    },
+    mounted: function () {
+      let cx = 0,
+        cy = this.radius + this.padding,
+        diameter = 2 * this.radius,
+        portion = 0,
+        smallcircles = [];
+      for (let i = 0; i < 10; i++) {
+        cx = ((i) * diameter) + ((i + 1) * this.spacing) + this.padding;
+        smallcircles = [];
+        // create small circles
+        if (i === 0) {
+          smallcircles.push({ x: this.smallradius, y: this.smallradius });
+        } else {
+          portion = Math.PI * 2 / i;
+          for (let j = 1; j <= i; j++) {
+            smallcircles.push({
+              x: this.smallradius + Math.floor(this.radius * Math.sin(portion * j)),
+              y: this.smallradius - Math.floor(this.radius * Math.cos(portion * j)),
+              style: 'fill: ' + this.colours[i] + '; stroke: black;'
+            })
+          }
+        }
+        // create everything in one main array
+        this.circles.push({
+          'handStyle': 'stroke-width: 2px; stroke: black;',
+          'handTransform': 'rotate(' + (360 / 12 * i) + ')',
+          'transform': 'translate(' + cx + ',' + cy + ')',
+          'style': 'fill: ' + this.colours[i] + '; opacity: 0.75; stroke: gray;',
+          'smallcircles': smallcircles
+        });
+      }
+    }
+  })
+  </script>
 ---
 {% raw %}
 <div id="app" class="app">
@@ -30,61 +90,4 @@ categories: [drawing, svg]
 		</g>
 	</svg>
 </div>
-<script src="https://cdn.jsdelivr.net/npm/vue@2.6.0/dist/vue.js"></script>
-<script>
-const app = new Vue({
-	el: '#app',
-	data: {
-		'radius': 20,
-		'smallradius': 5,
-		'padding': 7.5,
-		'spacing': 20,
-		'circles': [],
-		'colours': [
-			'#000000',
-			'#ffffff',
-			'#ff0000',
-			'#ff7f00',
-			'#ffff00',
-			'#00ff00',
-			'#00ffff',
-			'#0000ff',
-			'#4b0082',
-			'#8b00ff'
-		]
-	},
-	mounted: function() {
-		let cx = 0, 
-			cy = this.radius + this.padding,
-			diameter = 2 * this.radius,
-			portion = 0,
-			smallcircles = [];
-		for(let i = 0; i < 10; i++) {
-			cx = ((i) * diameter) + ((i + 1) * this.spacing) + this.padding;
-			smallcircles = [];
-			// create small circles
-			if(i === 0) {
-				smallcircles.push({x: this.smallradius, y: this.smallradius}); 
-			} else {
-				portion = Math.PI * 2 / i;
-				for(let j = 1; j <= i; j++) {
-					smallcircles.push({
-						x: this.smallradius + Math.floor(this.radius * Math.sin(portion * j)),
-						y: this.smallradius - Math.floor(this.radius * Math.cos(portion * j)),
-						style: 'fill: ' + this.colours[i] + '; stroke: black;'
-					})				
-				}
-			}
-			// create everything in one main array
-			this.circles.push({
-				'handStyle': 'stroke-width: 2px; stroke: black;',
-				'handTransform': 'rotate(' + (360 / 12 * i) + ')',
-				'transform': 'translate(' + cx + ',' + cy + ')',
-				'style': 'fill: ' + this.colours[i] + '; opacity: 0.75; stroke: gray;',
-				'smallcircles': smallcircles
-			});
-		}
-	}
-})
-</script>
 {% endraw %}

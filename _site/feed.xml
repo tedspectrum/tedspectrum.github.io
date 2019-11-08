@@ -6,8 +6,8 @@
 </description>
     <link>http://tedspectrum.github.io/</link>
     <atom:link href="http://tedspectrum.github.io/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Fri, 08 Nov 2019 19:14:04 +0000</pubDate>
-    <lastBuildDate>Fri, 08 Nov 2019 19:14:04 +0000</lastBuildDate>
+    <pubDate>Fri, 08 Nov 2019 22:11:38 +0000</pubDate>
+    <lastBuildDate>Fri, 08 Nov 2019 22:11:38 +0000</lastBuildDate>
     <generator>Jekyll v3.1.6</generator>
     
       <item>
@@ -24,54 +24,6 @@
     {{ msg }}
   &lt;/p&gt;
 &lt;/div&gt;
-&lt;script src=&quot;https://cdn.jsdelivr.net/npm/vue@2.6.0/dist/vue.js&quot;&gt;&lt;/script&gt;
-&lt;script&gt;
-  const app = new Vue({
-    el: &#39;#app&#39;,
-    data: {
-      &#39;msg&#39;: &#39;&#39;,
-      &#39;reader&#39;: {}
-    },
-    mounted: function () {
-      // feature check
-      if (window.FileReader) {
-        this.$refs.btnOpen.disabled = false;
-        this.reader = new FileReader();
-        this.reader.onload = this.onFileReaderLoad.bind(this);
-      }
-      if (window.Blob &amp;&amp; window.URL &amp;&amp; window.URL.createObjectURL) {
-        this.$refs.btnDownload.disabled = false;
-      }
-    },
-    methods: {
-      onDownloadClick: function () {
-        var fileName = prompt(&#39;Please enter file name to save&#39;, &#39;Untitled.txt&#39;);
-        if (fileName) {
-          var textFileAsBlob = new Blob([this.msg], { type: &#39;text/plain&#39; });
-          if (navigator &amp;&amp; navigator.msSaveOrOpenBlob) {
-            navigator.msSaveOrOpenBlob(textFileAsBlob, fileName);
-          } else {
-            this.$refs.fileDownload.download = fileName;
-            this.$refs.fileDownload.href = window.URL.createObjectURL(textFileAsBlob);
-            this.$refs.fileDownload.click();
-          }
-        }
-      },
-      onOpenClick: function () {
-        this.$refs.fileUpload.click();
-      },
-      onFileReaderLoad: function (ev) {
-        this.msg = ev.target.result + &#39; &#39; + Date.now();
-      },
-      onFileUploadChange: function (ev) {
-        const fileToLoad = ev.target.files[0];
-        if (fileToLoad) {
-          this.reader.readAsText(fileToLoad, &#39;UTF-8&#39;);
-        }
-      }
-    }
-  });
-&lt;/script&gt;
 </description>
         <pubDate>Fri, 08 Nov 2019 00:00:00 +0000</pubDate>
         <link>http://tedspectrum.github.io/web%20apps/file/2019/11/08/filemanipulation.html</link>
@@ -113,63 +65,6 @@
 		&lt;/g&gt;
 	&lt;/svg&gt;
 &lt;/div&gt;
-&lt;script src=&quot;https://cdn.jsdelivr.net/npm/vue@2.6.0/dist/vue.js&quot;&gt;&lt;/script&gt;
-&lt;script&gt;
-const app = new Vue({
-	el: &#39;#app&#39;,
-	data: {
-		&#39;radius&#39;: 20,
-		&#39;smallradius&#39;: 5,
-		&#39;padding&#39;: 7.5,
-		&#39;spacing&#39;: 20,
-		&#39;circles&#39;: [],
-		&#39;colours&#39;: [
-			&#39;#000000&#39;,
-			&#39;#ffffff&#39;,
-			&#39;#ff0000&#39;,
-			&#39;#ff7f00&#39;,
-			&#39;#ffff00&#39;,
-			&#39;#00ff00&#39;,
-			&#39;#00ffff&#39;,
-			&#39;#0000ff&#39;,
-			&#39;#4b0082&#39;,
-			&#39;#8b00ff&#39;
-		]
-	},
-	mounted: function() {
-		let cx = 0, 
-			cy = this.radius + this.padding,
-			diameter = 2 * this.radius,
-			portion = 0,
-			smallcircles = [];
-		for(let i = 0; i &lt; 10; i++) {
-			cx = ((i) * diameter) + ((i + 1) * this.spacing) + this.padding;
-			smallcircles = [];
-			// create small circles
-			if(i === 0) {
-				smallcircles.push({x: this.smallradius, y: this.smallradius}); 
-			} else {
-				portion = Math.PI * 2 / i;
-				for(let j = 1; j &lt;= i; j++) {
-					smallcircles.push({
-						x: this.smallradius + Math.floor(this.radius * Math.sin(portion * j)),
-						y: this.smallradius - Math.floor(this.radius * Math.cos(portion * j)),
-						style: &#39;fill: &#39; + this.colours[i] + &#39;; stroke: black;&#39;
-					})				
-				}
-			}
-			// create everything in one main array
-			this.circles.push({
-				&#39;handStyle&#39;: &#39;stroke-width: 2px; stroke: black;&#39;,
-				&#39;handTransform&#39;: &#39;rotate(&#39; + (360 / 12 * i) + &#39;)&#39;,
-				&#39;transform&#39;: &#39;translate(&#39; + cx + &#39;,&#39; + cy + &#39;)&#39;,
-				&#39;style&#39;: &#39;fill: &#39; + this.colours[i] + &#39;; opacity: 0.75; stroke: gray;&#39;,
-				&#39;smallcircles&#39;: smallcircles
-			});
-		}
-	}
-})
-&lt;/script&gt;
 </description>
         <pubDate>Sun, 03 Nov 2019 00:00:00 +0000</pubDate>
         <link>http://tedspectrum.github.io/drawing/svg/2019/11/03/firstsvg.html</link>
@@ -186,10 +81,8 @@ const app = new Vue({
         <title>Web apps in Jekyll - updated</title>
         <description>&lt;h1 id=&quot;setup-for-styles-and-scripts-at-top-nothing-added-at-bottom&quot;&gt;Setup for styles and scripts at top, nothing added at bottom&lt;/h1&gt;
 
-&lt;p&gt;To setup Jekyll so that posts can have both scripts and styles added in the header, 
-amend the &lt;strong&gt;head.html&lt;/strong&gt; file in the &lt;strong&gt;_includes&lt;/strong&gt; directory.&lt;/p&gt;
-
-&lt;p&gt;Scripts are given the &lt;strong&gt;defer&lt;/strong&gt; attribute to defer their execution until page is done.&lt;/p&gt;
+&lt;p&gt;To setup Jekyll so that posts can have scripts in the footer and styles added in the header, 
+amend the &lt;strong&gt;head.html&lt;/strong&gt; file and &lt;strong&gt;footer.html&lt;/strong&gt; in the &lt;strong&gt;_includes&lt;/strong&gt; directory.&lt;/p&gt;
 
 &lt;p&gt;Add front matter to the jekyll post to provide data that informs what scripts and styles to add.&lt;/p&gt;
 
@@ -200,7 +93,8 @@ etc. in the content.&lt;/p&gt;
 
 &lt;p&gt;Add data for the styles and scripts in the post front matter&lt;/p&gt;
 
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-yaml&quot; data-lang=&quot;yaml&quot;&gt;&lt;span class=&quot;na&quot;&gt;layout&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;post&lt;/span&gt;
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-yaml&quot; data-lang=&quot;yaml&quot;&gt;&lt;span class=&quot;nn&quot;&gt;---&lt;/span&gt;
+&lt;span class=&quot;na&quot;&gt;layout&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;post&lt;/span&gt;
 &lt;span class=&quot;na&quot;&gt;title&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;  &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;Some&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s&quot;&gt;title&quot;&lt;/span&gt;
 &lt;span class=&quot;na&quot;&gt;styles&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
   &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;url&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;/relative_path_to_css/some.css&quot;&lt;/span&gt;
@@ -209,9 +103,18 @@ etc. in the content.&lt;/p&gt;
   &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;url&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;https://mycdn/somecode.js&quot;&lt;/span&gt;
     &lt;span class=&quot;na&quot;&gt;type&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;absolute&quot;&lt;/span&gt;
   &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;url&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;/relative_path_to_script/some.js&quot;&lt;/span&gt;
-    &lt;span class=&quot;na&quot;&gt;type&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;relative&quot;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+    &lt;span class=&quot;na&quot;&gt;type&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;relative&quot;&lt;/span&gt;
+&lt;span class=&quot;na&quot;&gt;inlinestyle&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;pi&quot;&gt;&amp;gt;&lt;/span&gt;
+  &lt;span class=&quot;no&quot;&gt;&amp;lt;style&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;no&quot;&gt;.app {}&lt;/span&gt;
+  &lt;span class=&quot;no&quot;&gt;&amp;lt;/style&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;na&quot;&gt;inlinescript&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;pi&quot;&gt;&amp;gt;&lt;/span&gt;
+  &lt;span class=&quot;no&quot;&gt;&amp;lt;script&amp;gt;&lt;/span&gt;
+  &lt;span class=&quot;no&quot;&gt;const myVal = 0;&lt;/span&gt;
+  &lt;span class=&quot;no&quot;&gt;&amp;lt;/script&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;s&quot;&gt;---&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 
-&lt;h2 id=&quot;scripts-and-styles-in-the-header&quot;&gt;Scripts and styles in the header&lt;/h2&gt;
+&lt;h2 id=&quot;styles-in-the-header&quot;&gt;styles in the header&lt;/h2&gt;
 
 &lt;p&gt;Add the code below in the &lt;strong&gt;head.html&lt;/strong&gt; file before the end head tag&lt;/p&gt;
 
@@ -223,16 +126,23 @@ etc. in the content.&lt;/p&gt;
   &amp;lt;link rel=&quot;stylesheet&quot; href=&quot;&lt;span class=&quot;p&quot;&gt;{{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;item&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;url&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;|&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;relative_url&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}}&lt;/span&gt;&quot;&amp;gt;
   &lt;span class=&quot;p&quot;&gt;{%&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;kr&quot;&gt;endcase&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;%}&lt;/span&gt;
   &lt;span class=&quot;p&quot;&gt;{%&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;endfor&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;%}&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;{%&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;kr&quot;&gt;if&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;page&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;inlinestyle&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;%}&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;{{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;page&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;inlinestyle&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}}&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;{%&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;kr&quot;&gt;endif&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;%}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 
+&lt;p&gt;And in the &lt;strong&gt;footer.html&lt;/strong&gt;&lt;/p&gt;
 
-  &lt;span class=&quot;p&quot;&gt;{%&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;for&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;item&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;in&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;page.scripts&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;%}&lt;/span&gt;
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-liquid&quot; data-lang=&quot;liquid&quot;&gt;&lt;span class=&quot;p&quot;&gt;{%&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;for&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;item&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;in&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;page.scripts&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;%}&lt;/span&gt;
   &lt;span class=&quot;p&quot;&gt;{%&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;kr&quot;&gt;case&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;item&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;type&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;%}&lt;/span&gt;
   &lt;span class=&quot;p&quot;&gt;{%&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;kr&quot;&gt;when&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;absolute&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;%}&lt;/span&gt;
-  &amp;lt;script defer src=&quot;&lt;span class=&quot;p&quot;&gt;{{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;item&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;url&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}}&lt;/span&gt;&quot;&amp;gt;&amp;lt;/script&amp;gt;
+  &amp;lt;script src=&quot;&lt;span class=&quot;p&quot;&gt;{{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;item&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;url&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}}&lt;/span&gt;&quot;&amp;gt;&amp;lt;/script&amp;gt;
   &lt;span class=&quot;p&quot;&gt;{%&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;kr&quot;&gt;when&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;relative&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;%}&lt;/span&gt;
-  &amp;lt;script defer src=&quot;&lt;span class=&quot;p&quot;&gt;{{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;item&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;url&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;|&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;relative_url&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}}&lt;/span&gt;&quot;&amp;gt;&amp;lt;/script&amp;gt;
+  &amp;lt;script src=&quot;&lt;span class=&quot;p&quot;&gt;{{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;item&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;url&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;|&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;relative_url&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}}&lt;/span&gt;&quot;&amp;gt;&amp;lt;/script&amp;gt;
   &lt;span class=&quot;p&quot;&gt;{%&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;kr&quot;&gt;endcase&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;%}&lt;/span&gt;
-  &lt;span class=&quot;p&quot;&gt;{%&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;endfor&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;%}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+&lt;span class=&quot;p&quot;&gt;{%&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;endfor&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;%}&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;{%&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;kr&quot;&gt;if&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;page&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;inlinescript&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;%}&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;{{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;page&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;inlinescript&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}}&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;{%&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;kr&quot;&gt;endif&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;%}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 </description>
         <pubDate>Thu, 31 Oct 2019 00:00:00 +0000</pubDate>
         <link>http://tedspectrum.github.io/web%20apps/2019/10/31/webapp2.html</link>
@@ -283,90 +193,6 @@ etc. in the content.&lt;/p&gt;
         <category>web apps</category>
         
         <category>tickertext</category>
-        
-      </item>
-    
-      <item>
-        <title>Web apps in Jekyll</title>
-        <description>&lt;h1 id=&quot;setup-for-styles-at-top-scripts-at-bottom&quot;&gt;Setup for styles at top, scripts at bottom&lt;/h1&gt;
-
-&lt;p&gt;To setup Jekyll so that posts can have scripts beneath the header
-and styles added in the footer, amend the &lt;strong&gt;head.html&lt;/strong&gt; and &lt;strong&gt;footer.html&lt;/strong&gt; files
-in the &lt;strong&gt;_includes&lt;/strong&gt; directory.  Add front matter to the jekyll post to provide
-data that informs what scripts and styles to add.&lt;/p&gt;
-
-&lt;p&gt;Finally wrap content in &lt;strong&gt;raw&lt;/strong&gt;, &lt;strong&gt;endraw&lt;/strong&gt; liquid tags to allow double brackets
-etc. in the content.&lt;/p&gt;
-
-&lt;h2 id=&quot;data-in-the-post-front-matter&quot;&gt;Data in the post front matter&lt;/h2&gt;
-
-&lt;p&gt;Add data for the styles and scripts in the post front matter&lt;/p&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-yaml&quot; data-lang=&quot;yaml&quot;&gt;&lt;span class=&quot;na&quot;&gt;layout&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;post&lt;/span&gt;
-&lt;span class=&quot;na&quot;&gt;title&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;  &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;Some&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s&quot;&gt;title&quot;&lt;/span&gt;
-&lt;span class=&quot;na&quot;&gt;styles&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
-  &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;url&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;/relative_path_to_css/some.css&quot;&lt;/span&gt;
-    &lt;span class=&quot;na&quot;&gt;type&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;relative&quot;&lt;/span&gt;
-&lt;span class=&quot;na&quot;&gt;scripts&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; 
-  &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;url&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;https://mycdn/somecode.js&quot;&lt;/span&gt;
-    &lt;span class=&quot;na&quot;&gt;type&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;absolute&quot;&lt;/span&gt;
-  &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;url&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;/relative_path_to_script/some.js&quot;&lt;/span&gt;
-    &lt;span class=&quot;na&quot;&gt;type&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;relative&quot;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;h2 id=&quot;styles-in-the-header&quot;&gt;Styles in the header&lt;/h2&gt;
-
-&lt;p&gt;Add the code below in the &lt;strong&gt;head.html&lt;/strong&gt; file before the end head tag&lt;/p&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-liquid&quot; data-lang=&quot;liquid&quot;&gt;  &lt;span class=&quot;p&quot;&gt;{%&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;for&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;item&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;in&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;page.styles&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;%}&lt;/span&gt;
-  &lt;span class=&quot;p&quot;&gt;{%&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;kr&quot;&gt;case&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;item&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;type&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;%}&lt;/span&gt;
-  &lt;span class=&quot;p&quot;&gt;{%&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;kr&quot;&gt;when&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;absolute&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;%}&lt;/span&gt;
-  &amp;lt;link rel=&quot;stylesheet&quot; href=&quot;&lt;span class=&quot;p&quot;&gt;{{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;item&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;url&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}}&lt;/span&gt;&quot;&amp;gt;
-  &lt;span class=&quot;p&quot;&gt;{%&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;kr&quot;&gt;when&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;relative&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;%}&lt;/span&gt;
-  &amp;lt;link rel=&quot;stylesheet&quot; href=&quot;&lt;span class=&quot;p&quot;&gt;{{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;item&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;url&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;|&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;relative_url&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}}&lt;/span&gt;&quot;&amp;gt;
-  &lt;span class=&quot;p&quot;&gt;{%&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;kr&quot;&gt;endcase&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;%}&lt;/span&gt;
-  &lt;span class=&quot;p&quot;&gt;{%&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;endfor&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;%}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;h2 id=&quot;scripts-after-the-footer&quot;&gt;Scripts after the footer&lt;/h2&gt;
-
-&lt;p&gt;Add the code below at the end of the &lt;strong&gt;footer.html&lt;/strong&gt;&lt;/p&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-liquid&quot; data-lang=&quot;liquid&quot;&gt;  &lt;span class=&quot;p&quot;&gt;{%&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;for&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;item&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;in&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;page.scripts&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;%}&lt;/span&gt;
-  &lt;span class=&quot;p&quot;&gt;{%&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;kr&quot;&gt;case&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;item&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;type&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;%}&lt;/span&gt;
-  &lt;span class=&quot;p&quot;&gt;{%&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;kr&quot;&gt;when&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;absolute&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;%}&lt;/span&gt;
-  &amp;lt;script src=&quot;&lt;span class=&quot;p&quot;&gt;{{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;item&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;url&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}}&lt;/span&gt;&quot;&amp;gt;&amp;lt;/script&amp;gt;
-  &lt;span class=&quot;p&quot;&gt;{%&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;kr&quot;&gt;when&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;relative&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;%}&lt;/span&gt;
-  &amp;lt;script src=&quot;&lt;span class=&quot;p&quot;&gt;{{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;item&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;url&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;|&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;relative_url&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}}&lt;/span&gt;&quot;&amp;gt;&amp;lt;/script&amp;gt;
-  &lt;span class=&quot;p&quot;&gt;{%&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;kr&quot;&gt;endcase&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;%}&lt;/span&gt;
-  &lt;span class=&quot;p&quot;&gt;{%&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;endfor&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;%}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-</description>
-        <pubDate>Fri, 25 Oct 2019 00:00:00 +0100</pubDate>
-        <link>http://tedspectrum.github.io/web%20apps/2019/10/25/vueinjekyll.html</link>
-        <guid isPermaLink="true">http://tedspectrum.github.io/web%20apps/2019/10/25/vueinjekyll.html</guid>
-        
-        
-        <category>web apps</category>
-        
-      </item>
-    
-      <item>
-        <title>Adding Geolocation post</title>
-        <description>&lt;h1 id=&quot;geolocation-post&quot;&gt;Geolocation post&lt;/h1&gt;
-
-&lt;p&gt;Today I have written a little script to use the browser’s geolocation features
-to report the latitude and longitude of the current position.&lt;/p&gt;
-
-&lt;p&gt;The script is a very simple use of the Vue.js framework.&lt;/p&gt;
-
-&lt;p&gt;I hope you like it!&lt;/p&gt;
-</description>
-        <pubDate>Thu, 24 Oct 2019 00:00:00 +0100</pubDate>
-        <link>http://tedspectrum.github.io/web%20apps/geolocation/2019/10/24/geolocation.html</link>
-        <guid isPermaLink="true">http://tedspectrum.github.io/web%20apps/geolocation/2019/10/24/geolocation.html</guid>
-        
-        
-        <category>web apps</category>
-        
-        <category>geolocation</category>
         
       </item>
     

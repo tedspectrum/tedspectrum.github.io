@@ -17,12 +17,9 @@
   <link rel="stylesheet" href="{{ item.url | relative_url }}">
   {% endcase %}
   {% endfor %}
-  {% for item in page.scripts %}
-  {% case item.type %}
-  {% when "absolute" %}
-  <script defer src="{{ item.url }}"></script>
-  {% when "relative" %}
-  <script defer src="{{ item.url | relative_url }}"></script>
-  {% endcase %}
-  {% endfor %}
+  {% if page.inlinestyle %}
+  <style>
+  {{ page.inlinestyle }}
+  </style>
+  {% endif %}
 </head>
