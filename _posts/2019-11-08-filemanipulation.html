@@ -1,0 +1,66 @@
+---
+layout: post
+title: "File upload/download"
+categories: [web apps, file]
+---
+{% raw %}
+<div id="app" class="app">
+  <div id="cache" style="display: none">
+      <input ref="fileUpload" type="file" id="fileUpload" @change.prevent="onFileUploadChange">
+      <a ref="fileDownload" href="" download="">&nbsp;</a>
+  </div>
+  <button ref="btnOpen" type="button" id="btnOpen" @click.prevent="onOpenClick" disabled>Open...</button>
+  <button ref="btnDownload" type="button" id="btnDownload" @click.prevent="onDownloadClick" disabled>Download</button>
+  <p>
+    {{ msg }}
+  </p>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/vue@2.6.0/dist/vue.js"></script>
+<script>
+  const app = new Vue({
+    el: '#app',
+    data: {
+      'msg': '',
+      'reader': {}
+    },
+    mounted: function () {
+      // feature check
+      if (window.FileReader) {
+        this.$refs.btnOpen.disabled = false;
+        this.reader = new FileReader();
+        this.reader.onload = this.onFileReaderLoad.bind(this);
+      }
+      if (window.Blob && window.URL && window.URL.createObjectURL) {
+        this.$refs.btnDownload.disabled = false;
+      }
+    },
+    methods: {
+      onDownloadClick: function () {
+        var fileName = prompt('Please enter file name to save', 'Untitled.txt');
+        if (fileName) {
+          var textFileAsBlob = new Blob([this.msg], { type: 'text/plain' });
+          if (navigator && navigator.msSaveOrOpenBlob) {
+            navigator.msSaveOrOpenBlob(textFileAsBlob, fileName);
+          } else {
+            this.$refs.fileDownload.download = fileName;
+            this.$refs.fileDownload.href = window.URL.createObjectURL(textFileAsBlob);
+            this.$refs.fileDownload.click();
+          }
+        }
+      },
+      onOpenClick: function () {
+        this.$refs.fileUpload.click();
+      },
+      onFileReaderLoad: function (ev) {
+        this.msg = ev.target.result + ' ' + Date.now();
+      },
+      onFileUploadChange: function (ev) {
+        const fileToLoad = ev.target.files[0];
+        if (fileToLoad) {
+          this.reader.readAsText(fileToLoad, 'UTF-8');
+        }
+      }
+    }
+  });
+</script>
+{% endraw %}

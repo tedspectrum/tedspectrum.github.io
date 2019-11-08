@@ -6,13 +6,24 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>Ted Spectrum</title>
-  <meta name="description" content="My awesome website
-">
+  <title>Binary Search Tree</title>
+  <meta name="description" content="  {{ msg }}  Run">
 
   <link rel="stylesheet" href="/css/main.css">
-  <link rel="canonical" href="http://tedspectrum.github.io/">
+  <link rel="canonical" href="http://tedspectrum.github.io/web%20apps/data%20structures/2019/10/31/binarysearchtree.html">
   <link rel="alternate" type="application/rss+xml" title="Ted Spectrum" href="http://tedspectrum.github.io/feed.xml">
+  
+  
+  
+  <script defer src="https://cdn.jsdelivr.net/npm/vue@2.6.0/dist/vue.js"></script>
+  
+  
+  
+  <script defer src="/assets/bst/bst.js"></script>
+  
+  
+  
+  <script defer src="/assets/bst/main.js"></script>
   
   
 </head>
@@ -63,85 +74,23 @@
 
     <div class="page-content">
       <div class="wrapper">
-        <div class="home">
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
 
-  <h1 class="page-heading">Posts</h1>
+  <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">Binary Search Tree</h1>
+    <p class="post-meta"><time datetime="2019-10-31T00:00:00+00:00" itemprop="datePublished">Oct 31, 2019</time></p>
+  </header>
 
-  <ul class="post-list">
+  <div class="post-content" itemprop="articleBody">
     
-      <li>
-        <span class="post-meta">Nov 8, 2019</span>
-
-        <h2>
-          <a class="post-link" href="/web%20apps/file/2019/11/08/filemanipulation.html">File upload/download</a>
-        </h2>
-      </li>
-    
-      <li>
-        <span class="post-meta">Nov 3, 2019</span>
-
-        <h2>
-          <a class="post-link" href="/drawing/svg/2019/11/03/firstsvg.html">First SVG in Jekyll</a>
-        </h2>
-      </li>
-    
-      <li>
-        <span class="post-meta">Oct 31, 2019</span>
-
-        <h2>
-          <a class="post-link" href="/web%20apps/2019/10/31/webapp2.html">Web apps in Jekyll - updated</a>
-        </h2>
-      </li>
-    
-      <li>
-        <span class="post-meta">Oct 31, 2019</span>
-
-        <h2>
-          <a class="post-link" href="/web%20apps/data%20structures/2019/10/31/binarysearchtree.html">Binary Search Tree</a>
-        </h2>
-      </li>
-    
-      <li>
-        <span class="post-meta">Oct 26, 2019</span>
-
-        <h2>
-          <a class="post-link" href="/web%20apps/tickertext/2019/10/26/tickertext001.html">Ticker text</a>
-        </h2>
-      </li>
-    
-      <li>
-        <span class="post-meta">Oct 25, 2019</span>
-
-        <h2>
-          <a class="post-link" href="/web%20apps/2019/10/25/vueinjekyll.html">Web apps in Jekyll</a>
-        </h2>
-      </li>
-    
-  </ul>
-
-  
-  <div class="pagination">
-    
-      <span>&laquo; Prev</span>
-    
-  
-    
-      
-        <em>1</em>
-      
-    
-      
-        <a href="/page2">2</a>
-      
-    
-  
-    
-      <a href="/page2">Next &raquo;</a>
-    
-  </div>
-  
-
+<div id="app" class="app">
+  <p v-for="msg in logger">{{ msg }}</p>
+  <button class="app-button" @click.prevent="run()">Run</button>
 </div>
+
+  </div>
+
+</article>
 
       </div>
     </div>

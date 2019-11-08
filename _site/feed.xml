@@ -6,9 +6,83 @@
 </description>
     <link>http://tedspectrum.github.io/</link>
     <atom:link href="http://tedspectrum.github.io/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sun, 03 Nov 2019 19:23:29 +0000</pubDate>
-    <lastBuildDate>Sun, 03 Nov 2019 19:23:29 +0000</lastBuildDate>
+    <pubDate>Fri, 08 Nov 2019 19:14:04 +0000</pubDate>
+    <lastBuildDate>Fri, 08 Nov 2019 19:14:04 +0000</lastBuildDate>
     <generator>Jekyll v3.1.6</generator>
+    
+      <item>
+        <title>File upload/download</title>
+        <description>
+&lt;div id=&quot;app&quot; class=&quot;app&quot;&gt;
+  &lt;div id=&quot;cache&quot; style=&quot;display: none&quot;&gt;
+      &lt;input ref=&quot;fileUpload&quot; type=&quot;file&quot; id=&quot;fileUpload&quot; @change.prevent=&quot;onFileUploadChange&quot;&gt;
+      &lt;a ref=&quot;fileDownload&quot; href=&quot;&quot; download=&quot;&quot;&gt;&amp;nbsp;&lt;/a&gt;
+  &lt;/div&gt;
+  &lt;button ref=&quot;btnOpen&quot; type=&quot;button&quot; id=&quot;btnOpen&quot; @click.prevent=&quot;onOpenClick&quot; disabled&gt;Open...&lt;/button&gt;
+  &lt;button ref=&quot;btnDownload&quot; type=&quot;button&quot; id=&quot;btnDownload&quot; @click.prevent=&quot;onDownloadClick&quot; disabled&gt;Download&lt;/button&gt;
+  &lt;p&gt;
+    {{ msg }}
+  &lt;/p&gt;
+&lt;/div&gt;
+&lt;script src=&quot;https://cdn.jsdelivr.net/npm/vue@2.6.0/dist/vue.js&quot;&gt;&lt;/script&gt;
+&lt;script&gt;
+  const app = new Vue({
+    el: &#39;#app&#39;,
+    data: {
+      &#39;msg&#39;: &#39;&#39;,
+      &#39;reader&#39;: {}
+    },
+    mounted: function () {
+      // feature check
+      if (window.FileReader) {
+        this.$refs.btnOpen.disabled = false;
+        this.reader = new FileReader();
+        this.reader.onload = this.onFileReaderLoad.bind(this);
+      }
+      if (window.Blob &amp;&amp; window.URL &amp;&amp; window.URL.createObjectURL) {
+        this.$refs.btnDownload.disabled = false;
+      }
+    },
+    methods: {
+      onDownloadClick: function () {
+        var fileName = prompt(&#39;Please enter file name to save&#39;, &#39;Untitled.txt&#39;);
+        if (fileName) {
+          var textFileAsBlob = new Blob([this.msg], { type: &#39;text/plain&#39; });
+          if (navigator &amp;&amp; navigator.msSaveOrOpenBlob) {
+            navigator.msSaveOrOpenBlob(textFileAsBlob, fileName);
+          } else {
+            this.$refs.fileDownload.download = fileName;
+            this.$refs.fileDownload.href = window.URL.createObjectURL(textFileAsBlob);
+            this.$refs.fileDownload.click();
+          }
+        }
+      },
+      onOpenClick: function () {
+        this.$refs.fileUpload.click();
+      },
+      onFileReaderLoad: function (ev) {
+        this.msg = ev.target.result + &#39; &#39; + Date.now();
+      },
+      onFileUploadChange: function (ev) {
+        const fileToLoad = ev.target.files[0];
+        if (fileToLoad) {
+          this.reader.readAsText(fileToLoad, &#39;UTF-8&#39;);
+        }
+      }
+    }
+  });
+&lt;/script&gt;
+</description>
+        <pubDate>Fri, 08 Nov 2019 00:00:00 +0000</pubDate>
+        <link>http://tedspectrum.github.io/web%20apps/file/2019/11/08/filemanipulation.html</link>
+        <guid isPermaLink="true">http://tedspectrum.github.io/web%20apps/file/2019/11/08/filemanipulation.html</guid>
+        
+        
+        <category>web apps</category>
+        
+        <category>file</category>
+        
+      </item>
     
       <item>
         <title>First SVG in Jekyll</title>
@@ -178,13 +252,13 @@ etc. in the content.&lt;/p&gt;
 &lt;/div&gt;
 </description>
         <pubDate>Thu, 31 Oct 2019 00:00:00 +0000</pubDate>
-        <link>http://tedspectrum.github.io/web%20apps/geolocation/2019/10/31/binarysearchtree.html</link>
-        <guid isPermaLink="true">http://tedspectrum.github.io/web%20apps/geolocation/2019/10/31/binarysearchtree.html</guid>
+        <link>http://tedspectrum.github.io/web%20apps/data%20structures/2019/10/31/binarysearchtree.html</link>
+        <guid isPermaLink="true">http://tedspectrum.github.io/web%20apps/data%20structures/2019/10/31/binarysearchtree.html</guid>
         
         
         <category>web apps</category>
         
-        <category>geolocation</category>
+        <category>data structures</category>
         
       </item>
     
