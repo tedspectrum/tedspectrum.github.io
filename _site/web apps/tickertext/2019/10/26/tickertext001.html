@@ -14,9 +14,14 @@
   <link rel="alternate" type="application/rss+xml" title="Ted Spectrum" href="http://tedspectrum.github.io/feed.xml">
   
   
-  <link rel="stylesheet" href="/assets/cmdstepper/main.css">
-  
-  
+  <style> .app .hidden {
+  visibility: hidden;
+}
+.app .textarea {
+  width: 100%;
+  height: 4em;
+} </style>
+
   
 </head>
 
@@ -83,6 +88,7 @@
     <span>{{ t.shown }}</span><span class="hidden">{{ t.hidden }}</span>
   </p>
   <button class="app--button" @click.prevent="onRun()">Show text</button>
+  <button class="app--button" @click.prevent="onPause()">Pause</button>
 </div>
 
   </div>
@@ -106,9 +112,68 @@
   <script src="/assets/cmdstepper/cmdstepper.js"></script>
   
 
-  
-  <script src="/assets/cmdstepper/main.js"></script>
-  
+
+<script> function CmdTickerWords(twm) {
+  /* 
+    moves first word from hidden into shown each time do() is called 
+    twm is { src: '', shown: '', hidden: '' }
+  */
+  this.do = function (m, v) {
+    let wordEnd = twm.hidden.indexOf(' ');
+    if (wordEnd !== -1) {
+      twm.shown += twm.hidden.substring(0, wordEnd + 1);
+      twm.hidden = twm.hidden.substring(wordEnd + 1);
+    } else {
+      twm.shown += twm.hidden;
+      twm.hidden = '';
+    }
+  }
+  this.isDone = function (m, v) {
+    return (twm.hidden === '');
+  }
+  this.reset = function (m, v) {
+    twm.hidden = twm.src;
+    twm.shown = '';
+  }
+} const app = new Vue({
+  el: '#app',
+  data: function () {
+    return {
+      'cmdStates': [
+        {
+          src: '',
+          shown: '',
+          hidden: ''
+        },
+        {
+          src: '',
+          shown: '',
+          hidden: ''
+        }
+      ],
+      'elsrc': 'ttin',
+      'stepper': new CmdStepper(100)
+    }
+  },
+  methods: {
+    onPause: function () {
+      this.stepper.pause();
+    },
+    onRun: function () {
+      // prepare commands
+      let cmds = [];
+      // easy way to put text into tt
+      this.cmdStates[0].src = this.$refs[this.elsrc].value;
+      this.cmdStates[1].src = this.$refs[this.elsrc].value.toUpperCase();
+      // create command in command list for each state
+      this.cmdStates.forEach(function (v, i, a) {
+        cmds.push(new CmdTickerWords(v));
+      });
+      // start stepping, using the commands
+      this.stepper.start(cmds);
+    }
+  }
+}); </script>
 
 
 

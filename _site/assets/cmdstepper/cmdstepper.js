@@ -1,52 +1,52 @@
-function CmdList(cmdArr) {
-  var cmds = cmdArr;
-  var i = 0;
-  this.current = function () {
-    return cmds[i];
-  }
-  this.empty = function () {
-    cmds.forEach(function (v, i, a) { a.pop(); });
-  }
-  this.hasNext = function () {
-    return (i < (cmds.length - 1));
-  }
-  this.next = function () {
-    if (this.hasNext()) {
-      i++;
-    }
-    return cmds[i];
-  }
-  this.push = function (val) {
-    cmds.push(val);
-  }
-  this.reset = function (m, v) {
-    cmds.forEach(function (val) { val.reset(m, v); });
-    i = 0;
-  }
-}
-
 function CmdStepper(stepLength) {
   var boundStep,
+    cmdIndex = 0,
+    cmds = [],
+    isPaused = false,
+    isStepping = false,
     timeoutID = 0,
     ms = stepLength;
-  this.firstStep = function (m, v, cmds) {
-    this.reset(m, v);
-    cmds.reset(m, v);
-    this.step(m, v, cmds);
+  this.current = function() {
+    return cmds[cmdIndex];
   }
-  this.step = function (m, v, cmds) {
-    let cmd = cmds.current();
-    cmd.do(m, v);
-    if (!cmd.isDone(m, v)) {
-      timeoutID = window.setTimeout(boundStep, ms, m, v, cmds);
-    } else if (cmds.hasNext()) {
-      cmds.next();
-      boundStep(m, v, cmds);
+  this.pause = function () {
+    if(isStepping) { 
+      if(!isPaused) {
+        isPaused = true;
+        if (timeoutID !== 0) {
+          window.clearTimeout(timeoutID);
+        }
+      } else {
+        isPaused = false;
+        boundStep();
+      }
     }
   }
-  this.reset = function (m, v) {
+  this.reset = function () {
+    cmdIndex = 0;
+    cmds.forEach(function (v) { v.reset(); });
+    isPaused = false;
+    isStepping = false;
     if (timeoutID !== 0) {
       window.clearTimeout(timeoutID);
+    }
+  }
+  this.start = function (newCmds) {
+    cmds = newCmds;
+    this.reset();
+    isStepping = true;
+    boundStep();
+  }
+  this.step = function () {
+    let cmd = cmds[cmdIndex];
+    cmd.do();
+    if (!cmd.isDone()) {
+      timeoutID = window.setTimeout(boundStep, ms);
+    } else if (cmdIndex < (cmds.length - 1)) {
+      cmdIndex++;
+      boundStep();
+    } else {
+      isStepping = false;
     }
   }
   boundStep = this.step.bind(this);
