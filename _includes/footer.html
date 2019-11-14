@@ -9,6 +9,8 @@
   <script src="{{ item.url }}"></script>
   {% when "relative" %}
   <script src="{{ item.url | relative_url }}"></script>
+  {% when "inline" %}
+  {{ item.src }}
   {% endcase %}
 {% endfor %}
 {% if page.inlinescript %}
