@@ -6,9 +6,44 @@
 </description>
     <link>http://tedspectrum.github.io/</link>
     <atom:link href="http://tedspectrum.github.io/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Thu, 14 Nov 2019 22:29:48 +0000</pubDate>
-    <lastBuildDate>Thu, 14 Nov 2019 22:29:48 +0000</lastBuildDate>
+    <pubDate>Sat, 16 Nov 2019 16:51:03 +0000</pubDate>
+    <lastBuildDate>Sat, 16 Nov 2019 16:51:03 +0000</lastBuildDate>
     <generator>Jekyll v3.1.6</generator>
+    
+      <item>
+        <title>SVG Grid</title>
+        <description>
+&lt;div id=&quot;app&quot; class=&quot;app&quot;&gt;
+	&lt;svg xml:space=&quot;preserve&quot; :width=&quot;svg.width&quot; :height=&quot;svg. height&quot; zoomAndPan=&quot;disable&quot;&gt;
+		&lt;title&gt;Grid&lt;/title&gt;
+		&lt;desc&gt;A grid&lt;/desc&gt;
+		&lt;defs&gt;
+      &lt;line id=&quot;colgridline&quot; x1=&quot;0&quot; y1=&quot;0&quot; x2=&quot;0&quot; :y2=&quot;grid.height&quot; /&gt;
+      &lt;line id=&quot;rowgridline&quot; x1=&quot;0&quot; y1=&quot;0&quot; :x2=&quot;grid.width&quot; y2=&quot;0&quot; /&gt;
+    &lt;/defs&gt;
+    &lt;g :transform=&quot;&#39;translate(&#39; + svg.gutterWidth + &#39;,&#39; + svg.gutterHeight + &#39;)&#39;&quot;&gt;
+      &lt;g v-for=&quot;(col, index) in grid.columns&quot;&gt;
+        &lt;use xlink:href=&quot;#colgridline&quot; :x=&quot;index * grid.width / (grid.columns.length - 1)&quot; y=&quot;0&quot; :style=&quot;grid.lineStyle&quot;/&gt;
+        &lt;text :x=&quot;index * grid.width / (grid.columns.length - 1)&quot; :y=&quot;grid.height + grid.fontsize&quot; text-anchor=&quot;middle&quot;&gt;{{ col }}&lt;/text&gt;
+      &lt;/g&gt;
+      &lt;g v-for=&quot;(row, index) in grid.rows&quot;&gt;
+        &lt;use xlink:href=&quot;#rowgridline&quot; x=&quot;0&quot; :y=&quot;index * grid.height / (grid.rows.length - 1)&quot; :style=&quot;grid.lineStyle&quot;/&gt;
+        &lt;text :x=&quot;0&quot; :y=&quot;(grid.fontsize / 2) + (index * grid.height / (grid.rows.length - 1))&quot; text-anchor=&quot;end&quot;&gt;{{ grid.rows[grid.rows.length - index - 1] }}&lt;/text&gt;
+      &lt;/g&gt;
+    &lt;/g&gt;
+	&lt;/svg&gt;
+&lt;/div&gt;
+</description>
+        <pubDate>Sat, 16 Nov 2019 00:00:00 +0000</pubDate>
+        <link>http://tedspectrum.github.io/drawing/svg/2019/11/16/svggrid.html</link>
+        <guid isPermaLink="true">http://tedspectrum.github.io/drawing/svg/2019/11/16/svggrid.html</guid>
+        
+        
+        <category>drawing</category>
+        
+        <category>svg</category>
+        
+      </item>
     
       <item>
         <title>File upload/download</title>

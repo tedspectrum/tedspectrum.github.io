@@ -1,0 +1,69 @@
+---
+layout: post
+title:  "SVG Grid"
+categories: [drawing, svg]
+scripts: 
+  - url: "https://cdn.jsdelivr.net/npm/vue@2.6.0/dist/vue.js"
+    type: "absolute"
+inlinestyle: >
+  <style>
+    .app .hidden {
+      visibility: hidden;
+    }
+    .app svg {
+      border: 1px solid black;
+    }
+  </style>
+inlinescript: >
+  <script>
+  const app = new Vue({
+    el: '#app',
+    data: function () {
+      let svg = {
+        height: 320,
+        width: 480,
+        gutterWidth: 40,
+        gutterHeight: 20
+      }
+      let grid = {
+        columns: ['0','10','20','30','40','50','60','70','80','90','100'],
+        fontsize: 16,
+        height: svg.height - (2 * svg.gutterHeight),
+        lineStyle: {
+          strokeWidth: '1px',
+          stroke: 'gray'
+        },
+        lineWidth: 1,
+        rows: ['0','10','20','30','40','50','60','70','80','90','100'],
+        width: svg.width - (2 * svg.gutterWidth)
+      }
+      return {
+        'svg': svg,
+        'grid': grid
+      }
+    }
+  })
+  </script>
+---
+{% raw %}
+<div id="app" class="app">
+	<svg xml:space="preserve" :width="svg.width" :height="svg. height" zoomAndPan="disable">
+		<title>Grid</title>
+		<desc>A grid</desc>
+		<defs>
+      <line id="colgridline" x1="0" y1="0" x2="0" :y2="grid.height" />
+      <line id="rowgridline" x1="0" y1="0" :x2="grid.width" y2="0" />
+    </defs>
+    <g :transform="'translate(' + svg.gutterWidth + ',' + svg.gutterHeight + ')'">
+      <g v-for="(col, index) in grid.columns">
+        <use xlink:href="#colgridline" :x="index * grid.width / (grid.columns.length - 1)" y="0" :style="grid.lineStyle"/>
+        <text :x="index * grid.width / (grid.columns.length - 1)" :y="grid.height + grid.fontsize" text-anchor="middle">{{ col }}</text>
+      </g>
+      <g v-for="(row, index) in grid.rows">
+        <use xlink:href="#rowgridline" x="0" :y="index * grid.height / (grid.rows.length - 1)" :style="grid.lineStyle"/>
+        <text :x="0" :y="(grid.fontsize / 2) + (index * grid.height / (grid.rows.length - 1))" text-anchor="end">{{ grid.rows[grid.rows.length - index - 1] }}</text>
+      </g>
+    </g>
+	</svg>
+</div>
+{% endraw %}
