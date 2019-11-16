@@ -13,6 +13,22 @@ inlinestyle: >
     .app svg {
       border: 1px solid black;
     }
+    .svg--grid {
+      font-size: 16px;
+    }
+    .svg--gridline {
+      stroke-width: 1px;
+      stroke: gray;
+    }
+    .svg--text-left {
+      text-anchor: start;
+    }
+    .svg--text-center {
+      text-anchor: middle;
+    }
+    .svg--text-right {
+      text-anchor: end;
+    }
   </style>
 inlinescript: >
   <script>
@@ -20,23 +36,36 @@ inlinescript: >
     el: '#app',
     data: function () {
       let svg = {
+        title: '',
+        desc: '',
         height: 320,
         width: 480,
         gutterWidth: 40,
-        gutterHeight: 20
+        gutterHeight: 30
       }
       let grid = {
+        cellheight: 0,
+        cellwidth: 0,
         columns: ['0','10','20','30','40','50','60','70','80','90','100'],
-        fontsize: 16,
         height: svg.height - (2 * svg.gutterHeight),
-        lineStyle: {
-          strokeWidth: '1px',
-          stroke: 'gray'
-        },
-        lineWidth: 1,
         rows: ['0','10','20','30','40','50','60','70','80','90','100'],
+        labels: {
+          top: { show: true, dx: 0, dy: -6 },
+          left: { show: true, dx: -4, dy: 0 },
+          bottom: { show: true, dx: 0, dy: 22 },
+          right: { show: true, dx: 4, dy: 0 }
+        },
         width: svg.width - (2 * svg.gutterWidth)
       }
+      grid.cellheight = grid.height / (grid.columns.length - 1);
+      grid.cellwidth = grid.width / (grid.rows.length - 1);
+      /* to put labels in middle of cell 
+        1) add half cellwidth/height to dx/dy as appropriate
+        2) make last label in array empty
+      */
+      //grid.labels.top.dx = grid.labels.top.dx + (grid.cellwidth / 2);
+      //grid.labels.bottom.dx = grid.labels.bottom.dx + (grid.cellwidth / 2);
+      //grid.columns[grid.columns.length - 1] = '';
       return {
         'svg': svg,
         'grid': grid
@@ -48,20 +77,30 @@ inlinescript: >
 {% raw %}
 <div id="app" class="app">
 	<svg xml:space="preserve" :width="svg.width" :height="svg. height" zoomAndPan="disable">
-		<title>Grid</title>
-		<desc>A grid</desc>
+		<title v-if="svg.title && svg.title !== ''">{{ svg.title }}</title>
+    <desc v-if="svg.desc && svg.desc !== ''">{{ svg.desc }}</desc>
 		<defs>
       <line id="colgridline" x1="0" y1="0" x2="0" :y2="grid.height" />
       <line id="rowgridline" x1="0" y1="0" :x2="grid.width" y2="0" />
     </defs>
-    <g :transform="'translate(' + svg.gutterWidth + ',' + svg.gutterHeight + ')'">
+    <g class="svg--grid" :transform="'translate(' + svg.gutterWidth + ',' + svg.gutterHeight + ')'">
       <g v-for="(col, index) in grid.columns">
-        <use xlink:href="#colgridline" :x="index * grid.width / (grid.columns.length - 1)" y="0" :style="grid.lineStyle"/>
-        <text :x="index * grid.width / (grid.columns.length - 1)" :y="grid.height + grid.fontsize" text-anchor="middle">{{ col }}</text>
+        <use xlink:href="#colgridline" :x="index * grid.cellwidth" y="0" class="svg--gridline" />
+        <text v-if="grid.labels.top && grid.labels.top.show && col !== ''" 
+          :x="grid.labels.top.dx + (index * grid.cellwidth)" :y="grid.labels.top.dy" 
+          class="svg--text-center">{{ col }}</text>
+        <text v-if="grid.labels.bottom && grid.labels.bottom.show && col !== ''" 
+          :x="grid.labels.bottom.dx + (index * grid.cellwidth)" :y="grid.labels.bottom.dy + grid.height" 
+          class="svg--text-center">{{ col }}</text>
       </g>
       <g v-for="(row, index) in grid.rows">
-        <use xlink:href="#rowgridline" x="0" :y="index * grid.height / (grid.rows.length - 1)" :style="grid.lineStyle"/>
-        <text :x="0" :y="(grid.fontsize / 2) + (index * grid.height / (grid.rows.length - 1))" text-anchor="end">{{ grid.rows[grid.rows.length - index - 1] }}</text>
+        <use xlink:href="#rowgridline" x="0" :y="index * grid.cellheight" class="svg--gridline" />
+        <text v-if="grid.labels.left && grid.labels.left.show && row !== ''" 
+          :x="grid.labels.left.dx" :y="grid.labels.left.dy + (index * grid.cellheight)" 
+          dominant-baseline="middle" class="svg--text-right">{{ grid.rows[grid.rows.length - index - 1] }}</text>
+        <text v-if="grid.labels.right && grid.labels.right.show && row !==''" 
+          :x="grid.labels.right.dx + grid.width" :y="grid.labels.right.dy + (index * grid.cellheight)" 
+          dominant-baseline="middle" class="svg--text-left">{{ grid.rows[grid.rows.length - index - 1] }}</text>
       </g>
     </g>
 	</svg>
