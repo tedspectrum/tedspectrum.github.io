@@ -6,8 +6,8 @@
 </description>
     <link>http://tedspectrum.github.io/</link>
     <atom:link href="http://tedspectrum.github.io/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sun, 17 Nov 2019 19:52:22 +0000</pubDate>
-    <lastBuildDate>Sun, 17 Nov 2019 19:52:22 +0000</lastBuildDate>
+    <pubDate>Wed, 20 Nov 2019 23:26:24 +0000</pubDate>
+    <lastBuildDate>Wed, 20 Nov 2019 23:26:24 +0000</lastBuildDate>
     <generator>Jekyll v3.1.6</generator>
     
       <item>
@@ -63,12 +63,9 @@
         <title>File upload/download</title>
         <description>
 &lt;div id=&quot;app&quot; class=&quot;app&quot;&gt;
-  &lt;div id=&quot;cache&quot; style=&quot;display: none&quot;&gt;
-      &lt;input ref=&quot;fileUpload&quot; type=&quot;file&quot; id=&quot;fileUpload&quot; @change.prevent=&quot;onFileUploadChange&quot;&gt;
-      &lt;a ref=&quot;fileDownload&quot; href=&quot;&quot; download=&quot;&quot;&gt;&amp;nbsp;&lt;/a&gt;
-  &lt;/div&gt;
-  &lt;button ref=&quot;btnOpen&quot; type=&quot;button&quot; id=&quot;btnOpen&quot; @click.prevent=&quot;onOpenClick&quot; disabled&gt;Open...&lt;/button&gt;
-  &lt;button ref=&quot;btnDownload&quot; type=&quot;button&quot; id=&quot;btnDownload&quot; @click.prevent=&quot;onDownloadClick&quot; disabled&gt;Download&lt;/button&gt;
+  &lt;input type=&quot;text&quot; name=&quot;txtFilename&quot; v-model=&quot;filename&quot;&gt;&lt;/input&gt;
+  &lt;button type=&quot;button&quot; id=&quot;btnOpen&quot; @click=&quot;onOpenClick&quot;&gt;Open...&lt;/button&gt;
+  &lt;button type=&quot;button&quot; id=&quot;btnDownload&quot; @click=&quot;onDownloadClick&quot;&gt;Download&lt;/button&gt;
   &lt;p&gt;
     {{ msg }}
   &lt;/p&gt;
