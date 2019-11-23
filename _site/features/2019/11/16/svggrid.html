@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>SVG Grid</title>
+  <meta name="description" content="      Toggle Full Screen    Mobile console        {{ svg.title }}    {{ svg.desc }}                                              {{ col }}        {{ col }}  ...">
+
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="canonical" href="http://tedspectrum.github.io/features/2019/11/16/svggrid.html">
+  <link rel="alternate" type="application/rss+xml" title="Ted Spectrum" href="http://tedspectrum.github.io/feed.xml">
+  
+  
+  <style>
+  .app {
+    background-color: lightgray;
+  }
+
+  .app .hidden {
+    visibility: hidden;
+  }
+
+  .app svg {
+    border: 1px solid black;
+  }
+
+  .svg--grid {
+    font-size: 16px;
+  }
+
+  .svg--gridline {
+    stroke-width: 1px;
+    stroke: gray;
+  }
+
+  .svg--text-left {
+    text-anchor: start;
+  }
+
+  .svg--text-center {
+    text-anchor: middle;
+  }
+
+  .svg--text-right {
+    text-anchor: end;
+  }
+</style>
+
+  
+</head>
+
+
+  <body>
+
+    <header class="site-header">
+
+  <div class="wrapper">
+
+    <a class="site-title" href="/" id="top">Ted Spectrum</a>
+
+    <nav class="site-nav">
+      <a href="#" class="menu-icon">
+        <svg viewBox="0 0 18 15">
+          <path fill="#424242" d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.031C17.335,0,18,0.665,18,1.484L18,1.484z"/>
+          <path fill="#424242" d="M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0c0-0.82,0.665-1.484,1.484-1.484 h15.031C17.335,6.031,18,6.696,18,7.516L18,7.516z"/>
+          <path fill="#424242" d="M18,13.516C18,14.335,17.335,15,16.516,15H1.484C0.665,15,0,14.335,0,13.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.031C17.335,12.031,18,12.696,18,13.516L18,13.516z"/>
+        </svg>
+      </a>
+
+      <div class="trigger">
+        
+          
+          <a class="page-link" href="/about/">About</a>
+          
+        
+          
+          <a class="page-link" href="/categories/">Post Categories</a>
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+      </div>
+    </nav>
+
+  </div>
+
+</header>
+
+
+    <div class="page-content">
+      <div class="wrapper">
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">SVG Grid</h1>
+    <p class="post-meta"><time datetime="2019-11-16T00:00:00+00:00" itemprop="datePublished">Nov 16, 2019</time></p>
+  </header>
+
+  <div class="post-content" itemprop="articleBody">
+    
+<div id="app" class="app">
+  <div ref="menu">
+    <button id="toggleFullScreen" @click.prevent="onToggleFullScreen">Toggle Full Screen</button>
+    <button id="eruda" @click.prevent="onEruda">Mobile console</button>
+  </div>
+  <svg xml:space="preserve" :width="svg.width" :height="svg.height" zoomAndPan="disable">
+    <title v-if="svg.title && svg.title !== ''">{{ svg.title }}</title>
+    <desc v-if="svg.desc && svg.desc !== ''">{{ svg.desc }}</desc>
+    <defs>
+      <line id="colgridline" x1="0" y1="0" x2="0" :y2="grid.height" />
+      <line id="rowgridline" x1="0" y1="0" :x2="grid.width" y2="0" />
+    </defs>
+    <g class="svg--grid" :transform="'translate(' + svg.gutterWidth + ',' + svg.gutterHeight + ')'">
+      <g v-for="(col, index) in grid.columns">
+        <use xlink:href="#colgridline" :x="index * grid.cellwidth" y="0" class="svg--gridline" />
+        <text v-if="grid.labels.top && grid.labels.top.show && col !== ''"
+          :x="grid.labels.top.dx + (index * grid.cellwidth)" :y="grid.labels.top.dy"
+          class="svg--text-center">{{ col }}</text>
+        <text v-if="grid.labels.bottom && grid.labels.bottom.show && col !== ''"
+          :x="grid.labels.bottom.dx + (index * grid.cellwidth)" :y="grid.labels.bottom.dy + grid.height"
+          class="svg--text-center">{{ col }}</text>
+      </g>
+      <g v-for="(row, index) in grid.rows">
+        <use xlink:href="#rowgridline" x="0" :y="index * grid.cellheight" class="svg--gridline" />
+        <text v-if="grid.labels.left && grid.labels.left.show && row !== ''" :x="grid.labels.left.dx"
+          :y="grid.labels.left.dy + (index * grid.cellheight)" dominant-baseline="middle"
+          class="svg--text-right">{{ grid.rows[grid.rows.length - index - 1] }}</text>
+        <text v-if="grid.labels.right && grid.labels.right.show && row !==''" :x="grid.labels.right.dx + grid.width"
+          :y="grid.labels.right.dy + (index * grid.cellheight)" dominant-baseline="middle"
+          class="svg--text-left">{{ grid.rows[grid.rows.length - index - 1] }}</text>
+      </g>
+    </g>
+  </svg>
+</div>
+
+  </div>
+
+</article>
+
+      </div>
+    </div>
+
+    <footer class="site-footer">
+  <div class="wrapper">
+    <p><a href="#top">Top</a></p>
+  </div>
+</footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.6.0/dist/vue.js"></script>
+  
+
+  
+  <script src="/assets/src/core.js"></script>
+  
+
+
+<script> const app = new Vue({
+  el: '#app',
+  data: function () {
+    let svg = {
+      title: '',
+      desc: '',
+      height: 320,
+      width: 480,
+      gutterWidth: 40,
+      gutterHeight: 30
+    }
+    let grid = {
+      cellheight: 0,
+      cellwidth: 0,
+      columns: ['0', '10', '20', '30', '40', '50', '60', '70', '80', '90', '100'],
+      height: svg.height - (2 * svg.gutterHeight),
+      rows: ['0', '10', '20', '30', '40', '50', '60', '70', '80', '90', '100'],
+      labels: {
+        top: { show: true, dx: 0, dy: -6 },
+        left: { show: true, dx: -4, dy: 0 },
+        bottom: { show: true, dx: 0, dy: 22 },
+        right: { show: true, dx: 4, dy: 0 }
+      },
+      width: svg.width - (2 * svg.gutterWidth)
+    }
+    grid.cellheight = grid.height / (grid.columns.length - 1);
+    grid.cellwidth = grid.width / (grid.rows.length - 1);
+    /* to put labels in middle of cell 
+      1) add half cellwidth/height to dx/dy as appropriate
+      2) make last label in array empty
+    */
+    //grid.labels.top.dx = grid.labels.top.dx + (grid.cellwidth / 2);
+    //grid.labels.bottom.dx = grid.labels.bottom.dx + (grid.cellwidth / 2);
+    //grid.columns[grid.columns.length - 1] = '';
+    return {
+      'core': new Core(),
+      'svg': svg,
+      'grid': grid
+    }
+  },
+  methods: {
+    onEruda: function () {
+      this.core.eruda();
+    },
+    onResize: function () {
+      let containerW = this.$el.clientWidth;
+      this.svg.width = containerW - 2;
+      this.grid.width = this.svg.width - (2 * this.svg.gutterWidth);
+      this.svg.height = this.core.windowHeight() - this.$refs.menu.clientHeight;
+      this.grid.height = this.svg.height - (2 * this.svg.gutterHeight);
+      this.grid.cellheight = this.grid.height / (this.grid.columns.length - 1);
+      this.grid.cellwidth = this.grid.width / (this.grid.rows.length - 1);
+      window.scrollTo(0, this.$el.offsetTop);
+    },
+    onToggleFullScreen: function () {
+      this.core.toggleFullScreen(this.$el);
+    }
+  },
+  mounted: function () {
+    window.addEventListener('resize', this.core.debounce(this, this.onResize, 1000));
+    this.onResize();
+  }
+}) </script>
+
+
+
+  </body>
+
+</html>
