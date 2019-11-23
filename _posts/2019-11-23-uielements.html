@@ -1,0 +1,146 @@
+---
+layout: post
+title: "UI Elements"
+categories: [features]
+scripts: 
+  - url: "https://cdn.jsdelivr.net/npm/vue@2.6.0/dist/vue.js"
+    type: "absolute"
+  - url: "/assets/src/core.js"
+    type: "relative"
+  - url: "/assets/src/panel.js"
+    type: "relative"
+inlinestyle: >
+  <style>
+  .app {
+    position: relative;
+    border: 1px solid darkgray;
+  }
+  .hidden {
+    visibility: hidden;
+  }
+  .layout {
+    position: relative;
+    top: 0px;
+    left: 0px;
+    bottom: 0px;
+    right: 0px;
+    margin: 0 auto 0 auto;
+    border: 1px solid lightgray;
+    overflow: hidden;
+  }
+  .padded {
+    padding: 1em;
+  }
+  .overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    z-index: 20;
+    background-color: black;
+    opacity: 0.7;
+    display: block;
+  }
+  .overlay-enter,
+  .overlay-leave-to {
+    opacity: 0;
+  }
+
+  .overlay-enter-active {
+    transition: opacity 0.4s ease-in;
+  }
+
+  .overlay-leave-active {
+    transition: opacity 0.4s ease-out;
+  }
+
+  .panel {
+    position: absolute;
+    z-index: 1000;
+    background-color: lightgray;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .slideleft-enter,
+  .slideleft-leave-to {
+    left: 100%;
+  }
+
+  .slideleft-enter-active,
+  .slideleft-leave-active {
+    transition: left 0.4s ease-out;
+  }
+
+  .slideleft-enter-to,
+  .slideleft-leave {
+    left: calc(100% - 12em);
+  }
+
+  .panel-right {
+    width: 12em;
+    top: 0;
+    bottom: 0;
+    right: 0;
+  }
+
+  .slideright-enter,
+  .slideright-leave-to {
+    left: -12em;
+  }
+
+  .slideright-enter-active,
+  .slideright-leave-active {
+    transition: left 0.4s ease-out;
+  }
+
+  .slideright-enter-to,
+  .slideright-leave {
+    left: 0px;
+  }
+
+  .panel-left {
+    width: 12em;
+    top: 0;
+    bottom: 0;
+  }
+  </style>
+inlinescript: >
+  <script>
+  const app = new Vue({
+    el: '#app',
+    data: function() {
+      return {
+        menuActive: false,
+        menuClasses: ['panel-left'],
+        menuTransition: 'slideright'
+      }
+    },
+    methods: {
+    }
+  });
+  </script>
+---
+{% raw %}
+<div id="app" class="app">
+  <div class="layout">
+    <div class="app-header">
+      <button type="button" @click="(menuActive = !menuActive)">Menu button</button>
+      <h1>UI Elements</h1>
+    </div>
+    <div class="app-main padded">
+      Lorem ipsum dolor sit, amet consectetur adipisicing elit. Error quam reiciendis expedita ex suscipit earum ut sapiente dolor debitis deserunt, id eum est exercitationem eveniet qui possimus numquam nemo rerum.
+    </div>
+    <div class="app-footer">
+      <h1>By Tedspectrum</h1>
+    </div>
+    <panel :classes="menuClasses" :transition="menuTransition" :active="menuActive"
+      @panel-close="(menuActive = !menuActive)">
+      <div class="padded">
+        <h2>Menu</h2>
+      </div>
+    </panel>
+  </div>
+</div>
+{% endraw %}
