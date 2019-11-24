@@ -6,8 +6,8 @@
 </description>
     <link>http://tedspectrum.github.io/</link>
     <atom:link href="http://tedspectrum.github.io/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sun, 24 Nov 2019 16:27:55 +0000</pubDate>
-    <lastBuildDate>Sun, 24 Nov 2019 16:27:55 +0000</lastBuildDate>
+    <pubDate>Sun, 24 Nov 2019 22:52:53 +0000</pubDate>
+    <lastBuildDate>Sun, 24 Nov 2019 22:52:53 +0000</lastBuildDate>
     <generator>Jekyll v3.1.6</generator>
     
       <item>
@@ -15,13 +15,14 @@
         <description>
 &lt;div id=&quot;app&quot; class=&quot;app&quot;&gt;
   &lt;div class=&quot;app-header&quot;&gt;
+    &lt;h1&gt;UI Elements&lt;/h1&gt;
+  &lt;/div&gt;
+  &lt;div class=&quot;app-main padded&quot;&gt;
     &lt;button type=&quot;button&quot; @click=&quot;onMenuButtonClick(&#39;left&#39;)&quot;&gt;Left Menu&lt;/button&gt;
     &lt;button type=&quot;button&quot; @click=&quot;onMenuButtonClick(&#39;right&#39;)&quot;&gt;Right Menu&lt;/button&gt;
     &lt;button type=&quot;button&quot; @click=&quot;onMenuButtonClick(&#39;top&#39;)&quot;&gt;Top Menu&lt;/button&gt;
     &lt;button type=&quot;button&quot; @click=&quot;onMenuButtonClick(&#39;bottom&#39;)&quot;&gt;Bottom Menu&lt;/button&gt;
-    &lt;h1&gt;UI Elements&lt;/h1&gt;
-  &lt;/div&gt;
-  &lt;div class=&quot;app-main padded&quot;&gt;
+    &lt;button type=&quot;button&quot; @click=&quot;onMenuButtonClick(&#39;full&#39;)&quot;&gt;Full Menu&lt;/button&gt;
     {{ content }}
   &lt;/div&gt;
   &lt;div class=&quot;app-footer&quot;&gt;
@@ -33,8 +34,12 @@
     :overlay=&quot;menuOverlay&quot;
     :transition=&quot;menuTransition&quot; 
     @close=&quot;(menuActive = false)&quot;&gt;
-    &lt;div class=&quot;padded&quot;&gt;
-      &lt;h2&gt;Menu&lt;/h2&gt;
+    &lt;div&gt;
+      &lt;div class=&quot;panel-header padded&quot;&gt;
+        &lt;h2 class=&quot;griditem-left&quot;&gt;Menu&lt;/h2&gt;
+        &lt;button type=&quot;button&quot; class=&quot;griditem-right&quot; 
+          @click=&quot;(menuActive = false)&quot;&gt;X&lt;/button&gt;
+      &lt;/div&gt;
       &lt;button v-for=&quot;btn in menuItems&quot; 
         type=&quot;button&quot; class=&quot;panel-button&quot;
         @click=&quot;onMenuItemClick(btn.name)&quot;&gt;{{ btn.text }}&lt;/button&gt;
