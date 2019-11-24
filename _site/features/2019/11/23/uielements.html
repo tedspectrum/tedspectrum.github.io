@@ -7,7 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <title>UI Elements</title>
-  <meta name="description" content="            Menu button      UI Elements              Lorem ipsum dolor sit, amet consectetur adipisicing elit. Error quam reiciendis expedita ex suscipit ea...">
+  <meta name="description" content="      Left Menu    Right Menu    UI Elements        {{ content }}        By Tedspectrum              Menu      {{ btn.text }}      ">
 
   <link rel="stylesheet" href="/css/main.css">
   <link rel="canonical" href="http://tedspectrum.github.io/features/2019/11/23/uielements.html">
@@ -16,11 +16,6 @@
   
   <style> .app {
   position: relative;
-  border: 1px solid darkgray;
-} .hidden {
-  visibility: hidden;
-} .layout {
-  position: relative;
   top: 0px;
   left: 0px;
   bottom: 0px;
@@ -28,6 +23,8 @@
   margin: 0 auto 0 auto;
   border: 1px solid lightgray;
   overflow: hidden;
+} .hidden {
+  visibility: hidden;
 } .padded {
   padding: 1em;
 } .overlay {
@@ -39,15 +36,12 @@
   z-index: 20;
   background-color: black;
   opacity: 0.7;
-  display: block;
 } .overlay-enter, .overlay-leave-to {
   opacity: 0;
-}
-.overlay-enter-active {
-  transition: opacity 0.4s ease-in;
-}
-.overlay-leave-active {
-  transition: opacity 0.4s ease-out;
+} .overlay-enter-active {
+  transition: opacity 0.2s ease-in;
+} .overlay-leave-active {
+  transition: opacity 0.2s ease-out;
 }
 .panel {
   position: absolute;
@@ -55,35 +49,33 @@
   background-color: lightgray;
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
-}
-.slideleft-enter, .slideleft-leave-to {
-  left: 100%;
-}
-.slideleft-enter-active, .slideleft-leave-active {
-  transition: left 0.4s ease-out;
-}
-.slideleft-enter-to, .slideleft-leave {
-  left: calc(100% - 12em);
-}
-.panel-right {
+} .panel-button {
+  display: block;
+  width: 100%;
+  padding: 0.75em 0.5em 0.75em 0.5em;
+  text-align: left;
+} .panel-fulllengthright {
   width: 12em;
   top: 0;
   bottom: 0;
   right: 0;
-}
-.slideright-enter, .slideright-leave-to {
-  left: -12em;
-}
-.slideright-enter-active, .slideright-leave-active {
-  transition: left 0.4s ease-out;
-}
-.slideright-enter-to, .slideright-leave {
-  left: 0px;
-}
-.panel-left {
+} .panel-fulllengthleft {
   width: 12em;
   top: 0;
   bottom: 0;
+  left: 0;
+} .slideleft-enter, .slideleft-leave-to {
+  right: -3em;
+} .slideleft-enter-active {
+  transition: right 0.15s ease-out;
+} .slideleft-leave-active {
+  transition: right 0.15s ease-in;
+} .slideright-enter, .slideright-leave-to {
+  left: -3em;
+} .slideright-enter-active {
+  transition: left 0.15s ease-out;
+} .slideright-leave-active {
+  transition: left 0.15s ease-in;
 } </style>
 
   
@@ -145,24 +137,30 @@
   <div class="post-content" itemprop="articleBody">
     
 <div id="app" class="app">
-  <div class="layout">
-    <div class="app-header">
-      <button type="button" @click="(menuActive = !menuActive)">Menu button</button>
-      <h1>UI Elements</h1>
-    </div>
-    <div class="app-main padded">
-      Lorem ipsum dolor sit, amet consectetur adipisicing elit. Error quam reiciendis expedita ex suscipit earum ut sapiente dolor debitis deserunt, id eum est exercitationem eveniet qui possimus numquam nemo rerum.
-    </div>
-    <div class="app-footer">
-      <h1>By Tedspectrum</h1>
-    </div>
-    <panel :classes="menuClasses" :transition="menuTransition" :active="menuActive"
-      @panel-close="(menuActive = !menuActive)">
-      <div class="padded">
-        <h2>Menu</h2>
-      </div>
-    </panel>
+  <div class="app-header">
+    <button type="button" @click="onMenuButtonClick('left')">Left Menu</button>
+    <button type="button" @click="onMenuButtonClick('right')">Right Menu</button>
+    <h1>UI Elements</h1>
   </div>
+  <div class="app-main padded">
+    {{ content }}
+  </div>
+  <div class="app-footer">
+    <h1>By Tedspectrum</h1>
+  </div>
+  <panel 
+    :active="menuActive"
+    :classes="menuClasses" 
+    :overlay="menuOverlay"
+    :transition="menuTransition" 
+    @close="(menuActive = false)">
+    <div class="padded">
+      <h2>Menu</h2>
+      <button v-for="btn in menuItems" 
+        type="button" class="panel-button"
+        @click="onMenuItemClick(btn.name)">{{ btn.text }}</button>
+    </div>
+  </panel>
 </div>
 
   </div>
@@ -195,12 +193,42 @@
   el: '#app',
   data: function() {
     return {
+      content: 'Lorem ipsum dolor sit, amet consectetur adipisicing elit. Error quam reiciendis expedita ex suscipit earum ut sapiente dolor debitis deserunt, id eum est exercitationem eveniet qui possimus numquam nemo rerum.',
       menuActive: false,
-      menuClasses: ['panel-left'],
+      menuClasses: ['panel-fulllengthleft'],
+      menuItems: [
+        { 'name': 'menu1', 'text': 'first' },
+        { 'name': 'menu2', 'text': 'second' },
+        { 'name': 'menu3', 'text': 'third' },
+        { 'name': 'menu4', 'text': 'fourth' },
+        { 'name': 'menu5', 'text': 'fifth' },
+        { 'name': 'menu6', 'text': 'sixth' },
+        { 'name': 'menu7', 'text': 'seventh' },
+        { 'name': 'menu8', 'text': 'eighth' }
+      ],
+      menuOverlay: true,
       menuTransition: 'slideright'
     }
   },
   methods: {
+    onMenuButtonClick: function(menuName) {
+      if(!this.menuActive) {
+        this.menuActive = true;
+        switch(menuName) {
+          case 'right': 
+            this.menuClasses.splice(0, 1, 'panel-fulllengthright');
+            this.menuTransition = 'slideleft';
+            break;
+          default:
+            this.menuClasses.splice(0, 1, 'panel-fulllengthleft');
+            this.menuTransition = 'slideright';
+            break;
+        }
+      } 
+    },
+    onMenuItemClick: function(btnName) {
+      this.content += "Button " + btnName + " clicked.";
+    }
   }
 }); </script>
 
