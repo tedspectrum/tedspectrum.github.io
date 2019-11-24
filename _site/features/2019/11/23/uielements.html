@@ -7,7 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <title>UI Elements</title>
-  <meta name="description" content="      Left Menu    Right Menu    UI Elements        {{ content }}        By Tedspectrum              Menu      {{ btn.text }}      ">
+  <meta name="description" content="      Left Menu    Right Menu    Top Menu    Bottom Menu    UI Elements        {{ content }}        By Tedspectrum              Menu      {{ btn.text }}      ">
 
   <link rel="stylesheet" href="/css/main.css">
   <link rel="canonical" href="http://tedspectrum.github.io/features/2019/11/23/uielements.html">
@@ -16,10 +16,10 @@
   
   <style> .app {
   position: relative;
-  top: 0px;
-  left: 0px;
-  bottom: 0px;
-  right: 0px;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
   margin: 0 auto 0 auto;
   border: 1px solid lightgray;
   overflow: hidden;
@@ -47,7 +47,7 @@
   position: absolute;
   z-index: 1000;
   background-color: lightgray;
-  overflow-y: auto;
+  overflow: auto;
   -webkit-overflow-scrolling: touch;
 } .panel-button {
   display: block;
@@ -64,18 +64,40 @@
   top: 0;
   bottom: 0;
   left: 0;
-} .slideleft-enter, .slideleft-leave-to {
+} .panel-fullwidthtop {
+  height: 5em;
+  top: 0;
+  left: 0;
+  right: 0;
+} .panel-fullwidthbottom {
+  height: 5em;
+  left: 0;
+  bottom: 0;
+  right: 0;
+} /* slide left */ .slideleft-enter, .slideleft-leave-to {
   right: -3em;
 } .slideleft-enter-active {
   transition: right 0.15s ease-out;
 } .slideleft-leave-active {
   transition: right 0.15s ease-in;
-} .slideright-enter, .slideright-leave-to {
+} /* slide right */ .slideright-enter, .slideright-leave-to {
   left: -3em;
 } .slideright-enter-active {
   transition: left 0.15s ease-out;
 } .slideright-leave-active {
   transition: left 0.15s ease-in;
+} /* slide down */ .slidedown-enter, .slidedown-leave-to {
+  top: -3em;
+} .slidedown-enter-active {
+  transition: top 0.15s ease-out;
+} .slidedown-leave-active {
+  transition: top 0.15s ease-in;
+} /* slide up */ .slideup-enter, .slideup-leave-to {
+  bottom: -3em;
+} .slideup-enter-active {
+  transition: bottom 0.15s ease-out;
+} .slideup-leave-active {
+  transition: bottom 0.15s ease-in;
 } </style>
 
   
@@ -140,6 +162,8 @@
   <div class="app-header">
     <button type="button" @click="onMenuButtonClick('left')">Left Menu</button>
     <button type="button" @click="onMenuButtonClick('right')">Right Menu</button>
+    <button type="button" @click="onMenuButtonClick('top')">Top Menu</button>
+    <button type="button" @click="onMenuButtonClick('bottom')">Bottom Menu</button>
     <h1>UI Elements</h1>
   </div>
   <div class="app-main padded">
@@ -193,7 +217,24 @@
   el: '#app',
   data: function() {
     return {
-      content: 'Lorem ipsum dolor sit, amet consectetur adipisicing elit. Error quam reiciendis expedita ex suscipit earum ut sapiente dolor debitis deserunt, id eum est exercitationem eveniet qui possimus numquam nemo rerum.',
+      content: `
+      Lorem ipsum dolor sit, amet consectetur adipisicing elit. 
+        Error quam reiciendis expedita ex suscipit earum ut sapiente dolor 
+        debitis deserunt, id eum est exercitationem eveniet qui possimus 
+        numquam nemo rerum.
+      Lorem ipsum dolor sit, amet consectetur adipisicing elit. 
+        Error quam reiciendis expedita ex suscipit earum ut sapiente dolor 
+        debitis deserunt, id eum est exercitationem eveniet qui possimus 
+        numquam nemo rerum.
+      Lorem ipsum dolor sit, amet consectetur adipisicing elit. 
+        Error quam reiciendis expedita ex suscipit earum ut sapiente dolor 
+        debitis deserunt, id eum est exercitationem eveniet qui possimus 
+        numquam nemo rerum.
+      Lorem ipsum dolor sit, amet consectetur adipisicing elit. 
+        Error quam reiciendis expedita ex suscipit earum ut sapiente dolor 
+        debitis deserunt, id eum est exercitationem eveniet qui possimus 
+        numquam nemo rerum.
+        `,
       menuActive: false,
       menuClasses: ['panel-fulllengthleft'],
       menuItems: [
@@ -218,6 +259,14 @@
           case 'right': 
             this.menuClasses.splice(0, 1, 'panel-fulllengthright');
             this.menuTransition = 'slideleft';
+            break;
+          case 'top':
+            this.menuClasses.splice(0, 1, 'panel-fullwidthtop');
+            this.menuTransition = 'slidedown';
+            break;
+          case 'bottom':
+            this.menuClasses.splice(0, 1, 'panel-fullwidthbottom');
+            this.menuTransition = 'slideup';
             break;
           default:
             this.menuClasses.splice(0, 1, 'panel-fulllengthleft');
