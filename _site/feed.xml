@@ -6,8 +6,8 @@
 </description>
     <link>http://tedspectrum.github.io/</link>
     <atom:link href="http://tedspectrum.github.io/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sun, 24 Nov 2019 22:52:53 +0000</pubDate>
-    <lastBuildDate>Sun, 24 Nov 2019 22:52:53 +0000</lastBuildDate>
+    <pubDate>Sat, 30 Nov 2019 23:44:34 +0000</pubDate>
+    <lastBuildDate>Sat, 30 Nov 2019 23:44:34 +0000</lastBuildDate>
     <generator>Jekyll v3.1.6</generator>
     
       <item>
@@ -29,18 +29,18 @@
     &lt;h1&gt;By Tedspectrum&lt;/h1&gt;
   &lt;/div&gt;
   &lt;panel 
-    :active=&quot;menuActive&quot;
-    :classes=&quot;menuClasses&quot; 
-    :overlay=&quot;menuOverlay&quot;
-    :transition=&quot;menuTransition&quot; 
-    @close=&quot;(menuActive = false)&quot;&gt;
+    :active=&quot;activePanelVisible&quot;
+    :classes=&quot;activePanel.classes&quot; 
+    :overlay=&quot;activePanel.overlay&quot;
+    :transition=&quot;activePanel.transition&quot; 
+    @close=&quot;(activePanelVisible = false)&quot;&gt;
     &lt;div&gt;
       &lt;div class=&quot;panel-header padded&quot;&gt;
         &lt;h2 class=&quot;griditem-left&quot;&gt;Menu&lt;/h2&gt;
         &lt;button type=&quot;button&quot; class=&quot;griditem-right&quot; 
-          @click=&quot;(menuActive = false)&quot;&gt;X&lt;/button&gt;
+          @click=&quot;(activePanelVisible = false)&quot;&gt;X&lt;/button&gt;
       &lt;/div&gt;
-      &lt;button v-for=&quot;btn in menuItems&quot; 
+      &lt;button v-for=&quot;btn in activePanel.items&quot; 
         type=&quot;button&quot; class=&quot;panel-button&quot;
         @click=&quot;onMenuItemClick(btn.name)&quot;&gt;{{ btn.text }}&lt;/button&gt;
     &lt;/div&gt;

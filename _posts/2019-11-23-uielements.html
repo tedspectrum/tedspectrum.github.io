@@ -104,43 +104,50 @@ inlinestyle: >
   }
   /* slide left */
   .slideleft-enter, .slideleft-leave-to {
-    right: -3em;
+    transform: translate3d(2em, 0, 0);
   }
-  .slideleft-enter-active {
-    transition: right 0.15s ease-out;
-  }
-  .slideleft-leave-active {
-    transition: right 0.15s ease-in;
+  .slideleft-enter-active, .slideleft-leave-active {
+    transition: transform 0.15s ease-in-out;
   }
   /* slide right */
   .slideright-enter, .slideright-leave-to {
-    left: -3em;
+    transform: translate3d(-2em, 0, 0);
   }
   .slideright-enter-active {
-    transition: left 0.15s ease-out;
+    transition: transform 0.15s ease-out;
   }
   .slideright-leave-active {
-    transition: left 0.15s ease-in;
+    transition: transform 0.15s ease-in;
   }
   /* slide down */
   .slidedown-enter, .slidedown-leave-to {
-    top: -3em;
+    transform: translate3d(0, -1em, 0);
   }
   .slidedown-enter-active {
-    transition: top 0.15s ease-out;
+    transition: transform 0.15s ease-out;
   }
   .slidedown-leave-active {
-    transition: top 0.15s ease-in;
+    transition: transform 0.15s ease-in;
   }
   /* slide up */
   .slideup-enter, .slideup-leave-to {
-    bottom: -3em;
+    transform: translate3d(0, 1em, 0);
   }
   .slideup-enter-active {
-    transition: bottom 0.15s ease-out;
+    transition: transform 0.15s ease-out;
   }
   .slideup-leave-active {
-    transition: bottom 0.15s ease-in;
+    transition: transform 0.15s ease-in;
+  }
+  /* zoom in */
+  .zoomin-enter, .zoomin-leave-to {
+    transform: scale3d(0.7, 0.7, 0.7);
+  }
+  .zoomin-enter-active {
+    transition: transform 0.15s ease-out;
+  }
+  .zoomin-leave-active {
+    transition: transform 0.15s ease-in;
   }
   </style>
 inlinescript: >
@@ -149,6 +156,13 @@ inlinescript: >
     el: '#app',
     data: function() {
       return {
+        activePanel: {
+          classes: [''],
+          items: [{}],
+          overlay: true,
+          transition: 'zoomin'
+        },
+        activePanelVisible: false,
         content: `
         Lorem ipsum dolor sit, amet consectetur adipisicing elit. 
           Error quam reiciendis expedita ex suscipit earum ut sapiente dolor 
@@ -167,46 +181,82 @@ inlinescript: >
           debitis deserunt, id eum est exercitationem eveniet qui possimus 
           numquam nemo rerum.
           `,
-        menuActive: false,
-        menuClasses: ['panel-fulllengthleft'],
-        menuItems: [
-          { 'name': 'menu1', 'text': 'first' },
-          { 'name': 'menu2', 'text': 'second' },
-          { 'name': 'menu3', 'text': 'third' },
-          { 'name': 'menu4', 'text': 'fourth' },
-          { 'name': 'menu5', 'text': 'fifth' },
-          { 'name': 'menu6', 'text': 'sixth' },
-          { 'name': 'menu7', 'text': 'seventh' },
-          { 'name': 'menu8', 'text': 'eighth' }
-        ],
-        menuOverlay: true,
-        menuTransition: 'slideright'
+        leftMenu: {
+          classes: ['panel-fulllengthleft'],
+          items: [
+            { 'name': 'l1', 'text': 'first' },
+            { 'name': 'l2', 'text': 'second' },
+            { 'name': 'l3', 'text': 'third' },
+            { 'name': 'l4', 'text': 'fourth' }
+          ],
+          overlay: true,
+          transition: 'slideright'
+        },
+        rightMenu: {
+          classes: ['panel-fulllengthright'],
+          items: [
+            { 'name': 'r1', 'text': 'first' },
+            { 'name': 'r2', 'text': 'second' },
+            { 'name': 'r3', 'text': 'third' },
+            { 'name': 'r4', 'text': 'fourth' }
+          ],
+          overlay: true,
+          transition: 'slideleft'
+        },
+        topMenu: {
+          classes: ['panel-fullwidthtop'],
+          items: [
+            { 'name': 't1', 'text': 'first' },
+            { 'name': 't2', 'text': 'second' },
+            { 'name': 't3', 'text': 'third' },
+            { 'name': 't4', 'text': 'fourth' }
+          ],
+          overlay: true,
+          transition: 'slidedown'
+        },
+        bottomMenu: {
+          classes: ['panel-fullwidthbottom'],
+          items: [
+            { 'name': 'b1', 'text': 'first' },
+            { 'name': 'b2', 'text': 'second' },
+            { 'name': 'b3', 'text': 'third' },
+            { 'name': 'b4', 'text': 'fourth' }
+          ],
+          overlay: true,
+          transition: 'slideup'
+        },
+        fullMenu: {
+          classes: ['panel-full'],
+          items: [
+            { 'name': 'f1', 'text': 'first' },
+            { 'name': 'f2', 'text': 'second' },
+            { 'name': 'f3', 'text': 'third' },
+            { 'name': 'f4', 'text': 'fourth' }
+          ],
+          overlay: true,
+          transition: 'zoomin'
+        }
       }
     },
     methods: {
       onMenuButtonClick: function(menuName) {
-        if(!this.menuActive) {
-          this.menuActive = true;
+        if(!this.activePanelVisible) {
+          this.activePanelVisible = true;
           switch(menuName) {
+            case 'left': 
+              this.$set(this, 'activePanel', this.leftMenu);
+              break;
             case 'right': 
-              this.menuClasses.splice(0, 1, 'panel-fulllengthright');
-              this.menuTransition = 'slideleft';
+              this.$set(this, 'activePanel', this.rightMenu);  
               break;
             case 'top':
-              this.menuClasses.splice(0, 1, 'panel-fullwidthtop');
-              this.menuTransition = 'slidedown';
+              this.$set(this, 'activePanel', this.topMenu);
               break;
             case 'bottom':
-              this.menuClasses.splice(0, 1, 'panel-fullwidthbottom');
-              this.menuTransition = 'slideup';
+              this.$set(this, 'activePanel', this.bottomMenu);
               break;
             case 'full':
-              this.menuClasses.splice(0, 1, 'panel-full');
-              this.menuTransition = 'slideright';
-              break;
-            default:
-              this.menuClasses.splice(0, 1, 'panel-fulllengthleft');
-              this.menuTransition = 'slideright';
+              this.$set(this, 'activePanel', this.fullMenu);
               break;
           }
         } 
@@ -235,18 +285,18 @@ inlinescript: >
     <h1>By Tedspectrum</h1>
   </div>
   <panel 
-    :active="menuActive"
-    :classes="menuClasses" 
-    :overlay="menuOverlay"
-    :transition="menuTransition" 
-    @close="(menuActive = false)">
+    :active="activePanelVisible"
+    :classes="activePanel.classes" 
+    :overlay="activePanel.overlay"
+    :transition="activePanel.transition" 
+    @close="(activePanelVisible = false)">
     <div>
       <div class="panel-header padded">
         <h2 class="griditem-left">Menu</h2>
         <button type="button" class="griditem-right" 
-          @click="(menuActive = false)">X</button>
+          @click="(activePanelVisible = false)">X</button>
       </div>
-      <button v-for="btn in menuItems" 
+      <button v-for="btn in activePanel.items" 
         type="button" class="panel-button"
         @click="onMenuItemClick(btn.name)">{{ btn.text }}</button>
     </div>
