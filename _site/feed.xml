@@ -1,0 +1,350 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Ted Spectrum</title>
+    <description>My awesome website
+</description>
+    <link>http://tedspectrum.github.io/</link>
+    <atom:link href="http://tedspectrum.github.io/feed.xml" rel="self" type="application/rss+xml"/>
+    <pubDate>Sat, 14 Dec 2019 18:36:27 +0000</pubDate>
+    <lastBuildDate>Sat, 14 Dec 2019 18:36:27 +0000</lastBuildDate>
+    <generator>Jekyll v3.1.6</generator>
+    
+      <item>
+        <title>UI Elements</title>
+        <description>
+&lt;div id=&quot;app&quot; class=&quot;app&quot;&gt;
+  &lt;div class=&quot;app-header&quot;&gt;
+    &lt;h1&gt;UI Elements&lt;/h1&gt;
+  &lt;/div&gt;
+  &lt;div class=&quot;app-main padded&quot;&gt;
+    &lt;button type=&quot;button&quot; @click=&quot;onMenuButtonClick(&#39;left&#39;)&quot;&gt;Left Menu&lt;/button&gt;
+    &lt;button type=&quot;button&quot; @click=&quot;onMenuButtonClick(&#39;right&#39;)&quot;&gt;Right Menu&lt;/button&gt;
+    &lt;button type=&quot;button&quot; @click=&quot;onMenuButtonClick(&#39;top&#39;)&quot;&gt;Top Menu&lt;/button&gt;
+    &lt;button type=&quot;button&quot; @click=&quot;onMenuButtonClick(&#39;bottom&#39;)&quot;&gt;Bottom Menu&lt;/button&gt;
+    &lt;button type=&quot;button&quot; @click=&quot;onMenuButtonClick(&#39;full&#39;)&quot;&gt;Full Menu&lt;/button&gt;
+    {{ content }}
+  &lt;/div&gt;
+  &lt;div class=&quot;app-footer&quot;&gt;
+    &lt;h1&gt;By Tedspectrum&lt;/h1&gt;
+  &lt;/div&gt;
+  &lt;panel 
+    :active=&quot;activePanelVisible&quot;
+    :classes=&quot;activePanel.classes&quot; 
+    :overlay=&quot;activePanel.overlay&quot;
+    :transition=&quot;activePanel.transition&quot; 
+    @close=&quot;(activePanelVisible = false)&quot;&gt;
+    &lt;div&gt;
+      &lt;div class=&quot;panel-header padded&quot;&gt;
+        &lt;h2 class=&quot;griditem-left&quot;&gt;Menu&lt;/h2&gt;
+        &lt;button type=&quot;button&quot; class=&quot;griditem-right&quot; 
+          @click=&quot;(activePanelVisible = false)&quot;&gt;X&lt;/button&gt;
+      &lt;/div&gt;
+      &lt;template v-for=&quot;item in activePanel.items&quot;&gt;
+        &lt;btntree :tree=&quot;item&quot;/&gt;
+      &lt;/template&gt;
+    &lt;/div&gt;
+  &lt;/panel&gt;
+&lt;/div&gt;
+</description>
+        <pubDate>Sat, 23 Nov 2019 00:00:00 +0000</pubDate>
+        <link>http://tedspectrum.github.io/features/2019/11/23/uielements.html</link>
+        <guid isPermaLink="true">http://tedspectrum.github.io/features/2019/11/23/uielements.html</guid>
+        
+        
+        <category>features</category>
+        
+      </item>
+    
+      <item>
+        <title>ACE Editor</title>
+        <description>
+&lt;div id=&quot;app&quot; class=&quot;app&quot;&gt;
+  &lt;input type=&quot;text&quot; v-model=&quot;url&quot;&gt;&lt;/input&gt;
+  &lt;button type=&quot;button&quot; id=&quot;btnGet&quot; @click=&quot;onGetClick&quot;&gt;{{ buttonGetMsg }}&lt;/button&gt;
+  &lt;button type=&quot;button&quot; id=&quot;btnPost&quot; @click=&quot;onPostClick&quot;&gt;{{ buttonPostMsg }}&lt;/button&gt;
+  &lt;div id=&quot;editor&quot;&gt;// Hello World&lt;/div&gt;
+&lt;/div&gt;
+</description>
+        <pubDate>Thu, 21 Nov 2019 00:00:00 +0000</pubDate>
+        <link>http://tedspectrum.github.io/features/2019/11/21/aceeditor.html</link>
+        <guid isPermaLink="true">http://tedspectrum.github.io/features/2019/11/21/aceeditor.html</guid>
+        
+        
+        <category>features</category>
+        
+      </item>
+    
+      <item>
+        <title>SVG Grid</title>
+        <description>
+&lt;div id=&quot;app&quot; class=&quot;app&quot;&gt;
+  &lt;div ref=&quot;menu&quot;&gt;
+    &lt;button id=&quot;toggleFullScreen&quot; @click.prevent=&quot;onToggleFullScreen&quot;&gt;Toggle Full Screen&lt;/button&gt;
+    &lt;button id=&quot;eruda&quot; @click.prevent=&quot;onEruda&quot;&gt;Mobile console&lt;/button&gt;
+  &lt;/div&gt;
+  &lt;svg xml:space=&quot;preserve&quot; :width=&quot;svg.width&quot; :height=&quot;svg.height&quot; zoomAndPan=&quot;disable&quot;&gt;
+    &lt;title v-if=&quot;svg.title &amp;&amp; svg.title !== &#39;&#39;&quot;&gt;{{ svg.title }}&lt;/title&gt;
+    &lt;desc v-if=&quot;svg.desc &amp;&amp; svg.desc !== &#39;&#39;&quot;&gt;{{ svg.desc }}&lt;/desc&gt;
+    &lt;defs&gt;
+      &lt;line id=&quot;colgridline&quot; x1=&quot;0&quot; y1=&quot;0&quot; x2=&quot;0&quot; :y2=&quot;grid.height&quot; /&gt;
+      &lt;line id=&quot;rowgridline&quot; x1=&quot;0&quot; y1=&quot;0&quot; :x2=&quot;grid.width&quot; y2=&quot;0&quot; /&gt;
+    &lt;/defs&gt;
+    &lt;g class=&quot;svg--grid&quot; :transform=&quot;&#39;translate(&#39; + svg.gutterWidth + &#39;,&#39; + svg.gutterHeight + &#39;)&#39;&quot;&gt;
+      &lt;g v-for=&quot;(col, index) in grid.columns&quot;&gt;
+        &lt;use xlink:href=&quot;#colgridline&quot; :x=&quot;index * grid.cellwidth&quot; y=&quot;0&quot; class=&quot;svg--gridline&quot; /&gt;
+        &lt;text v-if=&quot;grid.labels.top &amp;&amp; grid.labels.top.show &amp;&amp; col !== &#39;&#39;&quot;
+          :x=&quot;grid.labels.top.dx + (index * grid.cellwidth)&quot; :y=&quot;grid.labels.top.dy&quot;
+          class=&quot;svg--text-center&quot;&gt;{{ col }}&lt;/text&gt;
+        &lt;text v-if=&quot;grid.labels.bottom &amp;&amp; grid.labels.bottom.show &amp;&amp; col !== &#39;&#39;&quot;
+          :x=&quot;grid.labels.bottom.dx + (index * grid.cellwidth)&quot; :y=&quot;grid.labels.bottom.dy + grid.height&quot;
+          class=&quot;svg--text-center&quot;&gt;{{ col }}&lt;/text&gt;
+      &lt;/g&gt;
+      &lt;g v-for=&quot;(row, index) in grid.rows&quot;&gt;
+        &lt;use xlink:href=&quot;#rowgridline&quot; x=&quot;0&quot; :y=&quot;index * grid.cellheight&quot; class=&quot;svg--gridline&quot; /&gt;
+        &lt;text v-if=&quot;grid.labels.left &amp;&amp; grid.labels.left.show &amp;&amp; row !== &#39;&#39;&quot; :x=&quot;grid.labels.left.dx&quot;
+          :y=&quot;grid.labels.left.dy + (index * grid.cellheight)&quot; dominant-baseline=&quot;middle&quot;
+          class=&quot;svg--text-right&quot;&gt;{{ grid.rows[grid.rows.length - index - 1] }}&lt;/text&gt;
+        &lt;text v-if=&quot;grid.labels.right &amp;&amp; grid.labels.right.show &amp;&amp; row !==&#39;&#39;&quot; :x=&quot;grid.labels.right.dx + grid.width&quot;
+          :y=&quot;grid.labels.right.dy + (index * grid.cellheight)&quot; dominant-baseline=&quot;middle&quot;
+          class=&quot;svg--text-left&quot;&gt;{{ grid.rows[grid.rows.length - index - 1] }}&lt;/text&gt;
+      &lt;/g&gt;
+    &lt;/g&gt;
+  &lt;/svg&gt;
+&lt;/div&gt;
+</description>
+        <pubDate>Sat, 16 Nov 2019 00:00:00 +0000</pubDate>
+        <link>http://tedspectrum.github.io/features/2019/11/16/svggrid.html</link>
+        <guid isPermaLink="true">http://tedspectrum.github.io/features/2019/11/16/svggrid.html</guid>
+        
+        
+        <category>features</category>
+        
+      </item>
+    
+      <item>
+        <title>File upload/download</title>
+        <description>
+&lt;div id=&quot;app&quot; class=&quot;app&quot;&gt;
+  &lt;input type=&quot;text&quot; name=&quot;txtFilename&quot; v-model=&quot;filename&quot;&gt;&lt;/input&gt;
+  &lt;button type=&quot;button&quot; id=&quot;btnOpen&quot; @click=&quot;onOpenClick&quot;&gt;Open...&lt;/button&gt;
+  &lt;button type=&quot;button&quot; id=&quot;btnDownload&quot; @click=&quot;onDownloadClick&quot;&gt;Download&lt;/button&gt;
+  &lt;p&gt;
+    {{ msg }}
+  &lt;/p&gt;
+&lt;/div&gt;
+</description>
+        <pubDate>Fri, 08 Nov 2019 00:00:00 +0000</pubDate>
+        <link>http://tedspectrum.github.io/features/2019/11/08/filemanipulation.html</link>
+        <guid isPermaLink="true">http://tedspectrum.github.io/features/2019/11/08/filemanipulation.html</guid>
+        
+        
+        <category>features</category>
+        
+      </item>
+    
+      <item>
+        <title>SVG logo</title>
+        <description>
+&lt;div id=&quot;app&quot; class=&quot;app&quot;&gt;
+	&lt;svg xml:space=&quot;preserve&quot; 
+		:width=&quot;(20 * radius) + (9 * spacing) + (2 * padding)&quot; 
+		:height=&quot;(2 * radius) + (2 * padding)&quot; zoomAndPan=&quot;disable&quot;&gt;
+		&lt;title&gt;Tedspectrum logo&lt;/title&gt;
+		&lt;desc&gt;10 circles in each of the colors of the rainbow&lt;/desc&gt;
+		&lt;defs&gt;
+		&lt;circle id=&quot;circ&quot; :cx=&quot;0&quot; :cy=&quot;0&quot; :r=&quot;radius&quot;/&gt;
+		&lt;circle id=&quot;smallcirc&quot; :cx=&quot;-smallradius&quot; :cy=&quot;-smallradius&quot; :r=&quot;smallradius&quot; /&gt;
+		&lt;/defs&gt;
+		&lt;g v-for=&quot;(circ, index) in circles&quot; :transform=&quot;circ.transform&quot;&gt;
+			&lt;use :width=&quot;radius * 2&quot; :height=&quot;radius * 2&quot; xlink:href=&quot;#circ&quot; :style=&quot;circ.style&quot;/&gt;
+			&lt;use v-for=&quot;smallcirc in circ.smallcircles&quot;
+				:x=&quot;smallcirc.x&quot; :y=&quot;smallcirc.y&quot;
+				:width=&quot;smallradius * 2&quot; :height=&quot;smallradius * 2&quot; 
+				xlink:href=&quot;#smallcirc&quot; :style=&quot;smallcirc.style&quot;/&gt;
+			&lt;line
+				v-if=&quot;(index !== 0)&quot; 
+				:x1=&quot;0&quot; :y1=&quot;0&quot; 
+				:x2=&quot;0&quot; :y2=&quot;(-0.6 * radius)&quot;
+				:style=&quot;circ.handStyle&quot;
+				:transform=&quot;circ.handTransform&quot; 
+				/&gt;
+		&lt;/g&gt;
+	&lt;/svg&gt;
+&lt;/div&gt;
+</description>
+        <pubDate>Sun, 03 Nov 2019 00:00:00 +0000</pubDate>
+        <link>http://tedspectrum.github.io/features/2019/11/03/firstsvg.html</link>
+        <guid isPermaLink="true">http://tedspectrum.github.io/features/2019/11/03/firstsvg.html</guid>
+        
+        
+        <category>features</category>
+        
+      </item>
+    
+      <item>
+        <title>Web apps in Jekyll - updated</title>
+        <description>&lt;h1 id=&quot;setup-for-styles-and-scripts-at-top-nothing-added-at-bottom&quot;&gt;Setup for styles and scripts at top, nothing added at bottom&lt;/h1&gt;
+
+&lt;p&gt;To setup Jekyll so that posts can have scripts in the footer and styles added in the header, 
+amend the &lt;strong&gt;head.html&lt;/strong&gt; file and &lt;strong&gt;footer.html&lt;/strong&gt; in the &lt;strong&gt;_includes&lt;/strong&gt; directory.&lt;/p&gt;
+
+&lt;p&gt;Add front matter to the jekyll post to provide data that informs what scripts and styles to add.&lt;/p&gt;
+
+&lt;p&gt;Finally wrap vue template in html content in &lt;strong&gt;raw&lt;/strong&gt;, &lt;strong&gt;endraw&lt;/strong&gt; liquid tags to allow double brackets
+etc. in the content.&lt;/p&gt;
+
+&lt;h2 id=&quot;data-in-the-post-front-matter&quot;&gt;Data in the post front matter&lt;/h2&gt;
+
+&lt;p&gt;Add data for the styles and scripts in the post front matter&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-yaml&quot; data-lang=&quot;yaml&quot;&gt;&lt;span class=&quot;nn&quot;&gt;---&lt;/span&gt;
+&lt;span class=&quot;na&quot;&gt;layout&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;post&lt;/span&gt;
+&lt;span class=&quot;na&quot;&gt;title&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;  &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;Some&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s&quot;&gt;title&quot;&lt;/span&gt;
+&lt;span class=&quot;na&quot;&gt;styles&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+  &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;url&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;/relative_path_to_css/some.css&quot;&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;type&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;relative&quot;&lt;/span&gt;
+&lt;span class=&quot;na&quot;&gt;scripts&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; 
+  &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;url&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;https://mycdn/somecode.js&quot;&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;type&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;absolute&quot;&lt;/span&gt;
+  &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;url&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;/relative_path_to_script/some.js&quot;&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;type&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;relative&quot;&lt;/span&gt;
+&lt;span class=&quot;na&quot;&gt;inlinestyle&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;pi&quot;&gt;&amp;gt;&lt;/span&gt;
+  &lt;span class=&quot;no&quot;&gt;&amp;lt;style&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;no&quot;&gt;.app {}&lt;/span&gt;
+  &lt;span class=&quot;no&quot;&gt;&amp;lt;/style&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;na&quot;&gt;inlinescript&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;pi&quot;&gt;&amp;gt;&lt;/span&gt;
+  &lt;span class=&quot;no&quot;&gt;&amp;lt;script&amp;gt;&lt;/span&gt;
+  &lt;span class=&quot;no&quot;&gt;const myVal = 0;&lt;/span&gt;
+  &lt;span class=&quot;no&quot;&gt;&amp;lt;/script&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;s&quot;&gt;---&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;h2 id=&quot;styles-in-the-header&quot;&gt;styles in the header&lt;/h2&gt;
+
+&lt;p&gt;Add the code below in the &lt;strong&gt;head.html&lt;/strong&gt; file before the end head tag&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-liquid&quot; data-lang=&quot;liquid&quot;&gt;  &lt;span class=&quot;p&quot;&gt;{%&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;for&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;item&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;in&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;page.styles&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;%}&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;{%&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;kr&quot;&gt;case&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;item&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;type&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;%}&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;{%&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;kr&quot;&gt;when&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;absolute&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;%}&lt;/span&gt;
+  &amp;lt;link rel=&quot;stylesheet&quot; href=&quot;&lt;span class=&quot;p&quot;&gt;{{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;item&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;url&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}}&lt;/span&gt;&quot;&amp;gt;
+  &lt;span class=&quot;p&quot;&gt;{%&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;kr&quot;&gt;when&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;relative&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;%}&lt;/span&gt;
+  &amp;lt;link rel=&quot;stylesheet&quot; href=&quot;&lt;span class=&quot;p&quot;&gt;{{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;item&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;url&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;|&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;relative_url&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}}&lt;/span&gt;&quot;&amp;gt;
+  &lt;span class=&quot;p&quot;&gt;{%&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;kr&quot;&gt;endcase&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;%}&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;{%&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;endfor&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;%}&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;{%&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;kr&quot;&gt;if&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;page&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;inlinestyle&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;%}&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;{{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;page&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;inlinestyle&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}}&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;{%&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;kr&quot;&gt;endif&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;%}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;And in the &lt;strong&gt;footer.html&lt;/strong&gt;&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-liquid&quot; data-lang=&quot;liquid&quot;&gt;&lt;span class=&quot;p&quot;&gt;{%&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;for&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;item&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;in&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;page.scripts&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;%}&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;{%&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;kr&quot;&gt;case&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;item&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;type&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;%}&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;{%&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;kr&quot;&gt;when&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;absolute&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;%}&lt;/span&gt;
+  &amp;lt;script src=&quot;&lt;span class=&quot;p&quot;&gt;{{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;item&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;url&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}}&lt;/span&gt;&quot;&amp;gt;&amp;lt;/script&amp;gt;
+  &lt;span class=&quot;p&quot;&gt;{%&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;kr&quot;&gt;when&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;relative&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;%}&lt;/span&gt;
+  &amp;lt;script src=&quot;&lt;span class=&quot;p&quot;&gt;{{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;item&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;url&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;|&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;relative_url&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}}&lt;/span&gt;&quot;&amp;gt;&amp;lt;/script&amp;gt;
+  &lt;span class=&quot;p&quot;&gt;{%&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;kr&quot;&gt;endcase&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;%}&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;{%&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;endfor&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;%}&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;{%&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;kr&quot;&gt;if&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;page&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;inlinescript&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;%}&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;{{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;page&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;inlinescript&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}}&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;{%&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;kr&quot;&gt;endif&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;%}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+</description>
+        <pubDate>Thu, 31 Oct 2019 00:00:00 +0000</pubDate>
+        <link>http://tedspectrum.github.io/jekyll/2019/10/31/webapp2.html</link>
+        <guid isPermaLink="true">http://tedspectrum.github.io/jekyll/2019/10/31/webapp2.html</guid>
+        
+        
+        <category>jekyll</category>
+        
+      </item>
+    
+      <item>
+        <title>Binary Search Tree</title>
+        <description>
+&lt;div id=&quot;app&quot; class=&quot;app&quot;&gt;
+  &lt;p v-for=&quot;msg in logger&quot;&gt;{{ msg }}&lt;/p&gt;
+  &lt;button class=&quot;app-button&quot; @click.prevent=&quot;run()&quot;&gt;Run&lt;/button&gt;
+&lt;/div&gt;
+</description>
+        <pubDate>Thu, 31 Oct 2019 00:00:00 +0000</pubDate>
+        <link>http://tedspectrum.github.io/features/data%20structures/2019/10/31/binarysearchtree.html</link>
+        <guid isPermaLink="true">http://tedspectrum.github.io/features/data%20structures/2019/10/31/binarysearchtree.html</guid>
+        
+        
+        <category>features</category>
+        
+        <category>data structures</category>
+        
+      </item>
+    
+      <item>
+        <title>Ticker text</title>
+        <description>
+&lt;div id=&quot;app&quot; class=&quot;app&quot;&gt;
+  &lt;h1&gt;Ticker text&lt;/h1&gt;
+  &lt;textarea ref=&quot;ttin&quot;
+    class=&quot;textarea&quot;&gt;Lorem ipsum, dolor sit amet consectetur adipisicing elit Quae repellat, eveniet pariatur maxime expedita, molestiae, dicta veniam quos dolores mollitia magni ut ducimus necessitatibus adipisci soluta assumenda inventore aliquam! Veniam?&lt;/textarea&gt;
+  &lt;button class=&quot;app--button&quot; @click.prevent=&quot;onStart()&quot;&gt;Start&lt;/button&gt;
+  &lt;button class=&quot;app--button&quot; @click.prevent=&quot;onPause()&quot;&gt;Pause&lt;/button&gt;
+  &lt;button class=&quot;app--button&quot; @click.prevent=&quot;onStop()&quot;&gt;Stop&lt;/button&gt;
+  &lt;p v-for=&quot;t in cmdStates&quot;&gt;
+    &lt;span&gt;{{ t.shown }}&lt;/span&gt;&lt;span class=&quot;hidden&quot;&gt;{{ t.hidden }}&lt;/span&gt;
+  &lt;/p&gt;
+&lt;/div&gt;
+</description>
+        <pubDate>Sat, 26 Oct 2019 00:00:00 +0100</pubDate>
+        <link>http://tedspectrum.github.io/features/2019/10/26/tickertext001.html</link>
+        <guid isPermaLink="true">http://tedspectrum.github.io/features/2019/10/26/tickertext001.html</guid>
+        
+        
+        <category>features</category>
+        
+      </item>
+    
+      <item>
+        <title>Geolocation</title>
+        <description>
+&lt;div id=&quot;geolocationapp&quot; class=&quot;app&quot;&gt;
+  &lt;h2&gt;Latitude, Longitude&lt;/h2&gt;
+  &lt;h3&gt;({{ lat }},{{ long }})&lt;/h3&gt;
+  &lt;p&gt;{{ msg ? msg : &#39;&amp;nbsp;&#39; }}&lt;/p&gt;
+  &lt;button class=&quot;geolocation--button&quot; @click.prevent=&quot;onLocationGet()&quot;&gt;Get Location&lt;/button&gt;
+&lt;/div&gt;
+</description>
+        <pubDate>Thu, 24 Oct 2019 00:00:00 +0100</pubDate>
+        <link>http://tedspectrum.github.io/features/2019/10/24/geolocate.html</link>
+        <guid isPermaLink="true">http://tedspectrum.github.io/features/2019/10/24/geolocate.html</guid>
+        
+        
+        <category>features</category>
+        
+      </item>
+    
+      <item>
+        <title>Welcome to Jekyll!</title>
+        <description>&lt;p&gt;You’ll find this post in your &lt;code class=&quot;highlighter-rouge&quot;&gt;_posts&lt;/code&gt; directory. Go ahead and edit it and re-build the site to see your changes. You can rebuild the site in many different ways, but the most common way is to run &lt;code class=&quot;highlighter-rouge&quot;&gt;jekyll serve&lt;/code&gt;, which launches a web server and auto-regenerates your site when a file is updated.&lt;/p&gt;
+
+&lt;p&gt;To add new posts, simply add a file in the &lt;code class=&quot;highlighter-rouge&quot;&gt;_posts&lt;/code&gt; directory that follows the convention &lt;code class=&quot;highlighter-rouge&quot;&gt;YYYY-MM-DD-name-of-post.ext&lt;/code&gt; and includes the necessary front matter. Take a look at the source for this post to get an idea about how it works.&lt;/p&gt;
+
+&lt;p&gt;Jekyll also offers powerful support for code snippets:&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;print_hi&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+  &lt;span class=&quot;nb&quot;&gt;puts&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;Hi, &lt;/span&gt;&lt;span class=&quot;si&quot;&gt;#{&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;print_hi&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&#39;Tom&#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;#=&amp;gt; prints &#39;Hi, Tom&#39; to STDOUT.&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;Check out the &lt;a href=&quot;http://jekyllrb.com/docs/home&quot;&gt;Jekyll docs&lt;/a&gt; for more info on how to get the most out of Jekyll. File all bugs/feature requests at &lt;a href=&quot;https://github.com/jekyll/jekyll&quot;&gt;Jekyll’s GitHub repo&lt;/a&gt;. If you have questions, you can ask them on &lt;a href=&quot;https://talk.jekyllrb.com/&quot;&gt;Jekyll Talk&lt;/a&gt;.&lt;/p&gt;
+
+</description>
+        <pubDate>Sun, 16 Jun 2019 16:57:58 +0100</pubDate>
+        <link>http://tedspectrum.github.io/jekyll/2019/06/16/welcome-to-jekyll.html</link>
+        <guid isPermaLink="true">http://tedspectrum.github.io/jekyll/2019/06/16/welcome-to-jekyll.html</guid>
+        
+        
+        <category>jekyll</category>
+        
+      </item>
+    
+  </channel>
+</rss>
