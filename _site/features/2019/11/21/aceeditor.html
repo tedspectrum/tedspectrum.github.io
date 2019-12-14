@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>ACE Editor</title>
+  <meta name="description" content="    {{ buttonGetMsg }}  {{ buttonPostMsg }}  // Hello World">
+
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="canonical" href="http://tedspectrum.github.io/features/2019/11/21/aceeditor.html">
+  <link rel="alternate" type="application/rss+xml" title="Ted Spectrum" href="http://tedspectrum.github.io/feed.xml">
+  
+  
+  <style>
+  #editor {
+    border: 1px solid lightgray;
+    margin: auto;
+    height: 400px;
+    width: 100%;
+  }
+  /* ace theme override */
+  .ace-twilight .ace_comment {
+    font-style: italic;
+    color: #7f7f7f;
+  }
+  /* ace mobile menu hide */
+  .ace_mobile-menu {
+    display: none !important;
+  }
+</style>
+
+  
+</head>
+
+
+  <body>
+
+    <header class="site-header">
+
+  <div class="wrapper">
+
+    <a class="site-title" href="/" id="top">Ted Spectrum</a>
+
+    <nav class="site-nav">
+      <a href="#" class="menu-icon">
+        <svg viewBox="0 0 18 15">
+          <path fill="#424242" d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.031C17.335,0,18,0.665,18,1.484L18,1.484z"/>
+          <path fill="#424242" d="M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0c0-0.82,0.665-1.484,1.484-1.484 h15.031C17.335,6.031,18,6.696,18,7.516L18,7.516z"/>
+          <path fill="#424242" d="M18,13.516C18,14.335,17.335,15,16.516,15H1.484C0.665,15,0,14.335,0,13.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.031C17.335,12.031,18,12.696,18,13.516L18,13.516z"/>
+        </svg>
+      </a>
+
+      <div class="trigger">
+        
+          
+          <a class="page-link" href="/about/">About</a>
+          
+        
+          
+          <a class="page-link" href="/categories/">Post Categories</a>
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+      </div>
+    </nav>
+
+  </div>
+
+</header>
+
+
+    <div class="page-content">
+      <div class="wrapper">
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">ACE Editor</h1>
+    <p class="post-meta"><time datetime="2019-11-21T00:00:00+00:00" itemprop="datePublished">Nov 21, 2019</time></p>
+  </header>
+
+  <div class="post-content" itemprop="articleBody">
+    
+<div id="app" class="app">
+  <input type="text" v-model="url"></input>
+  <button type="button" id="btnGet" @click="onGetClick">{{ buttonGetMsg }}</button>
+  <button type="button" id="btnPost" @click="onPostClick">{{ buttonPostMsg }}</button>
+  <div id="editor">// Hello World</div>
+</div>
+
+  </div>
+
+</article>
+
+      </div>
+    </div>
+
+    <footer class="site-footer">
+  <div class="wrapper">
+    <p><a href="#top">Top</a></p>
+  </div>
+</footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.6.0/dist/vue.js"></script>
+  
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/ace-builds@1.4.7/src-min-noconflict/ace.js"></script>
+  
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  
+
+
+<script> const app = new Vue({
+  el: '#app',
+  data: function() {
+    return {
+      'buttonGetMsg': 'Get',
+      'buttonPostMsg': 'Post',
+      'editor': null, 
+      'url': ''
+    }
+  },
+  methods: {
+    onGetClick: function() {
+      let myself = this;
+      this.buttonGetMsg = '...';
+      axios.get(myself.url, {'responseType': 'text'})
+        .then(function(res) {
+          console.log(res);
+          myself.editor.setValue(res.data);
+          myself.editor.gotoLine(1);
+          myself.editor.focus();
+          myself.buttonGetMsg = 'Get';
+        }
+      );
+    },
+    onPostClick: function() {
+      let myself = this;
+      myself.buttonPostMsg = '...';
+      axios.post(myself.url, {'text' : myself.editor.getValue() })
+        .finally(function(res) {
+          myself.buttonPostMsg = 'Post';
+        });
+    }
+  },
+  mounted: function() {
+    const editor = ace.edit("editor");
+    editor.setTheme("ace/theme/twilight");
+    editor.session.setMode("ace/mode/javascript");
+    editor.session.setOption("tabSize", 2);
+    editor.session.setOption("useSoftTabs", true);
+    this.editor = editor;
+  }
+}); </script>
+
+
+
+  </body>
+
+</html>
