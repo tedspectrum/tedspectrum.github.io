@@ -6,16 +6,12 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>UI Elements</title>
-  <meta name="description" content="      UI Elements        Left Menu    Right Menu    Top Menu    Bottom Menu    Full Menu    {{ content }}        By Tedspectrum                      Menu    ...">
+  <title>File upload/download</title>
+  <meta name="description" content="    Open...  Download      {{ msg }}  ">
 
   <link rel="stylesheet" href="/css/main.css">
-  <link rel="canonical" href="http://localhost:4000/features/2019/11/23/uielements.html">
+  <link rel="canonical" href="http://localhost:4000/features/2019/11/08/filemanipulation.html">
   <link rel="alternate" type="application/rss+xml" title="Ted Spectrum" href="http://localhost:4000/feed.xml">
-  
-  
-  <link rel="stylesheet" href="/assets/styles/uimain.css">
-  
   
   
 </head>
@@ -69,46 +65,19 @@
         <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
 
   <header class="post-header">
-    <h1 class="post-title" itemprop="name headline">UI Elements</h1>
-    <p class="post-meta"><time datetime="2019-11-23T00:00:00+00:00" itemprop="datePublished">Nov 23, 2019</time></p>
+    <h1 class="post-title" itemprop="name headline">File upload/download</h1>
+    <p class="post-meta"><time datetime="2019-11-08T00:00:00+00:00" itemprop="datePublished">Nov 8, 2019</time></p>
   </header>
 
   <div class="post-content" itemprop="articleBody">
     
 <div id="app" class="app">
-  <div class="app-header">
-    <h1>UI Elements</h1>
-  </div>
-  <div class="app-main padded">
-    <button type="button" @click="onMenuButtonClick('left')">Left Menu</button>
-    <button type="button" @click="onMenuButtonClick('right')">Right Menu</button>
-    <button type="button" @click="onMenuButtonClick('top')">Top Menu</button>
-    <button type="button" @click="onMenuButtonClick('bottom')">Bottom Menu</button>
-    <button type="button" @click="onMenuButtonClick('full')">Full Menu</button>
-    {{ content }}
-  </div>
-  <div class="app-footer">
-    <h1>By Tedspectrum</h1>
-  </div>
-  <panel 
-    :active="activePanelVisible"
-    :classes="activePanel.classes" 
-    :overlay="activePanel.overlay"
-    :transition="activePanel.transition" 
-    @close="(activePanelVisible = false)">
-    <div>
-      <div class="panel-header padded">
-        <h2 class="griditem-left">Menu</h2>
-        <button type="button" class="griditem-right" 
-          @click="(activePanelVisible = false)">X</button>
-      </div>
-      <template v-for="item in activePanel.items">
-      	<button type="button" class="panel-button"
-      		@click="onMenuItemClick(item.name)">{{ item.text }}
-      	</button>
-      </template>
-    </div>
-  </panel>
+  <input type="text" name="txtFilename" v-model="filename"></input>
+  <button type="button" id="btnOpen" @click="onOpenClick">Open...</button>
+  <button type="button" id="btnDownload" @click="onDownloadClick">Download</button>
+  <p>
+    {{ msg }}
+  </p>
 </div>
 
   </div>
@@ -125,20 +94,36 @@
 </footer>
 
   
-  <script src="https://cdn.jsdelivr.net/npm/vue@2.6.0/dist/vue.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.6.0/dist/vue.min.js"></script>
   
 
   
   <script src="/assets/src/core.js"></script>
   
 
-  
-  <script src="/assets/src/panel.js"></script>
-  
 
-  
-  <script src="/assets/src/uimain.js"></script>
-  
+<script> const app = new Vue({
+  el: '#app',
+  data: function() {
+    return {
+      'core': new Core(),
+      'filename': 'untitled.txt',
+      'msg': 'The quick brown fox'
+    }
+  },
+  methods: {
+    onDownloadClick: function () {
+      this.core.fileWriteText(this.filename, this.msg);
+    },
+    onOpenClick: function () {
+      this.core.fileReadText(this.onFileReadLoad.bind(this));
+    },
+    onFileReadLoad: function (ev, v, i, a) {
+      this.filename = v.name;
+      this.msg = ev.target.result + ' ' + Date.now();
+    }
+  }
+}); </script>
 
 
 

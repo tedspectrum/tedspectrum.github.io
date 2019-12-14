@@ -1,4 +1,4 @@
-Vue.component('btntree', {
+Vue.component('panel', {
   template: `
 <div data-id='panel-template'>
   <transition name='overlay'>
@@ -11,5 +11,5 @@ Vue.component('btntree', {
   </transition>
 </div>
 `,
-  props: ["tree"]
+  props: ["classes", "transition", "active", "overlay"]
 });

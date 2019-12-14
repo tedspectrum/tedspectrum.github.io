@@ -1,3 +1,5 @@
+const c = new Core();
+c.eruda();
 const app = new Vue({
   el: '#app',
   data: function () {
@@ -74,109 +76,10 @@ const app = new Vue({
       fullMenu: {
         classes: ['panel-full'],
         items: [
-          {
-            "type": "directory",
-            "name": "emptydir",
-            "path": "emptydir",
-            "contents": []
-          },
-          {
-            "type": "file",
-            "name": "index.js",
-            "path": "index.js"
-          },
-          {
-            "type": "file",
-            "name": "package.json",
-            "path": "package.json"
-          },
-          {
-            "type": "file",
-            "name": "test.json",
-            "path": "test.json"
-          },
-          {
-            "type": "directory",
-            "name": "testdirectory",
-            "path": "testdirectory",
-            "contents": [
-              {
-                "type": "directory",
-                "name": "emptysubdir1",
-                "path": "testdirectory/emptysubdir1",
-                "contents": []
-              },
-              {
-                "type": "file",
-                "name": "file1.html",
-                "path": "testdirectory/file1.html"
-              },
-              {
-                "type": "file",
-                "name": "file11.txt",
-                "path": "testdirectory/file11.txt"
-              },
-              {
-                "type": "file",
-                "name": "file2.txt",
-                "path": "testdirectory/file2.txt"
-              },
-              {
-                "type": "file",
-                "name": "file3.md",
-                "path": "testdirectory/file3.md"
-              },
-              {
-                "type": "directory",
-                "name": "subdir1",
-                "path": "testdirectory/subdir1",
-                "contents": [
-                  {
-                    "type": "file",
-                    "name": "file4.txt",
-                    "path": "testdirectory/subdir1/file4.txt"
-                  },
-                  {
-                    "type": "file",
-                    "name": "file5.txt",
-                    "path": "testdirectory/subdir1/file5.txt"
-                  },
-                  {
-                    "type": "file",
-                    "name": "file6.txt",
-                    "path": "testdirectory/subdir1/file6.txt"
-                  },
-                  {
-                    "type": "file",
-                    "name": "file7.txt",
-                    "path": "testdirectory/subdir1/file7.txt"
-                  },
-                  {
-                    "type": "file",
-                    "name": "file8.txt",
-                    "path": "testdirectory/subdir1/file8.txt"
-                  }
-                ]
-              },
-              {
-                "type": "directory",
-                "name": "subdir2",
-                "path": "testdirectory/subdir2",
-                "contents": [
-                  {
-                    "type": "file",
-                    "name": "file10.txt",
-                    "path": "testdirectory/subdir2/file10.txt"
-                  },
-                  {
-                    "type": "file",
-                    "name": "file9.txt",
-                    "path": "testdirectory/subdir2/file9.txt"
-                  }
-                ]
-              }
-            ]
-          }
+          { 'name': 'b1', 'text': 'first' },
+          { 'name': 'b2', 'text': 'second' },
+          { 'name': 'b3', 'text': 'third' },
+          { 'name': 'b4', 'text': 'fourth' }
         ],
         overlay: true,
         transition: 'zoomin'

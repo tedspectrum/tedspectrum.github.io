@@ -20,5 +20,6 @@ markdown: kramdown
 
 # Plugin settings
 plugins_dir: [jekyll-paginate]
+plugins: [jekyll-paginate]
 gems: [jekyll-paginate]
 paginate: 6

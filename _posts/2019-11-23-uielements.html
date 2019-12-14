@@ -12,8 +12,6 @@ scripts:
     type: "relative"
   - url: "/assets/src/panel.js"
     type: "relative"
-  - url: "/assets/src/btntree.js"
-    type: "relative"
   - url: "/assets/src/uimain.js"
     type: "relative"
 ---
@@ -46,7 +44,9 @@ scripts:
           @click="(activePanelVisible = false)">X</button>
       </div>
       <template v-for="item in activePanel.items">
-        <btntree :tree="item"/>
+      	<button type="button" class="panel-button"
+      		@click="onMenuItemClick(item.name)">{{ item.text }}
+      	</button>
       </template>
     </div>
   </panel>
