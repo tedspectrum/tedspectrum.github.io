@@ -1,0 +1,29 @@
+---
+layout: post
+title: "Button Tree"
+categories: [features]
+scripts: 
+  - url: "https://cdn.jsdelivr.net/npm/vue@2.6.0/dist/vue.js"
+    type: "absolute"
+  - url: "/assets/src/core.js"
+    type: "relative"
+  - url: "/assets/src/btntree.js"
+    type: "relative"
+  - url: "/assets/src/buttontree.js"
+    type: "relative"
+---
+{% raw %}
+<div id="app" class="app">
+  <div class="app-header">
+    <h1>Button Tree</h1>
+    <p>A tree of buttons</p>
+    <p>{{ content }}</p>
+  </div>
+  <div class="app-main padded">
+		<btntree :tree="btns" @btnclick="onItemClick"/>
+  </div>
+  <div class="app-footer">
+    <h1>By Tedspectrum</h1>
+  </div>
+</div>
+{% endraw %}
