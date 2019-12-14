@@ -19,6 +19,6 @@ github_username: tedspectrum
 markdown: kramdown
 
 # Plugin settings
-plugins: [jekyll-paginate]
-
+plugins_dir: [jekyll-paginate]
+gems: [jekyll-paginate]
 paginate: 6
