@@ -1,0 +1,7 @@
+
+<div id="geolocationapp" class="app">
+  <h2>Latitude, Longitude</h2>
+  <h3>({{ lat }},{{ long }})</h3>
+  <p>{{ msg ? msg : '&nbsp;' }}</p>
+  <button class="geolocation--button" @click.prevent="onLocationGet()">Get Location</button>
+</div>
