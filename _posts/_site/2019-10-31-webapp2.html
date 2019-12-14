@@ -1,0 +1,49 @@
+<h1 id="setup-for-styles-and-scripts-at-top-nothing-added-at-bottom">Setup for styles and scripts at top, nothing added at bottom</h1>
+
+<p>To setup Jekyll so that posts can have both scripts and styles added in the header, 
+amend the <strong>head.html</strong> file in the <strong>_includes</strong> directory.</p>
+
+<p>Scripts are given the <strong>defer</strong> attribute to defer their execution until page is done.</p>
+
+<p>Add front matter to the jekyll post to provide data that informs what scripts and styles to add.</p>
+
+<p>Finally wrap vue template in html content in <strong>raw</strong>, <strong>endraw</strong> liquid tags to allow double brackets
+etc. in the content.</p>
+
+<h2 id="data-in-the-post-front-matter">Data in the post front matter</h2>
+
+<p>Add data for the styles and scripts in the post front matter</p>
+
+<figure class="highlight"><pre><code class="language-yaml" data-lang="yaml"><span class="na">layout</span><span class="pi">:</span> <span class="s">post</span>
+<span class="na">title</span><span class="pi">:</span>  <span class="s2">"</span><span class="s">Some</span><span class="nv"> </span><span class="s">title"</span>
+<span class="na">styles</span><span class="pi">:</span>
+  <span class="pi">-</span> <span class="na">url</span><span class="pi">:</span> <span class="s2">"</span><span class="s">/relative_path_to_css/some.css"</span>
+    <span class="na">type</span><span class="pi">:</span> <span class="s2">"</span><span class="s">relative"</span>
+<span class="na">scripts</span><span class="pi">:</span> 
+  <span class="pi">-</span> <span class="na">url</span><span class="pi">:</span> <span class="s2">"</span><span class="s">https://mycdn/somecode.js"</span>
+    <span class="na">type</span><span class="pi">:</span> <span class="s2">"</span><span class="s">absolute"</span>
+  <span class="pi">-</span> <span class="na">url</span><span class="pi">:</span> <span class="s2">"</span><span class="s">/relative_path_to_script/some.js"</span>
+    <span class="na">type</span><span class="pi">:</span> <span class="s2">"</span><span class="s">relative"</span></code></pre></figure>
+
+<h2 id="scripts-and-styles-in-the-header">Scripts and styles in the header</h2>
+
+<p>Add the code below in the <strong>head.html</strong> file before the end head tag</p>
+
+<figure class="highlight"><pre><code class="language-liquid" data-lang="liquid">  <span class="p">{%</span><span class="w"> </span><span class="nt">for</span><span class="w"> </span><span class="nv">item</span><span class="w"> </span><span class="nt">in</span><span class="w"> </span><span class="nv">page.styles</span><span class="w"> </span><span class="p">%}</span>
+  <span class="p">{%</span><span class="w"> </span><span class="kr">case</span><span class="w"> </span><span class="nv">item</span><span class="p">.</span><span class="nv">type</span><span class="w"> </span><span class="p">%}</span>
+  <span class="p">{%</span><span class="w"> </span><span class="kr">when</span><span class="w"> </span><span class="s2">"absolute"</span><span class="w"> </span><span class="p">%}</span>
+  &lt;link rel="stylesheet" href="<span class="p">{{</span><span class="w"> </span><span class="nv">item</span><span class="p">.</span><span class="nv">url</span><span class="w"> </span><span class="p">}}</span>"&gt;
+  <span class="p">{%</span><span class="w"> </span><span class="kr">when</span><span class="w"> </span><span class="s2">"relative"</span><span class="w"> </span><span class="p">%}</span>
+  &lt;link rel="stylesheet" href="<span class="p">{{</span><span class="w"> </span><span class="nv">item</span><span class="p">.</span><span class="nv">url</span><span class="w"> </span><span class="p">|</span><span class="w"> </span><span class="nf">relative_url</span><span class="w"> </span><span class="p">}}</span>"&gt;
+  <span class="p">{%</span><span class="w"> </span><span class="kr">endcase</span><span class="w"> </span><span class="p">%}</span>
+  <span class="p">{%</span><span class="w"> </span><span class="nt">endfor</span><span class="w"> </span><span class="p">%}</span>
+
+
+  <span class="p">{%</span><span class="w"> </span><span class="nt">for</span><span class="w"> </span><span class="nv">item</span><span class="w"> </span><span class="nt">in</span><span class="w"> </span><span class="nv">page.scripts</span><span class="w"> </span><span class="p">%}</span>
+  <span class="p">{%</span><span class="w"> </span><span class="kr">case</span><span class="w"> </span><span class="nv">item</span><span class="p">.</span><span class="nv">type</span><span class="w"> </span><span class="p">%}</span>
+  <span class="p">{%</span><span class="w"> </span><span class="kr">when</span><span class="w"> </span><span class="s2">"absolute"</span><span class="w"> </span><span class="p">%}</span>
+  &lt;script defer src="<span class="p">{{</span><span class="w"> </span><span class="nv">item</span><span class="p">.</span><span class="nv">url</span><span class="w"> </span><span class="p">}}</span>"&gt;&lt;/script&gt;
+  <span class="p">{%</span><span class="w"> </span><span class="kr">when</span><span class="w"> </span><span class="s2">"relative"</span><span class="w"> </span><span class="p">%}</span>
+  &lt;script defer src="<span class="p">{{</span><span class="w"> </span><span class="nv">item</span><span class="p">.</span><span class="nv">url</span><span class="w"> </span><span class="p">|</span><span class="w"> </span><span class="nf">relative_url</span><span class="w"> </span><span class="p">}}</span>"&gt;&lt;/script&gt;
+  <span class="p">{%</span><span class="w"> </span><span class="kr">endcase</span><span class="w"> </span><span class="p">%}</span>
+  <span class="p">{%</span><span class="w"> </span><span class="nt">endfor</span><span class="w"> </span><span class="p">%}</span></code></pre></figure>

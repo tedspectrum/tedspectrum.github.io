@@ -96,20 +96,20 @@ etc. in the content.</p>
   <span class="pi">-</span> <span class="na">url</span><span class="pi">:</span> <span class="s2">"</span><span class="s">/relative_path_to_script/some.js"</span>
     <span class="na">type</span><span class="pi">:</span> <span class="s2">"</span><span class="s">relative"</span>
 <span class="na">inlinestyle</span><span class="pi">:</span> <span class="pi">&gt;</span>
-  <span class="no">&lt;style&gt;</span>
-    <span class="no">.app {}</span>
-  <span class="no">&lt;/style&gt;</span>
+  <span class="s">&lt;style&gt;</span>
+    <span class="s">.app {}</span>
+  <span class="s">&lt;/style&gt;</span>
 <span class="na">inlinescript</span><span class="pi">:</span> <span class="pi">&gt;</span>
-  <span class="no">&lt;script&gt;</span>
-  <span class="no">const myVal = 0;</span>
-  <span class="no">&lt;/script&gt;</span>
+  <span class="s">&lt;script&gt;</span>
+  <span class="s">const myVal = 0;</span>
+  <span class="s">&lt;/script&gt;</span>
 <span class="s">---</span></code></pre></figure>
 
 <h2 id="styles-in-the-header">styles in the header</h2>
 
 <p>Add the code below in the <strong>head.html</strong> file before the end head tag</p>
 
-<figure class="highlight"><pre><code class="language-liquid" data-lang="liquid">  <span class="p">{%</span><span class="w"> </span><span class="nt">for</span><span class="w"> </span>item<span class="w"> </span>in<span class="w"> </span>page.styles<span class="w"> </span><span class="p">%}</span>
+<figure class="highlight"><pre><code class="language-liquid" data-lang="liquid">  <span class="p">{%</span><span class="w"> </span><span class="nt">for</span><span class="w"> </span><span class="nv">item</span><span class="w"> </span><span class="nt">in</span><span class="w"> </span><span class="nv">page.styles</span><span class="w"> </span><span class="p">%}</span>
   <span class="p">{%</span><span class="w"> </span><span class="kr">case</span><span class="w"> </span><span class="nv">item</span><span class="p">.</span><span class="nv">type</span><span class="w"> </span><span class="p">%}</span>
   <span class="p">{%</span><span class="w"> </span><span class="kr">when</span><span class="w"> </span><span class="s2">"absolute"</span><span class="w"> </span><span class="p">%}</span>
   &lt;link rel="stylesheet" href="<span class="p">{{</span><span class="w"> </span><span class="nv">item</span><span class="p">.</span><span class="nv">url</span><span class="w"> </span><span class="p">}}</span>"&gt;
@@ -123,7 +123,7 @@ etc. in the content.</p>
 
 <p>And in the <strong>footer.html</strong></p>
 
-<figure class="highlight"><pre><code class="language-liquid" data-lang="liquid"><span class="p">{%</span><span class="w"> </span><span class="nt">for</span><span class="w"> </span>item<span class="w"> </span>in<span class="w"> </span>page.scripts<span class="w"> </span><span class="p">%}</span>
+<figure class="highlight"><pre><code class="language-liquid" data-lang="liquid"><span class="p">{%</span><span class="w"> </span><span class="nt">for</span><span class="w"> </span><span class="nv">item</span><span class="w"> </span><span class="nt">in</span><span class="w"> </span><span class="nv">page.scripts</span><span class="w"> </span><span class="p">%}</span>
   <span class="p">{%</span><span class="w"> </span><span class="kr">case</span><span class="w"> </span><span class="nv">item</span><span class="p">.</span><span class="nv">type</span><span class="w"> </span><span class="p">%}</span>
   <span class="p">{%</span><span class="w"> </span><span class="kr">when</span><span class="w"> </span><span class="s2">"absolute"</span><span class="w"> </span><span class="p">%}</span>
   &lt;script src="<span class="p">{{</span><span class="w"> </span><span class="nv">item</span><span class="p">.</span><span class="nv">url</span><span class="w"> </span><span class="p">}}</span>"&gt;&lt;/script&gt;

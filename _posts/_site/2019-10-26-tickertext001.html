@@ -1,0 +1,10 @@
+
+<div id="app" class="app">
+  <h1>Ticker text</h1>
+  <textarea ref="ttin"
+    class="textarea">Lorem ipsum, dolor sit amet consectetur adipisicing elit Quae repellat, eveniet pariatur maxime expedita, molestiae, dicta veniam quos dolores mollitia magni ut ducimus necessitatibus adipisci soluta assumenda inventore aliquam! Veniam?</textarea>
+  <p v-for="t in cmdStates">
+    <span>{{ t.shown }}</span><span class="hidden">{{ t.hidden }}</span>
+  </p>
+  <button class="app--button" @click.prevent="onRun()">Show text</button>
+</div>
