@@ -2,6 +2,9 @@
 layout: post
 title: "Button Tree"
 categories: [features]
+styles:
+  - url: "/assets/styles/btntreemain.css"
+    type: "relative"
 scripts: 
   - url: "https://cdn.jsdelivr.net/npm/vue@2.6.0/dist/vue.js"
     type: "absolute"
@@ -18,10 +21,14 @@ scripts:
     <h1>Button Tree</h1>
     <button @click="onEruda">Eruda</button>
     <p>A tree of buttons</p>
-    <p>{{ content }}</p>
   </div>
   <div class="app-main padded">
-		<btntree :tree="btns" @click.native="onItemClick"/>
+		<div class="mainleft">
+			<btntree :tree="btns" :depth="0" @click.native="onItemClick" class="btntree-top"/>
+		</div>
+		<div class="mainright">
+			<p>{{ content }}</p>
+		</div>
   </div>
   <div class="app-footer">
     <h1>By Tedspectrum</h1>
