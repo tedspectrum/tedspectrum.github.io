@@ -1,5 +1,5 @@
-const c = new Core();
-c.eruda();
+//const c = new Core();
+//c.eruda();
 const app = new Vue({
   el: '#app',
   data: function () {

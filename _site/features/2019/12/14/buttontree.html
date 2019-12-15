@@ -7,11 +7,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <title>Button Tree</title>
-  <meta name="description" content="      Button Tree    A tree of buttons    {{ content }}    		        By Tedspectrum  ">
+  <meta name="description" content="      Button Tree    Eruda    A tree of buttons    {{ content }}    		        By Tedspectrum  ">
 
   <link rel="stylesheet" href="/css/main.css">
-  <link rel="canonical" href="http://localhost:4000/features/2019/12/14/buttontree.html">
-  <link rel="alternate" type="application/rss+xml" title="Ted Spectrum" href="http://localhost:4000/feed.xml">
+  <link rel="canonical" href="http://tedspectrum.github.io/features/2019/12/14/buttontree.html">
+  <link rel="alternate" type="application/rss+xml" title="Ted Spectrum" href="http://tedspectrum.github.io/feed.xml">
   
   
 </head>
@@ -74,11 +74,12 @@
 <div id="app" class="app">
   <div class="app-header">
     <h1>Button Tree</h1>
+    <button @click="onEruda">Eruda</button>
     <p>A tree of buttons</p>
     <p>{{ content }}</p>
   </div>
   <div class="app-main padded">
-		<btntree :tree="btns" @btnclick="onItemClick"/>
+		<btntree :tree="btns" @click.native="onItemClick"/>
   </div>
   <div class="app-footer">
     <h1>By Tedspectrum</h1>

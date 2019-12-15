@@ -16,11 +16,12 @@ scripts:
 <div id="app" class="app">
   <div class="app-header">
     <h1>Button Tree</h1>
+    <button @click="onEruda">Eruda</button>
     <p>A tree of buttons</p>
     <p>{{ content }}</p>
   </div>
   <div class="app-main padded">
-		<btntree :tree="btns" @btnclick="onItemClick"/>
+		<btntree :tree="btns" @click.native="onItemClick"/>
   </div>
   <div class="app-footer">
     <h1>By Tedspectrum</h1>
