@@ -7,14 +7,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <title>Button Tree</title>
-  <meta name="description" content="      Button Tree    Eruda    A tree of buttons    												{{ content }}		        By Tedspectrum  ">
+  <meta name="description" content="      Button Tree    Eruda    A tree of buttons    		      							{{ content }}		        By Tedspectrum  ">
 
   <link rel="stylesheet" href="/css/main.css">
   <link rel="canonical" href="http://tedspectrum.github.io/features/2019/12/14/buttontree.html">
   <link rel="alternate" type="application/rss+xml" title="Ted Spectrum" href="http://tedspectrum.github.io/feed.xml">
   
   
-  <link rel="stylesheet" href="/assets/styles/btntreemain.css">
+  <link rel="stylesheet" href="/assets/buttontree/btntreemain.css">
   
   
   
@@ -83,7 +83,9 @@
   </div>
   <div class="app-main padded">
 		<div class="mainleft">
-			<btntree :tree="btns" :depth="0" @click.native="onItemClick" class="btntree-top"/>
+      <btntree :tree="domain" :depth="0" 
+        @btntree-click="onBtnTreeClick" 
+        class="btntree-top"/>
 		</div>
 		<div class="mainright">
 			<p>{{ content }}</p>
@@ -112,15 +114,19 @@
   
 
   
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  
+
+  
   <script src="/assets/src/core.js"></script>
   
 
   
-  <script src="/assets/src/btntree.js"></script>
+  <script src="/assets/buttontree/btntree.js"></script>
   
 
   
-  <script src="/assets/src/buttontree.js"></script>
+  <script src="/assets/buttontree/btntreemain.js"></script>
   
 
 

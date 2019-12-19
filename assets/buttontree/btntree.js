@@ -1,7 +1,9 @@
 Vue.component('btntree', {
   template: `
 <div data-id="btntree-template">
-  <button type="button" class="panel-button" :name="tree.name">
+	<button type="button" class="panel-button" :name="tree.name"
+		@click="$emit('btntree-click', tree)"
+	>
   	<template v-for="n in depth">&nbsp;</template>
   	<span v-if="tree.contents && (tree.contents.length !== 0)">
       +
@@ -15,12 +17,20 @@ Vue.component('btntree', {
  		<ul>
 	  <template v-for="t in tree.contents">
 	      <li>
-	      	<btntree :tree="t" :depth="depth + 1"/>
+					<btntree 
+						:tree="t" 
+						:depth="depth + 1"
+						@btntree-click="bubble"/>
 	     	</li>
 	  </template>
 	  </ul>
   </template>
 </div>
 `,
-  props: ['tree', 'depth']
+	props: ['tree', 'depth'],
+	methods: {
+		bubble: function(a) {
+			this.$emit('btntree-click', a);
+		}
+	}
 });

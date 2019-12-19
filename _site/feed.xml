@@ -6,8 +6,8 @@
 </description>
     <link>http://tedspectrum.github.io/</link>
     <atom:link href="http://tedspectrum.github.io/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sun, 15 Dec 2019 12:43:10 +0000</pubDate>
-    <lastBuildDate>Sun, 15 Dec 2019 12:43:10 +0000</lastBuildDate>
+    <pubDate>Thu, 19 Dec 2019 08:47:57 +0000</pubDate>
+    <lastBuildDate>Thu, 19 Dec 2019 08:47:57 +0000</lastBuildDate>
     <generator>Jekyll v3.1.6</generator>
     
       <item>
@@ -21,7 +21,9 @@
   &lt;/div&gt;
   &lt;div class=&quot;app-main padded&quot;&gt;
 		&lt;div class=&quot;mainleft&quot;&gt;
-			&lt;btntree :tree=&quot;btns&quot; :depth=&quot;0&quot; @click.native=&quot;onItemClick&quot; class=&quot;btntree-top&quot;/&gt;
+      &lt;btntree :tree=&quot;domain&quot; :depth=&quot;0&quot; 
+        @btntree-click=&quot;onBtnTreeClick&quot; 
+        class=&quot;btntree-top&quot;/&gt;
 		&lt;/div&gt;
 		&lt;div class=&quot;mainright&quot;&gt;
 			&lt;p&gt;{{ content }}&lt;/p&gt;

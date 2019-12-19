@@ -3,16 +3,18 @@ layout: post
 title: "Button Tree"
 categories: [features]
 styles:
-  - url: "/assets/styles/btntreemain.css"
+  - url: "/assets/buttontree/btntreemain.css"
     type: "relative"
 scripts: 
   - url: "https://cdn.jsdelivr.net/npm/vue@2.6.0/dist/vue.js"
     type: "absolute"
+  - url: "https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"
+    type: "absolute"
   - url: "/assets/src/core.js"
     type: "relative"
-  - url: "/assets/src/btntree.js"
+  - url: "/assets/buttontree/btntree.js"
     type: "relative"
-  - url: "/assets/src/buttontree.js"
+  - url: "/assets/buttontree/btntreemain.js"
     type: "relative"
 ---
 {% raw %}
@@ -24,7 +26,9 @@ scripts:
   </div>
   <div class="app-main padded">
 		<div class="mainleft">
-			<btntree :tree="btns" :depth="0" @click.native="onItemClick" class="btntree-top"/>
+      <btntree :tree="domain" :depth="0" 
+        @btntree-click="onBtnTreeClick" 
+        class="btntree-top"/>
 		</div>
 		<div class="mainright">
 			<p>{{ content }}</p>

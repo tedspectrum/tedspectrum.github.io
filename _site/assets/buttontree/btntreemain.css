@@ -1,0 +1,31 @@
+.app {
+  position: relative;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  margin: 0 auto 0 auto;
+  border: 1px solid lightgray;
+  overflow: hidden;
+}
+.hidden {
+  visibility: hidden;
+}
+.padded {
+  padding: 1em;
+}
+.app-main {
+	display: grid;
+	grid-template-columns: 50% 50%;
+}
+.btntree-top ul {
+	list-style-type: none;
+	margin: 0px;
+	padding: 0px;
+}
+.panel-button {
+  display: block;
+  width: 100%;
+  padding: 0.75em 0.5em 0.75em 0.5em;
+  text-align: left;
+}
