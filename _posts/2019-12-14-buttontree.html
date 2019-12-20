@@ -21,18 +21,21 @@ scripts:
 <div id="app" class="app">
   <div class="app-header">
     <h1>Button Tree</h1>
-    <button @click="onEruda">Eruda</button>
-    <p>A tree of buttons</p>
+    <div class="padded">
+    <button @click="onEruda">Dev Console</button>
+    <button @click="onFullScreen">Full Screen</button>
+    <p>A tree of buttons<br />
+    {{ path ? path : '&nbsp;' }}</p>
+    </div>
   </div>
-  <div class="app-main padded">
+  <div class="app-main">
 		<div class="mainleft padded">
       <btntree :tree="domain"
         @btntree-click="onBtnTreeClick" 
-        class="btntree-top"
+        class="btntree"
       />
 		</div>
 		<div class="mainright padded">
-      <p>{{ path }}</p>
 			<pre>{{ content }}</pre>
 		</div>
   </div>

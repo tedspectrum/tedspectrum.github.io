@@ -21,6 +21,9 @@ const app = new Vue({
     onEruda: function (e) {
       c.eruda();
     },
+    onFullScreen: function () {
+      c.toggleFullScreen(this.$el);
+    },
     onBtnTreeClick: function (t, p) {
       // receives object from btn tree
       let newPath = '';
