@@ -25,14 +25,15 @@ scripts:
     <p>A tree of buttons</p>
   </div>
   <div class="app-main padded">
-		<div class="mainleft">
+		<div class="mainleft padded">
       <btntree :tree="domain"
         @btntree-click="onBtnTreeClick" 
         class="btntree-top"
       />
 		</div>
-		<div class="mainright">
-			<p>{{ content }}</p>
+		<div class="mainright padded">
+      <p>{{ path }}</p>
+			<pre>{{ content }}</pre>
 		</div>
   </div>
   <div class="app-footer">

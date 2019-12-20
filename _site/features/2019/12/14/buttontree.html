@@ -7,7 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <title>Button Tree</title>
-  <meta name="description" content="      Button Tree    Eruda    A tree of buttons    		      							{{ content }}		        By Tedspectrum  ">
+  <meta name="description" content="      Button Tree    Eruda    A tree of buttons    		      				      {{ path }}			{{ content }}		        By Tedspectrum  ">
 
   <link rel="stylesheet" href="/css/main.css">
   <link rel="canonical" href="http://tedspectrum.github.io/features/2019/12/14/buttontree.html">
@@ -82,14 +82,15 @@
     <p>A tree of buttons</p>
   </div>
   <div class="app-main padded">
-		<div class="mainleft">
+		<div class="mainleft padded">
       <btntree :tree="domain"
         @btntree-click="onBtnTreeClick" 
         class="btntree-top"
       />
 		</div>
-		<div class="mainright">
-			<p>{{ content }}</p>
+		<div class="mainright padded">
+      <p>{{ path }}</p>
+			<pre>{{ content }}</pre>
 		</div>
   </div>
   <div class="app-footer">

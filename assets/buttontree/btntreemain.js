@@ -5,7 +5,8 @@ const app = new Vue({
     return {
       url: '/assets/buttontree/btns.json',
       domain: {},
-      content: ''
+      content: '',
+      path: ''
     }
   },
   mounted: function () {
@@ -20,9 +21,18 @@ const app = new Vue({
     onEruda: function (e) {
       c.eruda();
     },
-    onBtnTreeClick: function (t) {
+    onBtnTreeClick: function (t, p) {
       // receives object from btn tree
-      this.content += "Button " + t.text + " clicked.";
+      let newPath = '';
+      p.forEach(function(v,i,a) {
+        newPath += v.text;
+        if(i < a.length) {
+          newPath += ' > ';
+        }
+      })
+      newPath = newPath + t.text;
+      this.path = newPath;
+      this.content = JSON.stringify(t,null, 2);
     }
   }
 });

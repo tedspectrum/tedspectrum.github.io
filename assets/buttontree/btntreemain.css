@@ -23,9 +23,9 @@
 	margin: 0px;
 	padding: 0px;
 }
-.panel-button {
+.btntree-button {
   display: block;
   width: 100%;
-  padding: 0.75em 0.5em 0.75em 0.5em;
+  padding: 0.5em 0.25em 0.5em 0.25em;
   text-align: left;
 }
