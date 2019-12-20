@@ -27,7 +27,15 @@ Vue.component('btntree', {
   </template>
 </div>
 `,
-	props: ['tree', 'depth'],
+	props: {
+		'tree': {
+			type: Object
+		}, 
+		'depth': {
+			type: Number,
+			default: 0
+		}
+	},
 	methods: {
 		bubble: function(a) {
 			this.$emit('btntree-click', a);

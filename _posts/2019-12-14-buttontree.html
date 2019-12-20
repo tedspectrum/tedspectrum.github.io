@@ -26,9 +26,10 @@ scripts:
   </div>
   <div class="app-main padded">
 		<div class="mainleft">
-      <btntree :tree="domain" :depth="0" 
+      <btntree :tree="domain"
         @btntree-click="onBtnTreeClick" 
-        class="btntree-top"/>
+        class="btntree-top"
+      />
 		</div>
 		<div class="mainright">
 			<p>{{ content }}</p>
