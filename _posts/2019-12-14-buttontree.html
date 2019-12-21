@@ -20,12 +20,11 @@ scripts:
 {% raw %}
 <div id="app" class="app">
   <div class="app-header">
-    <h1>Button Tree</h1>
+    <h1>A tree of buttons</h1>
     <div class="padded">
     <button @click="onEruda">Dev Console</button>
     <button @click="onFullScreen">Full Screen</button>
-    <p>A tree of buttons<br />
-    {{ path ? path : '&nbsp;' }}</p>
+    <p>{{ path ? path : '&nbsp;' }}</p>
     </div>
   </div>
   <div class="app-main">
