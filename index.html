@@ -3,6 +3,16 @@ layout: default
 ---
 
 <div class="home">
+  <h1 class="page-heading">Pages</h1>
+  <p>
+    {% for my_page in site.pages %}
+      {% if my_page.title %}
+      <div>
+        <a class="page-link" href="{{ my_page.url | prepend: site.baseurl }}">{{ my_page.title }}</a>
+      </div>
+      {% endif %}
+    {% endfor %}
+  </p>
 
   <h1 class="page-heading">Posts</h1>
 
