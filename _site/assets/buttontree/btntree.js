@@ -25,38 +25,38 @@ Vue.component('btntree', {
 			</span>
 			<span>{{ tree[config.text_property] }}</span>
 		</button>
- 		<ul v-if="tree.expanded">
-	  <template v-for="t in tree[config.group_property]">
-				<li>
-					<btntree 
-						:tree="t" 
-						:depth="depth + 1"
-						:config="config"
-						@btntree-click="onClickChildNode"
-					/>
-	     	</li>
-	  </template>
+ 		<ul v-if="tree[config.expanded_property]">
+			<template v-for="t in tree[config.group_property]">
+					<li>
+						<btntree 
+							:tree="t" 
+							:depth="depth + 1"
+							:config="config"
+							@node-select="onSelectChildNode"
+							@tree-select="onSelectChildTree"
+						/>
+					</li>
+			</template>
 	  </ul>
   </template>
 </div>
 `,
 	methods: {
-		'onClickChildNode': function(t, p) {
-			// bubble
-			p.splice(0, 0, this.tree);
-			this.$emit('btntree-click', t, p);
-		},
 		'onClickNode': function() {
 			// initial click
-			this.$emit('btntree-click', this.tree, []);
+			this.$emit('node-select', this.tree, []);
 		},
 		'onClickTree': function() {
-			let expandedPropName = this.config.expanded_property;
-			// dynamically added expanded property as needed.
-			if (!this.tree.hasOwnProperty(expandedPropName)) {
-				this.$set(this.tree, expandedPropName, false);
-			}
-			this.tree[expandedPropName] = !this.tree[expandedPropName];
+			// initial click
+			this.$emit('tree-select', this.tree, []);
+		},
+		'onSelectChildNode': function(t, p) {
+			// bubble
+			this.$emit('node-select', t, p.splice(0, 0, this.tree));
+		},
+		'onSelectChildTree': function(t, p) {
+			// bubble
+			this.$emit('tree-select', t, p.splice(0, 0, this.tree));
 		}
 	},
 	props: {

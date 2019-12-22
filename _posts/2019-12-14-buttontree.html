@@ -30,7 +30,8 @@ scripts:
   <div class="app-main">
 		<div class="mainleft padded">
       <btntree :tree="domain"
-        @btntree-click="onBtnTreeClick" 
+        @node-select="onNodeSelect"
+        @tree-select="onTreeSelect" 
         class="btntree"
       />
 		</div>

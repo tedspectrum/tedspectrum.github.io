@@ -24,7 +24,7 @@ const app = new Vue({
     onFullScreen: function () {
       c.toggleFullScreen(this.$el);
     },
-    onBtnTreeClick: function (t, p) {
+    onNodeSelect: function (t, p) {
       // receives object from btn tree
       let newPath = '';
       p.forEach(function(v,i,a) {
@@ -36,6 +36,13 @@ const app = new Vue({
       newPath = newPath + t.text;
       this.path = newPath;
       this.content = JSON.stringify(t,null, 2);
+    },
+    onTreeSelect: function (t /*, p */) {
+			// dynamically added expanded property as needed.
+			if (!t.hasOwnProperty('expanded')) {
+				this.$set(t, 'expanded', false);
+			}
+			t.expanded = !t.expanded;
     }
   }
 });
