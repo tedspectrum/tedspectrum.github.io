@@ -16,15 +16,9 @@
 .padded {
   padding: 0.25em;
 }
-.app-main {
-	display: grid;
+.app-main-grid {
+  display: grid;
 	grid-template-columns: 30% 70%;
-}
-.mainleft {
-  display: block;
-  width: 100%;
-  overflow: auto;
-  word-wrap: none;
 }
 .btntree ul {
 	list-style-type: none;

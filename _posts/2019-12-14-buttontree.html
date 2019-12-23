@@ -14,33 +14,36 @@ scripts:
     type: "relative"
   - url: "/assets/buttontree/btntree.js"
     type: "relative"
-  - url: "/assets/buttontree/btntreemain.js"
+  - url: "/assets/buttontree/btntreeapp.js"
     type: "relative"
 ---
 {% raw %}
 <div id="app" class="app">
   <div class="app-header">
-    <h1>A tree of buttons</h1>
+    <h2>A tree of buttons</h2>
     <div class="padded">
-    <button @click="onEruda">Dev Console</button>
-    <button @click="onFullScreen">Full Screen</button>
-    <p>{{ path ? path : '&nbsp;' }}</p>
+      <button @click="onEruda">Dev Console</button>
+      <button @click="onFullScreen">Full Screen</button>
     </div>
   </div>
   <div class="app-main">
-		<div class="mainleft padded">
-      <btntree :tree="domain"
-        @node-select="onNodeSelect"
-        @tree-select="onTreeSelect" 
-        class="btntree"
-      />
-		</div>
-		<div class="mainright padded">
-			<pre>{{ content }}</pre>
-		</div>
+    <p>{{ path ? path : '&nbsp;' }}</p>
+    <div class="app-main-grid">
+      <div class="mainleft">
+        <btntree 
+          :tree="domain"
+          @node-select="onNodeSelect"
+          @tree-select="onTreeSelect" 
+          class="btntree"
+        />
+      </div>
+      <div class="mainright">
+        <pre>{{ content }}</pre>
+      </div>
+    </div>
   </div>
   <div class="app-footer">
-    <h1>By Tedspectrum</h1>
+    <h2>By Tedspectrum</h2>
   </div>
 </div>
 {% endraw %}

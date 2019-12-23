@@ -6,8 +6,8 @@
 </description>
     <link>http://localhost:4000/</link>
     <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sun, 22 Dec 2019 12:03:15 +0000</pubDate>
-    <lastBuildDate>Sun, 22 Dec 2019 12:03:15 +0000</lastBuildDate>
+    <pubDate>Mon, 23 Dec 2019 22:34:33 +0000</pubDate>
+    <lastBuildDate>Mon, 23 Dec 2019 22:34:33 +0000</lastBuildDate>
     <generator>Jekyll v4.0.0</generator>
     
       <item>
@@ -15,27 +15,30 @@
         <description>
 &lt;div id=&quot;app&quot; class=&quot;app&quot;&gt;
   &lt;div class=&quot;app-header&quot;&gt;
-    &lt;h1&gt;A tree of buttons&lt;/h1&gt;
+    &lt;h2&gt;A tree of buttons&lt;/h2&gt;
     &lt;div class=&quot;padded&quot;&gt;
-    &lt;button @click=&quot;onEruda&quot;&gt;Dev Console&lt;/button&gt;
-    &lt;button @click=&quot;onFullScreen&quot;&gt;Full Screen&lt;/button&gt;
-    &lt;p&gt;{{ path ? path : '&amp;nbsp;' }}&lt;/p&gt;
+      &lt;button @click=&quot;onEruda&quot;&gt;Dev Console&lt;/button&gt;
+      &lt;button @click=&quot;onFullScreen&quot;&gt;Full Screen&lt;/button&gt;
     &lt;/div&gt;
   &lt;/div&gt;
   &lt;div class=&quot;app-main&quot;&gt;
-		&lt;div class=&quot;mainleft padded&quot;&gt;
-      &lt;btntree :tree=&quot;domain&quot;
-        @node-select=&quot;onNodeSelect&quot;
-        @tree-select=&quot;onTreeSelect&quot; 
-        class=&quot;btntree&quot;
-      /&gt;
-		&lt;/div&gt;
-		&lt;div class=&quot;mainright padded&quot;&gt;
-			&lt;pre&gt;{{ content }}&lt;/pre&gt;
-		&lt;/div&gt;
+    &lt;p&gt;{{ path ? path : '&amp;nbsp;' }}&lt;/p&gt;
+    &lt;div class=&quot;app-main-grid&quot;&gt;
+      &lt;div class=&quot;mainleft&quot;&gt;
+        &lt;btntree 
+          :tree=&quot;domain&quot;
+          @node-select=&quot;onNodeSelect&quot;
+          @tree-select=&quot;onTreeSelect&quot; 
+          class=&quot;btntree&quot;
+        /&gt;
+      &lt;/div&gt;
+      &lt;div class=&quot;mainright&quot;&gt;
+        &lt;pre&gt;{{ content }}&lt;/pre&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
   &lt;/div&gt;
   &lt;div class=&quot;app-footer&quot;&gt;
-    &lt;h1&gt;By Tedspectrum&lt;/h1&gt;
+    &lt;h2&gt;By Tedspectrum&lt;/h2&gt;
   &lt;/div&gt;
 &lt;/div&gt;
 </description>

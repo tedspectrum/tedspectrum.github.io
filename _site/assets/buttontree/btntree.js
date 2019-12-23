@@ -52,11 +52,13 @@ Vue.component('btntree', {
 		},
 		'onSelectChildNode': function(t, p) {
 			// bubble
-			this.$emit('node-select', t, p.splice(0, 0, this.tree));
+			p.splice(0, 0, this.tree);
+			this.$emit('node-select', t, p);
 		},
 		'onSelectChildTree': function(t, p) {
 			// bubble
-			this.$emit('tree-select', t, p.splice(0, 0, this.tree));
+			p.splice(0, 0, this.tree)
+			this.$emit('tree-select', t, p);
 		}
 	},
 	props: {
