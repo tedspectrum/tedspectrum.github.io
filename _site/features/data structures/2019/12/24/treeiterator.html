@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Tree Iterator</title>
+  <meta name="description" content="  let iterator = new TreeIterator(mytree), step;while ((step = iterator.next()) &amp;&amp; !step.done) {  // do something with step.value}// orfor (step of i...">
+
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="canonical" href="http://localhost:4000/features/data%20structures/2019/12/24/treeiterator.html">
+  <link rel="alternate" type="application/rss+xml" title="Ted Spectrum" href="http://localhost:4000/feed.xml">
+  
+  
+</head>
+
+
+  <body>
+    <header class="site-header">
+    <div class="wrapper">
+      <h1><a href="/" id="top">Ted Spectrum</a></h1>
+    </div>
+    </header>
+    <div class="page-content">
+      <div class="wrapper">
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">Tree Iterator</h1>
+    <p class="post-meta"><time datetime="2019-12-24T00:00:00+00:00" itemprop="datePublished">Dec 24, 2019</time></p>
+  </header>
+
+  <div class="post-content" itemprop="articleBody">
+    <div id="app" class="app">
+  <pre><figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">let</span> <span class="nx">iterator</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">TreeIterator</span><span class="p">(</span><span class="nx">mytree</span><span class="p">),</span> <span class="nx">step</span><span class="p">;</span>
+<span class="k">while</span> <span class="p">((</span><span class="nx">step</span> <span class="o">=</span> <span class="nx">iterator</span><span class="p">.</span><span class="nx">next</span><span class="p">())</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="nx">step</span><span class="p">.</span><span class="nx">done</span><span class="p">)</span> <span class="p">{</span>
+  <span class="c1">// do something with step.value</span>
+<span class="p">}</span>
+<span class="c1">// or</span>
+<span class="k">for</span> <span class="p">(</span><span class="nx">step</span> <span class="k">of</span> <span class="nx">iterator</span><span class="p">)</span> <span class="p">{</span>
+  <span class="c1">// do something with step</span>
+<span class="p">}</span></code></pre></figure></pre>
+  
+  <button class="app-button" @click.prevent="run()">Run</button>
+  <p>results</p>
+  <pre><template v-for="msg in logger">{{ msg }}<br /></template></pre>
+  
+</div>
+
+  </div>
+
+</article>
+
+      </div>
+    </div>
+
+    <footer class="site-footer">
+  <div class="wrapper">
+    <p><a href="#top">Top</a></p>
+  </div>
+</footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.6.0/dist/vue.min.js"></script>
+  
+
+  
+  <script src="/assets/src/TreeIterator.js"></script>
+  
+
+
+<script> const app = new Vue({
+  el: '#app',
+  data: {
+    loggerLength: 50,
+    logger: [],
+  },
+  methods: {
+    log: function (str) {
+      this.logger.push(str);
+      while (this.logger.length > this.loggerLength) {
+        this.logger.shift();
+      } 
+    },
+    run: function () {
+      const node = {
+        "name": "root"
+      };
+      const emptylist = {
+        "name": "root",
+        "contents": []
+      }
+      const list = {
+        "name": "root",
+        "contents": [
+          { "name": "list1" },
+          { "name": "list2" }
+        ]
+      };
+      const mytree = {
+        "name": "root",
+        "contents": [
+          {
+            "name": "descendant1", "contents": [
+              {
+                "name": "descendant1.1", "contents": [
+                  { "name": "descendant1.1.1" },
+                  { "name": "descendant1.1.2", "contents": [
+                    { "name": "descendant1.1.2.1" },
+                    { "name": "descendant1.1.2.2" },
+                    { "name": "descendant1.1.2.3" },
+                    { "name": "descendant1.1.2.4" }
+                  ]},
+                  { "name": "descendant1.1.3" }
+                ]
+              }
+            ]
+          },
+          { "name": "descendant2", "contents": [] },
+          {
+            "name": "descendant3", "contents": [
+              { "name": "descendant3.1" },
+              { "name": "descendant3.2" }
+            ]
+          },
+          { "name": "descendant4", "contents": [] },
+        ]
+      }
+
+      let iterator = new TreeIterator(node), step;
+      while ((step = iterator.next()) && !step.done) {
+        this.log(["node ", step.value.name].join(' '));
+      }
+      iterator = new TreeIterator(emptylist);
+      while ((step = iterator.next()) && !step.done) {
+        this.log(["emptylist", step.value.name].join(' '));
+      }
+      iterator = new TreeIterator(list);
+      while ((step = iterator.next()) && !step.done) {
+        this.log(["list", step.value.name].join(' '));
+      }
+      iterator = new TreeIterator(mytree);
+      while ((step = iterator.next()) && !step.done) {
+        this.log(["tree", step.value.name].join(' '));
+      }
+      iterator = new TreeIterator(mytree);
+      for(step of iterator) {
+        this.log(["for of tree", step.name].join(' '));
+      }
+    }
+  }
+});   </script>
+
+
+
+  </body>
+
+</html>
