@@ -1,11 +1,11 @@
 ---
 layout: post
-title:  "Tree Tested Iterator"
+title:  "Tree Filtered Iterator"
 categories: [features, data structures]
 scripts: 
   - url: "https://cdn.jsdelivr.net/npm/vue@2.6.0/dist/vue.min.js"
     type: "absolute"
-  - url: "/assets/src/TreeTestedIterator.js"
+  - url: "/assets/src/TreeFilteredIterator.js"
     type: "relative"
 inlinescript: >
   <script>
@@ -64,16 +64,18 @@ inlinescript: >
             { "name": "descendant4", "contents": [] },
           ]
         }
-
-        let iterator = new TreeTestedIterator(node), step;
+        let filterFn = function (v, i, t) {
+          return !v.disabled;
+        }
+        let iterator = new TreeFilteredIterator(node, filterFn), step;
         while ((step = iterator.next()) && !step.done) {
           this.log(["node", step.value.name].join(' '));
         }
-        iterator = new TreeTestedIterator(list);
+        iterator = new TreeFilteredIterator(list, filterFn);
         while ((step = iterator.next()) && !step.done) {
           this.log(["list", step.value.name].join(' '));
         }
-        iterator = new TreeTestedIterator(mytree);
+        iterator = new TreeFilteredIterator(mytree, filterFn);
         while ((step = iterator.next()) && !step.done) {
           this.log(["tree", step.value.name].join(' '));
         }
@@ -85,7 +87,11 @@ inlinescript: >
 <div id="app" class="app">
   <pre>
 {%- highlight javascript -%}
-let iterator = new TreeTestedIterator(mytree), step;
+function filterFn (node, index, tree) {
+  // return true to include node in iterator output
+  return true;
+}
+let iterator = new TreeFilteredIterator(mytree, filterFn), step;
 while ((step = iterator.next()) && !step.done) {
   // do something with step.value
 }

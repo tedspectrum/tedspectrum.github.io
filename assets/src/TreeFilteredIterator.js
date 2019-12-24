@@ -1,16 +1,21 @@
-function TreeTestedIterator(tree) {
+function TreeFilteredIterator(tree, filterFn) {
   var ancestors = [], // { value: node, index: index of descendant }
     current = null,
     search = null;
-  this.test = function (nextVal) {
-    return !nextVal.disabled;
+  if (typeof filterFn === "function") {
+    this.filter = filterFn;
+  } else {
+    this.filter = function (/* node, index of node in ancestor, tree */) {
+      // return true to include node in iterator output
+      return true;
+    }
   }
   this.next = function () {
     let ret = {
       value: null,
       done: true // false if next has produced value, true if no more values
     }
-    if (current === null && this.test(tree)) {
+    if (current === null && this.filter(tree, 0, tree)) {
       // first step
       current = tree;
       ret.value = current;
@@ -21,7 +26,7 @@ function TreeTestedIterator(tree) {
       // next value is first descendant that passes test
       let idx = 0;
       while (idx < current.contents.length) {
-        if(this.test(current.contents[idx])) {
+        if(this.filter(current.contents[idx], idx, tree)) {
           ancestors.push({ value: current, index: idx });
           current = current.contents[idx];
           ret.value = current;
@@ -35,7 +40,7 @@ function TreeTestedIterator(tree) {
         search = ancestors.pop();
         while (search.index < search.value.contents.length - 1 && ret.done) {
           search.index++;
-          if (this.test(search.value.contents[search.index])) {
+          if (this.filter(search.value.contents[search.index], search.index, tree)) {
             ancestors.push({ value: search.value, index: search.index });
             current = search.value.contents[search.index];
             ret.value = current;

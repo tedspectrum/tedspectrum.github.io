@@ -6,8 +6,8 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>Tree Tested Iterator</title>
-  <meta name="description" content="  let iterator = new TreeTestedIterator(mytree), step;while ((step = iterator.next()) &amp;&amp; !step.done) {  // do something with step.value}// orfor (ste...">
+  <title>Tree Filtered Iterator</title>
+  <meta name="description" content="  function filterFn (node, index, tree) {  // return true to include node in iterator output  return true;}let iterator = new TreeFilteredIterator(mytree, fi...">
 
   <link rel="stylesheet" href="/css/main.css">
   <link rel="canonical" href="http://localhost:4000/features/data%20structures/2019/12/24/treetestediterator.html">
@@ -28,13 +28,17 @@
         <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
 
   <header class="post-header">
-    <h1 class="post-title" itemprop="name headline">Tree Tested Iterator</h1>
+    <h1 class="post-title" itemprop="name headline">Tree Filtered Iterator</h1>
     <p class="post-meta"><time datetime="2019-12-24T00:00:00+00:00" itemprop="datePublished">Dec 24, 2019</time></p>
   </header>
 
   <div class="post-content" itemprop="articleBody">
     <div id="app" class="app">
-  <pre><figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">let</span> <span class="nx">iterator</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">TreeTestedIterator</span><span class="p">(</span><span class="nx">mytree</span><span class="p">),</span> <span class="nx">step</span><span class="p">;</span>
+  <pre><figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">function</span> <span class="nx">filterFn</span> <span class="p">(</span><span class="nx">node</span><span class="p">,</span> <span class="nx">index</span><span class="p">,</span> <span class="nx">tree</span><span class="p">)</span> <span class="p">{</span>
+  <span class="c1">// return true to include node in iterator output</span>
+  <span class="k">return</span> <span class="kc">true</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="kd">let</span> <span class="nx">iterator</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">TreeFilteredIterator</span><span class="p">(</span><span class="nx">mytree</span><span class="p">,</span> <span class="nx">filterFn</span><span class="p">),</span> <span class="nx">step</span><span class="p">;</span>
 <span class="k">while</span> <span class="p">((</span><span class="nx">step</span> <span class="o">=</span> <span class="nx">iterator</span><span class="p">.</span><span class="nx">next</span><span class="p">())</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="nx">step</span><span class="p">.</span><span class="nx">done</span><span class="p">)</span> <span class="p">{</span>
   <span class="c1">// do something with step.value</span>
 <span class="p">}</span>
@@ -67,7 +71,7 @@
   
 
   
-  <script src="/assets/src/TreeTestedIterator.js"></script>
+  <script src="/assets/src/TreeFilteredIterator.js"></script>
   
 
 
@@ -126,16 +130,18 @@
           { "name": "descendant4", "contents": [] },
         ]
       }
-
-      let iterator = new TreeTestedIterator(node), step;
+      let filterFn = function (v, i, t) {
+        return !v.disabled;
+      }
+      let iterator = new TreeFilteredIterator(node, filterFn), step;
       while ((step = iterator.next()) && !step.done) {
         this.log(["node", step.value.name].join(' '));
       }
-      iterator = new TreeTestedIterator(list);
+      iterator = new TreeFilteredIterator(list, filterFn);
       while ((step = iterator.next()) && !step.done) {
         this.log(["list", step.value.name].join(' '));
       }
-      iterator = new TreeTestedIterator(mytree);
+      iterator = new TreeFilteredIterator(mytree, filterFn);
       while ((step = iterator.next()) && !step.done) {
         this.log(["tree", step.value.name].join(' '));
       }
