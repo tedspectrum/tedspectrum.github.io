@@ -1,6 +1,6 @@
 function TreeIterator(tree) {
   var ancestors = [], // { value: node, index: index of descendant }
-    current = null,
+    current = null;
     search = null;
   this.next = function () {
     let ret = {
@@ -19,14 +19,13 @@ function TreeIterator(tree) {
       ret.value = current;
       ret.done = false;
     } else {
-      while (ancestors.length !== 0) {
+      while (ancestors.length !== 0 && ret.done) {
         search = ancestors.pop();
         if (search.index < search.value.contents.length - 1) {
           ancestors.push({ value: search.value, index: search.index + 1 });
           current = search.value.contents[search.index + 1];
           ret.value = current;
           ret.done = false;
-          break;
         }
       }
     }
