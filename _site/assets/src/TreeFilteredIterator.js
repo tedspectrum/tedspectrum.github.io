@@ -1,7 +1,10 @@
 function TreeFilteredIterator(tree, filterFn) {
-  var ancestors = [], // { value: node, index: index of descendant }
+  var ancestorIndexes = [],
+    ancestorValues = [],
     current = null,
-    search = null;
+    isDone = false,
+    searchIndex = 0,
+    searchValue = null;
   if (typeof filterFn === "function") {
     this.filter = filterFn;
   } else {
@@ -11,45 +14,39 @@ function TreeFilteredIterator(tree, filterFn) {
     }
   }
   this.next = function () {
-    let ret = {
-      value: null,
-      done: true // false if next has produced value, true if no more values
-    }
-    if (current === null && this.filter(tree, 0, tree)) {
+    // there are no objects or variables in step.
+    this.step();
+    // iterator protocol requires return of an object
+    return isDone ? { 'done': true } : { 'done': isDone, 'value': current };
+  };
+  this.step = function () {
+    isDone = true;
+    if (current === null) {
       // first step
-      current = tree;
-      ret.value = current;
-      ret.done = false;
-    } else if (current !== null
-      && current.contents
-      && current.contents.length > 0) {
-      // next value is first descendant that passes test
-      let idx = 0;
-      while (idx < current.contents.length) {
-        if(this.filter(current.contents[idx], idx, tree)) {
-          ancestors.push({ value: current, index: idx });
-          current = current.contents[idx];
-          ret.value = current;
-          ret.done = false;
-          break;
-        }
-        idx++;
+      if (this.filter(tree, 0, tree)) {
+        current = tree;
+        isDone = false;
       }
     } else {
-      while (ancestors.length !== 0 && ret.done) {
-        search = ancestors.pop();
-        while (search.index < search.value.contents.length - 1 && ret.done) {
-          search.index++;
-          if (this.filter(search.value.contents[search.index], search.index, tree)) {
-            ancestors.push({ value: search.value, index: search.index });
-            current = search.value.contents[search.index];
-            ret.value = current;
-            ret.done = false;
+      if (current.contents && current.contents.length > 0) {
+        ancestorIndexes.push(-1);
+        ancestorValues.push(current);
+      }
+      while (ancestorValues.length !== 0 && isDone) {
+        searchIndex = ancestorIndexes.pop() + 1;
+        searchValue = ancestorValues.pop();
+        while (searchIndex < searchValue.contents.length) {
+          if (this.filter(searchValue.contents[searchIndex], searchIndex, tree)) {
+            ancestorIndexes.push(searchIndex);
+            ancestorValues.push(searchValue);
+            current = searchValue.contents[searchIndex];
+            isDone = false;
+            break;
           }
+          searchIndex++;
         }
       }
     }
-    return ret;
   }
   this[Symbol.iterator] = function () { return this; };
 }
