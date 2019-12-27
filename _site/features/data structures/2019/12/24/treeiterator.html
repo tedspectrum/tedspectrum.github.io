@@ -7,7 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <title>Tree Iterator</title>
-  <meta name="description" content="  let iterator = new TreeIterator(mytree), step;while ((step = iterator.next()) &amp;&amp; !step.done) {  // do something with step.value}// orfor (step of i...">
+  <meta name="description" content="  function transformFn (node, step count, iterator) {  // return true to include node in iterator output  return true;}let iterator = new TreeIterator(mytree...">
 
   <link rel="stylesheet" href="/css/main.css">
   <link rel="canonical" href="http://localhost:4000/features/data%20structures/2019/12/24/treeiterator.html">
@@ -34,7 +34,15 @@
 
   <div class="post-content" itemprop="articleBody">
     <div id="app" class="app">
-  <pre><figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">let</span> <span class="nx">iterator</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">TreeIterator</span><span class="p">(</span><span class="nx">mytree</span><span class="p">),</span> <span class="nx">step</span><span class="p">;</span>
+  <pre><figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">function</span> <span class="nx">transformFn</span> <span class="p">(</span><span class="nx">node</span><span class="p">,</span> <span class="nx">step</span> <span class="nx">count</span><span class="p">,</span> <span class="nx">iterator</span><span class="p">)</span> <span class="p">{</span>
+  <span class="c1">// return true to include node in iterator output</span>
+  <span class="k">return</span> <span class="kc">true</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="kd">let</span> <span class="nx">iterator</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">TreeIterator</span><span class="p">(</span><span class="nx">mytree</span><span class="p">),</span> <span class="nx">step</span><span class="p">;</span>
+<span class="nx">iterator</span><span class="p">.</span><span class="nx">setTransform</span><span class="p">(</span><span class="nx">transformFn</span><span class="p">);</span>
+<span class="k">while</span> <span class="p">(</span><span class="nx">iterator</span><span class="p">.</span><span class="nx">step</span><span class="p">()</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="nx">iterator</span><span class="p">.</span><span class="nx">done</span><span class="p">())</span> <span class="p">{</span>
+  <span class="c1">// do something with iterator.current()</span>
+<span class="p">}</span>
 <span class="k">while</span> <span class="p">((</span><span class="nx">step</span> <span class="o">=</span> <span class="nx">iterator</span><span class="p">.</span><span class="nx">next</span><span class="p">())</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="nx">step</span><span class="p">.</span><span class="nx">done</span><span class="p">)</span> <span class="p">{</span>
   <span class="c1">// do something with step.value</span>
 <span class="p">}</span>
@@ -86,17 +94,15 @@
     },
     run: function () {
       const node = {
-        "name": "root"
-      };
-      const emptylist = {
         "name": "root",
-        "contents": []
-      }
+        "disabled": true
+      };
       const list = {
         "name": "root",
         "contents": [
-          { "name": "list1" },
-          { "name": "list2" }
+          { "name": "list1", "disabled": false },
+          { "name": "list2", "disabled": true },
+          { "name": "list3", "disabled": false }
         ]
       };
       const mytree = {
@@ -110,7 +116,7 @@
                   { "name": "descendant1.1.2", "contents": [
                     { "name": "descendant1.1.2.1" },
                     { "name": "descendant1.1.2.2" },
-                    { "name": "descendant1.1.2.3" },
+                    { "name": "descendant1.1.2.3", "disabled": true },
                     { "name": "descendant1.1.2.4" }
                   ]},
                   { "name": "descendant1.1.3" }
@@ -118,36 +124,36 @@
               }
             ]
           },
-          { "name": "descendant2", "contents": [] },
+          { "name": "descendant2", "contents": [], "disabled": false },
           {
             "name": "descendant3", "contents": [
-              { "name": "descendant3.1" },
+              { "name": "descendant3.1"},
               { "name": "descendant3.2" }
-            ]
+            ], "disabled": true
           },
           { "name": "descendant4", "contents": [] },
         ]
       }
-
+      let transformFn = function (v, i, it) {
+        return !v.disabled;
+      }
       let iterator = new TreeIterator(node), step;
+      iterator.setTransform(transformFn);
       while ((step = iterator.next()) && !step.done) {
         this.log(["node", step.value.name].join(' '));
       }
-      iterator = new TreeIterator(emptylist);
-      while ((step = iterator.next()) && !step.done) {
-        this.log(["emptylist", step.value.name].join(' '));
-      }
-      iterator = new TreeIterator(list);
+      iterator.setTree(list);
       while ((step = iterator.next()) && !step.done) {
         this.log(["list", step.value.name].join(' '));
       }
-      iterator = new TreeIterator(mytree);
-      while ((step = iterator.next()) && !step.done) {
-        this.log(["tree", step.value.name].join(' '));
+      iterator.setTree(mytree);
+      while (iterator.step() && !iterator.done()) {
+        step = iterator.current();
+        this.log(["tree", step.name].join(' '));
       }
-      iterator = new TreeIterator(mytree);
-      for(step of iterator) {
-        this.log(["for of tree", step.name].join(' '));
+      iterator.reset();
+      for (step of iterator) {
+        this.log(["for ... of tree", step.name].join(' '));
       }
     }
   }

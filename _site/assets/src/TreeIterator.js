@@ -1,35 +1,79 @@
 function TreeIterator(tree) {
-  var ancestors = [], // { value: node, index: index of descendant }
-    current = null;
-    search = null;
+  const ITERATOR_DONE = { 'done': true };
+  var currentTree = tree, 
+    currentValue = null, // object
+    hasNext = true,
+    nodeStackLength = 0,
+    nodeStackIndexes = [],
+    nodeStackValues = [],
+    searchIndex = 0,
+    searchValue = null, // object
+    stepCount = 0;
+  this.current = function () {
+    return currentValue;
+  }
+  this.done = function () {
+    return !hasNext;
+  }
   this.next = function () {
-    let ret = {
-      value: null,
-      done: true // false if next has produced value, true if no more values
+    // iterator protocol requires return of an object
+    return (this.step()) ? { 'done': false, 'value': currentValue } : ITERATOR_DONE;
+  };
+  this.reset = function () {
+    currentValue = null; // object
+    hasNext = true;
+    nodeStackLength = 0;
+    nodeStackIndexes = [];
+    nodeStackValues = [];
+    searchIndex = 0;
+    searchValue = null; // object
+    stepCount = 0;
+    return this;
+  };
+  this.setTransform = function (newTransformFn) {
+    if (typeof newTransformFn === "function") {
+      this.transform = newTransformFn;
     }
-    if (current === null) {
-      // first step
-      current = tree;
-      ret.value = current;
-      ret.done = false;
-    } else if (current.contents && current.contents.length !== 0) {
-      // next value is first descendant
-      ancestors.push({ value: current, index: 0 });
-      current = current.contents[0];
-      ret.value = current;
-      ret.done = false;
-    } else {
-      while (ancestors.length !== 0 && ret.done) {
-        search = ancestors.pop();
-        if (search.index < search.value.contents.length - 1) {
-          ancestors.push({ value: search.value, index: search.index + 1 });
-          current = search.value.contents[search.index + 1];
-          ret.value = current;
-          ret.done = false;
+    return this;
+  };
+  this.setTree = function (newTree) {
+    currentTree = newTree;
+    this.reset();
+    return this;
+  };
+  this.step = function () {
+    hasNext = false;
+    if (stepCount === 0) {
+      if (this.transform(currentTree, stepCount, this)) {
+        currentValue = currentTree;
+        hasNext = true;
+      }
+    } else if (currentValue.contents) {
+      nodeStackIndexes[nodeStackLength] = -1;
+      nodeStackValues[nodeStackLength] = currentValue;
+      nodeStackLength++;
+    }
+    while (nodeStackLength > 0 && !hasNext) {
+      nodeStackLength--;
+      searchIndex = nodeStackIndexes[nodeStackLength] + 1;
+      searchValue = nodeStackValues[nodeStackLength];
+      while (searchIndex < searchValue.contents.length && !hasNext) {
+        if (this.transform(searchValue.contents[searchIndex], stepCount, this)) {
+          nodeStackIndexes[nodeStackLength] = searchIndex;
+          nodeStackValues[nodeStackLength] = searchValue;
+          nodeStackLength++;
+          currentValue = searchValue.contents[searchIndex];
+          hasNext = true;
+        } else {
+          searchIndex++;
         }
       }
     }
-    return ret;
+    stepCount++;
+    return hasNext;
   }
-  this[Symbol.iterator] = function() { return this; };
+  this.transform = function () {
+    return true;
+  }
+  this[Symbol.iterator] = function () { return this; };
 }
