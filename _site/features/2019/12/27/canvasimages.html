@@ -7,7 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <title>Canvas Images</title>
-  <meta name="description" content="            Run      Left    Right    Up    Down        ">
+  <meta name="description" content="            Run      Left (a)    Right (d)    Up (w)    Down (s)        ">
 
   <link rel="stylesheet" href="/css/main.css">
   <link rel="canonical" href="http://localhost:4000/features/2019/12/27/canvasimages.html">
@@ -43,20 +43,21 @@
   </header>
 
   <div class="post-content" itemprop="articleBody">
-    <div id="app" class="app">
+    <div id="app" class="app" @keydown="onKeyDown" @keyup="onKeyUp">
   
   <div class="hidden">
     <image ref="tiles" width="640" height="640" src="/assets/canvasimages/tiles.png"></image>
   </div>
   <div><button class="app-button" @click.prevent="run()">Run</button></div>
   <div>
-    <button class="app-button" @click.prevent="move([-1,0])">Left</button>
-    <button class="app-button" @click.prevent="move([1,0])">Right</button>
-    <button class="app-button" @click.prevent="move([0,-1])">Up</button>
-    <button class="app-button" @click.prevent="move([0,1])">Down</button>
+    <button class="app-button" @click.prevent="move(-1,0)">Left (a)</button>
+    <button class="app-button" @click.prevent="move(1,0)">Right (d)</button>
+    <button class="app-button" @click.prevent="move(0,-1)">Up (w)</button>
+    <button class="app-button" @click.prevent="move(0,1)">Down (s)</button>
   </div>
   <canvas ref="layer1"
-    :width="viewWidth" :height="viewHeight">
+    :width="viewWidth" :height="viewHeight"
+  >
   </canvas>
   
 </div>
@@ -86,10 +87,18 @@
   el: '#app',
   data: function () {
     let d = {
+      keypresses: {
+        'a': false,
+        'd': false,
+        'w': false,
+        's': false
+      },
       tileMapViewer: {},
+      timeAccumulated: 0,
+      timePrevious: 0,
       viewHeight: 240,
       viewWidth: 310,
-      moveRate: 16,
+      moveRate: 8,
       tileMap:
         [
           [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
@@ -107,6 +116,16 @@
     return d;
   },
   methods: {
+    onKeyDown: function (e) {
+      if(this.keypresses[e.key] === false) {
+        this.keypresses[e.key] = true;
+      }
+    },
+    onKeyUp: function (e) {
+      if(this.keypresses[e.key] === true) {
+        this.keypresses[e.key] = false;
+      }
+    },
     run: function () {
       this.tileMapViewer = new TileMapViewer(
         {
@@ -116,14 +135,19 @@
           outputEl: this.$refs.layer1
         }
       );
-      this.update();
+      this.update(0);
     },
-    update: function () {
+    update: function (timestamp) {
+      let myself = this;
+      this.keypresses.a && this.move(-1,0);
+      this.keypresses.d && this.move(1,0);
+      this.keypresses.w && this.move(0,-1);
+      this.keypresses.s && this.move(0,1);
       this.tileMapViewer.update();
+      window.requestAnimationFrame(myself.update);
     },
-    move: function (vec) {
-      this.tileMapViewer.changeXY(vec[0] * this.moveRate, vec[1] * this.moveRate);
-      this.update();
+    move: function (moveX,moveY) {
+      this.tileMapViewer.changeXY(moveX * this.moveRate, moveY * this.moveRate);
     }
   }
 });   </script>

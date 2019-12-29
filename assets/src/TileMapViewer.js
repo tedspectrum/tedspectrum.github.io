@@ -32,7 +32,7 @@ function TileMapViewer(config) {
   tileMapCols = config.map[0].length;
   tileMapRows = config.map.length;
   tileSpriteSheet = config.spriteSheet;
-  spriteSheetCols = config.spriteSheet.width;
+  spriteSheetCols = Math.round(config.spriteSheet.width / tilesize);
   maxCols = Math.ceil(width / tilesize);
   maxRows = Math.ceil(height / tilesize);
   maxX = tileMapCols * tilesize - width;
