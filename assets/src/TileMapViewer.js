@@ -37,9 +37,13 @@ function TileMapViewer(config) {
   maxRows = Math.ceil(height / tilesize);
   maxX = tileMapCols * tilesize - width;
   maxY = tileMapRows * tilesize - height;
+  this.setXY = function(newX, newY) {
+    // top left of view in map coordinates
+    x = Math.max(0, Math.min(newX, maxX));
+    y = Math.max(0, Math.min(newY, maxY));    
+  };
   this.changeXY = function (xChange, yChange) {
-    x = Math.max(0, Math.min(x + xChange, maxX));
-    y = Math.max(0, Math.min(y + yChange, maxY));
+    this.setXY(x + xChange, y + yChange);
   }
   this.update = function () {
     let col, row,
