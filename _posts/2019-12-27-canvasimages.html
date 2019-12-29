@@ -5,6 +5,10 @@ categories: [features]
 scripts:
   - url: "https://cdn.jsdelivr.net/npm/vue@2.6.0/dist/vue.min.js"
     type: "absolute"
+  - url: "https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"
+    type: "absolute"
+  - url: "/assets/src/core.js"
+    type: "relative"
   - url: "/assets/src/TileMapViewer.js"
     type: "relative"
 inlinestyle: >
@@ -13,6 +17,7 @@ inlinestyle: >
       display: none;
     }
     canvas {
+      background: lightblue;
       border: 1px solid black;
     }
   </style>
@@ -22,6 +27,14 @@ inlinescript: >
     el: '#app',
     data: function () {
       let d = {
+        changed: false,
+        core: {},
+        controlButton: {
+          'disabled': true,
+          'activeMsg': '',
+          'msgLoading': 'Loading...',
+          'msgReady': 'Start'
+        },
         keypresses: {
           'a': false,
           'd': false,
@@ -29,32 +42,33 @@ inlinescript: >
           's': false
         },
         tileMapViewer: {},
-        timeAccumulated: 0,
-        timePrevious: 0,
         viewHeight: 240,
-        viewWidth: 310,
+        viewWidth: 320,
         moveRate: 8,
-        tileMap:
-          [
-            [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-            [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1],
-            [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-            [1, 0, 3, 3, 3, 3, 0, 0, 0, 0, 1, 0, 0, 0, 1],
-            [1, 0, 4, 4, 4, 4, 0, 0, 0, 0, 1, 0, 0, 0, 1],
-            [1, 0, 4, 4, 4, 4, 0, 0, 0, 0, 1, 0, 0, 0, 1],
-            [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1],
-            [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1],
-            [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1],
-            [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
-          ]
+        tileMapURL: '/assets/canvasimages/tilemap.json',
+        tileMap: {}
       };
       return d;
     },
     mounted: function() {
+      let myself = this;
+      myself.core = new Core();
       window.addEventListener("keydown", this.onKeyDown.bind(this));
       window.addEventListener("keyup", this.onKeyUp.bind(this));
+      myself.controlButton.activeMsg = myself.controlButton.msgLoading;
+      axios.get(myself.tileMapURL).then(function (res) {
+        myself.$set(myself, 'tileMap', res.data);
+        myself.controlButton.activeMsg = myself.controlButton.msgReady;
+        myself.controlButton.disabled = false;
+      });
     },
     methods: {
+      onEruda: function () {
+        this.core.eruda();
+      },
+      onFullScreen: function () {
+        this.core.toggleFullScreen(this.$el);
+      },
       onKeyDown: function (e) {
         if(this.keypresses[e.key] === false) {
           this.keypresses[e.key] = true;
@@ -97,21 +111,27 @@ inlinescript: >
   });  
   </script>
 ---
-<div id="app" class="app" @keydown="onKeyDown" @keyup="onKeyUp">
+<div id="app" class="app">
   {% raw %}
   <div class="hidden">
     <image ref="tiles" width="640" height="640" src="/assets/canvasimages/tiles.png"></image>
   </div>
-  <div><button class="app-button" @click.prevent="run()">Run</button></div>
+  <div>
+    <button class="app-button" 
+    :disabled="controlButton.disabled"
+    @click.prevent="run()">{{ controlButton.activeMsg }}</button>
+    <button @click="onFullScreen">Full Screen</button>
+    <button @click="onEruda">Dev Console</button>
+  </div>
+  <canvas ref="layer1"
+    :width="viewWidth" :height="viewHeight"
+  >
+  </canvas>
   <div>
     <button class="app-button" @click.prevent="move(-1,0)">Left (a)</button>
     <button class="app-button" @click.prevent="move(1,0)">Right (d)</button>
     <button class="app-button" @click.prevent="move(0,-1)">Up (w)</button>
     <button class="app-button" @click.prevent="move(0,1)">Down (s)</button>
   </div>
-  <canvas ref="layer1"
-    :width="viewWidth" :height="viewHeight"
-  >
-  </canvas>
   {% endraw %}
 </div>
