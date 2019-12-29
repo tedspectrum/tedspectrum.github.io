@@ -50,6 +50,10 @@ inlinescript: >
       };
       return d;
     },
+    mounted: function() {
+      window.addEventListener("keydown", this.onKeyDown.bind(this));
+      window.addEventListener("keyup", this.onKeyUp.bind(this));
+    },
     methods: {
       onKeyDown: function (e) {
         if(this.keypresses[e.key] === false) {
@@ -70,19 +74,24 @@ inlinescript: >
             outputEl: this.$refs.layer1
           }
         );
+        this.changed = true;
         this.update(0);
       },
       update: function (timestamp) {
         let myself = this;
-        this.keypresses.a && this.move(-1,0);
-        this.keypresses.d && this.move(1,0);
-        this.keypresses.w && this.move(0,-1);
-        this.keypresses.s && this.move(0,1);
-        this.tileMapViewer.update();
+        if (this.keypresses.a) { this.move(-1,0); }
+        if (this.keypresses.d) { this.move(1,0); }
+        if (this.keypresses.w) { this.move(0,-1); }
+        if (this.keypresses.s) { this.move(0,1); }
+        if (this.changed === true) { 
+          this.changed = false;
+          this.tileMapViewer.update();
+        }
         window.requestAnimationFrame(myself.update);
       },
       move: function (moveX,moveY) {
         this.tileMapViewer.changeXY(moveX * this.moveRate, moveY * this.moveRate);
+        this.changed = true;
       }
     }
   });  

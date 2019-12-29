@@ -37,10 +37,10 @@ function TileMapViewer(config) {
   maxRows = Math.ceil(height / tilesize);
   maxX = tileMapCols * tilesize - width;
   maxY = tileMapRows * tilesize - height;
-  this.setXY = function(newX, newY) {
+  this.setXY = function (newX, newY) {
     // top left of view in map coordinates
     x = Math.max(0, Math.min(newX, maxX));
-    y = Math.max(0, Math.min(newY, maxY));    
+    y = Math.max(0, Math.min(newY, maxY));
   };
   this.changeXY = function (xChange, yChange) {
     this.setXY(x + xChange, y + yChange);
@@ -64,15 +64,17 @@ function TileMapViewer(config) {
       col = startCol;
       while (col <= endCol) {
         tileId = (tileMap[row] && tileMap[row][col]) ? tileMap[row][col] : 0;
-        ctx.drawImage(tileSpriteSheet,
-          Math.round(tileId % spriteSheetCols) * tilesize,
-          Math.round(tileId / spriteSheetCols) * tilesize,
-          tilesize,
-          tilesize,
-          Math.round((col - startCol) * tilesize + offsetX),
-          Math.round((row - startRow) * tilesize + offsetY),
-          tilesize,
-          tilesize);
+        if (tileId !== 0) {
+          ctx.drawImage(tileSpriteSheet,
+            Math.round(tileId % spriteSheetCols) * tilesize,
+            Math.round(tileId / spriteSheetCols) * tilesize,
+            tilesize,
+            tilesize,
+            Math.round((col - startCol) * tilesize + offsetX),
+            Math.round((row - startRow) * tilesize + offsetY),
+            tilesize,
+            tilesize);
+        }
         col++;
       }
       row++;
