@@ -1,0 +1,84 @@
+---
+layout: post
+title: "Canvas Images"
+categories: [features]
+scripts:
+  - url: "https://cdn.jsdelivr.net/npm/vue@2.6.0/dist/vue.min.js"
+    type: "absolute"
+  - url: "/assets/src/TileMapViewer.js"
+    type: "relative"
+inlinestyle: >
+  <style>
+    .hidden {
+      display: none;
+    }
+    canvas {
+      border: 1px solid black;
+    }
+  </style>
+inlinescript: >
+  <script>
+  const app = new Vue({
+    el: '#app',
+    data: function () {
+      let d = {
+        tileMapViewer: {},
+        viewHeight: 240,
+        viewWidth: 310,
+        moveRate: 16,
+        tileMap:
+          [
+            [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+            [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1],
+            [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+            [1, 0, 3, 3, 3, 3, 0, 0, 0, 0, 1, 0, 0, 0, 1],
+            [1, 0, 4, 4, 4, 4, 0, 0, 0, 0, 1, 0, 0, 0, 1],
+            [1, 0, 4, 4, 4, 4, 0, 0, 0, 0, 1, 0, 0, 0, 1],
+            [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1],
+            [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1],
+            [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1],
+            [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+          ]
+      };
+      return d;
+    },
+    methods: {
+      run: function () {
+        this.tileMapViewer = new TileMapViewer(
+          {
+            map: this.tileMap,
+            spriteSheet: this.$refs.tiles,
+            tilesize: 32,
+            outputEl: this.$refs.layer1
+          }
+        );
+        this.update();
+      },
+      update: function () {
+        this.tileMapViewer.update();
+      },
+      move: function (vec) {
+        this.tileMapViewer.changeXY(vec[0] * this.moveRate, vec[1] * this.moveRate);
+        this.update();
+      }
+    }
+  });  
+  </script>
+---
+<div id="app" class="app">
+  {% raw %}
+  <div class="hidden">
+    <image ref="tiles" width="640" height="640" src="/assets/canvasimages/tiles.png"></image>
+  </div>
+  <div><button class="app-button" @click.prevent="run()">Run</button></div>
+  <div>
+    <button class="app-button" @click.prevent="move([-1,0])">Left</button>
+    <button class="app-button" @click.prevent="move([1,0])">Right</button>
+    <button class="app-button" @click.prevent="move([0,-1])">Up</button>
+    <button class="app-button" @click.prevent="move([0,1])">Down</button>
+  </div>
+  <canvas ref="layer1"
+    :width="viewWidth" :height="viewHeight">
+  </canvas>
+  {% endraw %}
+</div>

@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Canvas Images</title>
+  <meta name="description" content="            Run      Left    Right    Up    Down        ">
+
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="canonical" href="http://localhost:4000/features/2019/12/27/canvasimages.html">
+  <link rel="alternate" type="application/rss+xml" title="Ted Spectrum" href="http://localhost:4000/feed.xml">
+  
+  
+  <style>
+  .hidden {
+    display: none;
+  }
+  canvas {
+    border: 1px solid black;
+  }
+</style>
+
+  
+</head>
+
+
+  <body>
+    <header class="site-header">
+    <div class="wrapper">
+      <h1><a href="/" id="top">Ted Spectrum</a></h1>
+    </div>
+    </header>
+    <div class="page-content">
+      <div class="wrapper">
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">Canvas Images</h1>
+    <p class="post-meta"><time datetime="2019-12-27T00:00:00+00:00" itemprop="datePublished">Dec 27, 2019</time></p>
+  </header>
+
+  <div class="post-content" itemprop="articleBody">
+    <div id="app" class="app">
+  
+  <div class="hidden">
+    <image ref="tiles" width="640" height="640" src="/assets/canvasimages/tiles.png"></image>
+  </div>
+  <div><button class="app-button" @click.prevent="run()">Run</button></div>
+  <div>
+    <button class="app-button" @click.prevent="move([-1,0])">Left</button>
+    <button class="app-button" @click.prevent="move([1,0])">Right</button>
+    <button class="app-button" @click.prevent="move([0,-1])">Up</button>
+    <button class="app-button" @click.prevent="move([0,1])">Down</button>
+  </div>
+  <canvas ref="layer1"
+    :width="viewWidth" :height="viewHeight">
+  </canvas>
+  
+</div>
+  </div>
+
+</article>
+
+      </div>
+    </div>
+
+    <footer class="site-footer">
+  <div class="wrapper">
+    <p><a href="#top">Top</a></p>
+  </div>
+</footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.6.0/dist/vue.min.js"></script>
+  
+
+  
+  <script src="/assets/src/TileMapViewer.js"></script>
+  
+
+
+<script> const app = new Vue({
+  el: '#app',
+  data: function () {
+    let d = {
+      tileMapViewer: {},
+      viewHeight: 240,
+      viewWidth: 310,
+      moveRate: 16,
+      tileMap:
+        [
+          [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+          [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1],
+          [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+          [1, 0, 3, 3, 3, 3, 0, 0, 0, 0, 1, 0, 0, 0, 1],
+          [1, 0, 4, 4, 4, 4, 0, 0, 0, 0, 1, 0, 0, 0, 1],
+          [1, 0, 4, 4, 4, 4, 0, 0, 0, 0, 1, 0, 0, 0, 1],
+          [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1],
+          [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1],
+          [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1],
+          [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+        ]
+    };
+    return d;
+  },
+  methods: {
+    run: function () {
+      this.tileMapViewer = new TileMapViewer(
+        {
+          map: this.tileMap,
+          spriteSheet: this.$refs.tiles,
+          tilesize: 32,
+          outputEl: this.$refs.layer1
+        }
+      );
+      this.update();
+    },
+    update: function () {
+      this.tileMapViewer.update();
+    },
+    move: function (vec) {
+      this.tileMapViewer.changeXY(vec[0] * this.moveRate, vec[1] * this.moveRate);
+      this.update();
+    }
+  }
+});   </script>
+
+
+
+  </body>
+
+</html>
