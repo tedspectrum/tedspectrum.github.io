@@ -6,8 +6,8 @@
 </description>
     <link>http://localhost:4000/</link>
     <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sun, 29 Dec 2019 12:59:39 +0000</pubDate>
-    <lastBuildDate>Sun, 29 Dec 2019 12:59:39 +0000</lastBuildDate>
+    <pubDate>Mon, 30 Dec 2019 20:02:16 +0000</pubDate>
+    <lastBuildDate>Mon, 30 Dec 2019 20:02:16 +0000</lastBuildDate>
     <generator>Jekyll v4.0.0</generator>
     
       <item>
@@ -28,11 +28,35 @@
     :width=&quot;viewWidth&quot; :height=&quot;viewHeight&quot;
   &gt;
   &lt;/canvas&gt;
-  &lt;div&gt;
-    &lt;button class=&quot;app-button&quot; @click.prevent=&quot;move(-1,0)&quot;&gt;Left (a)&lt;/button&gt;
-    &lt;button class=&quot;app-button&quot; @click.prevent=&quot;move(1,0)&quot;&gt;Right (d)&lt;/button&gt;
-    &lt;button class=&quot;app-button&quot; @click.prevent=&quot;move(0,-1)&quot;&gt;Up (w)&lt;/button&gt;
-    &lt;button class=&quot;app-button&quot; @click.prevent=&quot;move(0,1)&quot;&gt;Down (s)&lt;/button&gt;
+  &lt;div class=&quot;grid--div-controller&quot;&gt;
+    &lt;div class=&quot;grid--button-top grid--button-controller&quot; 
+      @mousedown=&quot;onMouseDown('up')&quot;
+      @mouseup=&quot;onMouseUp('up')&quot;
+      @touchstart.prevent=&quot;onTouchStart('up')&quot;
+      @touchend.prevent=&quot;onTouchEnd('up')&quot;
+      @touchcancel.prevent=&quot;onTouchCancel('up')&quot;
+    &gt;Up (w)&lt;/div&gt;
+    &lt;div class=&quot;grid--button-left grid--button-controller&quot; 
+      @mousedown=&quot;onMouseDown('left')&quot;
+      @mouseup=&quot;onMouseUp('left')&quot;
+      @touchstart.prevent=&quot;onTouchStart('left')&quot;
+      @touchend.prevent=&quot;onTouchEnd('left')&quot;
+      @touchcancel.prevent=&quot;onTouchCancel('left')&quot;
+    &gt;Left (a)&lt;/div&gt;
+    &lt;div class=&quot;grid--button-right grid--button-controller&quot; 
+      @mousedown=&quot;onMouseDown('right')&quot;
+      @mouseup=&quot;onMouseUp('right')&quot;
+      @touchstart.prevent=&quot;onTouchStart('right')&quot;
+      @touchend.prevent=&quot;onTouchEnd('right')&quot;
+      @touchcancel.prevent=&quot;onTouchCancel(right)&quot;
+    &gt;Right (d)&lt;/div&gt;
+    &lt;div class=&quot;grid--button-bottom grid--button-controller&quot; 
+      @mousedown=&quot;onMouseDown('down')&quot;
+      @mouseup=&quot;onMouseUp('down')&quot;
+      @touchstart.prevent=&quot;onTouchStart('down')&quot;
+      @touchend.prevent=&quot;onTouchEnd('down')&quot;
+      @touchcancel.prevent=&quot;onTouchCancel('down')&quot;
+    &gt;Down (s)&lt;/div&gt;
   &lt;/div&gt;
   
 &lt;/div&gt;</description>
