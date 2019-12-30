@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <title>{% if page.title %}{{ page.title | escape }}{% else %}{{ site.title | escape }}{% endif %}</title>
+    {% for item in page.styles %}
+    {% case item.type %}
+    {% when "absolute" %}
+    <link rel="stylesheet" href="{{ item.url }}">
+    {% when "relative" %}
+    <link rel="stylesheet" href="{{ item.url | relative_url }}">
+    {% endcase %}
+    {% endfor %}
+    {% if page.inlinestyle %}
+    {{ page.inlinestyle }}
+    {% endif %}
+  </head>
+  <body>
+    <noscript>
+      <strong>We're sorry but this doesn't work properly without JavaScript enabled. Please enable it to continue.</strong>
+    </noscript>
+    {{ content }}
+    {% for item in page.scripts %}
+    {% case item.type %}
+    {% when "absolute" %}
+    <script src="{{ item.url }}"></script>
+    {% when "relative" %}
+    <script src="{{ item.url | relative_url }}"></script>
+    {% when "inline" %}
+    {{ item.src }}
+    {% endcase %}
+    {% endfor %}
+    {% if page.inlinescript %}
+    {{ page.inlinescript }}
+    {% endif %}
+  </body>
+</html>

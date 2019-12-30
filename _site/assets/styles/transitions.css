@@ -1,0 +1,47 @@
+/* slide left */
+.slideleft-enter, .slideleft-leave-to {
+  transform: translate3d(2em, 0, 0);
+}
+.slideleft-enter-active, .slideleft-leave-active {
+  transition: transform 0.15s ease-in-out;
+}
+/* slide right */
+.slideright-enter, .slideright-leave-to {
+  transform: translate3d(-2em, 0, 0);
+}
+.slideright-enter-active {
+  transition: transform 0.15s ease-out;
+}
+.slideright-leave-active {
+  transition: transform 0.15s ease-in;
+}
+/* slide down */
+.slidedown-enter, .slidedown-leave-to {
+  transform: translate3d(0, -1em, 0);
+}
+.slidedown-enter-active {
+  transition: transform 0.15s ease-out;
+}
+.slidedown-leave-active {
+  transition: transform 0.15s ease-in;
+}
+/* slide up */
+.slideup-enter, .slideup-leave-to {
+  transform: translate3d(0, 1em, 0);
+}
+.slideup-enter-active {
+  transition: transform 0.15s ease-out;
+}
+.slideup-leave-active {
+  transition: transform 0.15s ease-in;
+}
+/* zoom in */
+.zoomin-enter, .zoomin-leave-to {
+  transform: scale3d(0.7, 0.7, 0.7);
+}
+.zoomin-enter-active {
+  transition: transform 0.15s ease-out;
+}
+.zoomin-leave-active {
+  transition: transform 0.15s ease-in;
+}

@@ -1,89 +1,35 @@
 <!DOCTYPE html>
-<html>
-
+<html lang="en">
   <head>
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-
-  <title>Canvas Images</title>
-  <meta name="description" content="                {{ controlButton.activeMsg }}    Full Screen    Dev Console            Up (w)    Left (a)    Right (d)    Down (s)    ">
-
-  <link rel="stylesheet" href="/css/main.css">
-  <link rel="canonical" href="http://localhost:4000/features/2019/12/27/canvasimages.html">
-  <link rel="alternate" type="application/rss+xml" title="Ted Spectrum" href="http://localhost:4000/feed.xml">
-  
-  
-  <style>
-  .hidden {
-    display: none;
-  }
-  canvas {
-    background: lightblue;
-    border: 1px solid black;
-  }
-  .grid--div-controller {
-    width: 320px;
-    display: grid;
-    grid-template-columns: 50% 50%;
-    grid-template-rows: auto;
-    grid-template-areas: "top top" "left right" "bottom bottom";
-  }
-  .grid--button-top {
-    grid-area: top;
-    justify-self: center;
-  }
-  .grid--button-left {
-    grid-area: left;
-    justify-self: center;
-  }
-  .grid--button-right {
-    grid-area: right;
-    justify-self: center;
-  }
-  .grid--button-bottom {
-    grid-area: bottom;
-    justify-self: center;
-  }
-  .grid--button-controller {
-    padding: 1.5em;
-    margin: 0.5em;
-    width: 4em;
-    border-radius: 4em;
-    background: gray;
-    border:black 1px solid;
-  }
-</style>
-
-  
-</head>
-
-
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <title>Tilemap View</title>
+    
+    
+    <link rel="stylesheet" href="/assets/canvasimages/app.css">
+    
+    
+    
+    <link rel="stylesheet" href="/assets/styles/panel.css">
+    
+    
+    
+    <link rel="stylesheet" href="/assets/styles/transitions.css">
+    
+    
+    
+  </head>
   <body>
-    <header class="site-header">
-    <div class="wrapper">
-      <h1><a href="/" id="top">Ted Spectrum</a></h1>
-    </div>
-    </header>
-    <div class="page-content">
-      <div class="wrapper">
-        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
-
-  <header class="post-header">
-    <h1 class="post-title" itemprop="name headline">Canvas Images</h1>
-    <p class="post-meta"><time datetime="2019-12-27T00:00:00+00:00" itemprop="datePublished">Dec 27, 2019</time></p>
-  </header>
-
-  <div class="post-content" itemprop="articleBody">
+    <noscript>
+      <strong>We're sorry but this doesn't work properly without JavaScript enabled. Please enable it to continue.</strong>
+    </noscript>
     <div id="app" class="app">
   
   <div class="hidden">
     <image ref="tiles" width="640" height="640" src="/assets/canvasimages/tiles.png"></image>
   </div>
   <div>
-    <button class="app-button" 
-    :disabled="controlButton.disabled"
-    @click.prevent="run()">{{ controlButton.activeMsg }}</button>
     <button @click="onFullScreen">Full Screen</button>
     <button @click="onEruda">Dev Console</button>
   </div>
@@ -121,170 +67,51 @@
       @touchcancel.prevent="onTouchCancel('down')"
     >Down (s)</div>
   </div>
-  
-</div>
-  </div>
-
-</article>
-
+  <panel 
+  :active="showStartPanel"
+  classes="panel-full" 
+  overlay="true"
+  transition="zoomin">
+    <div class="panel--start-content">
+      <div class="panel--start-griditem">
+      <button class="app-button" 
+      :disabled="controlButton.disabled"
+      @click.prevent="run()">{{ controlButton.activeMsg }}
+      </button>
       </div>
     </div>
-
-    <footer class="site-footer">
-  <div class="wrapper">
-    <p><a href="#top">Top</a></p>
-  </div>
-</footer>
-
+  </panel>
   
-  <script src="https://cdn.jsdelivr.net/npm/vue@2.6.0/dist/vue.min.js"></script>
-  
-
-  
-  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-  
-
-  
-  <script src="/assets/src/core.js"></script>
-  
-
-  
-  <script src="/assets/src/KeyHandler.js"></script>
-  
-
-  
-  <script src="/assets/src/TileMapViewer.js"></script>
-  
-
-
-<script> const app = new Vue({
-  el: '#app',
-  data: function () {
-    let d = {
-      changed: false,
-      core: {},
-      controlButton: {
-        'disabled': true,
-        'activeMsg': '',
-        'msgLoading': 'Loading...',
-        'msgReady': 'Start'
-      },
-      kb: {},
-      tileMapViewer: {},
-      viewHeight: 240,
-      viewWidth: 320,
-      moveRate: 8,
-      mousepresses: {
-        up: false,
-        down: false,
-        left: false,
-        right: false
-      },
-      tileMapURL: '/assets/canvasimages/tilemap.json',
-      tileMap: {},
-      touches: {
-        up: false,
-        down: false,
-        left: false,
-        right: false
-      }
-    };
-    return d;
-  },
-  mounted: function() {
-    let myself = this;
-    this.core = new Core();
-    this.kb = new KeyHandler(window, {
-      'up': 'w',
-      'down': 's',
-      'left': 'a',
-      'right': 'd'
-    });
-    this.controlButton.activeMsg = this.controlButton.msgLoading;
-    axios.get(this.tileMapURL).then(function (res) {
-      myself.$set(myself, 'tileMap', res.data);
-      myself.controlButton.activeMsg = myself.controlButton.msgReady;
-      myself.controlButton.disabled = false;
-    });
-  },
-  methods: {
-    onEruda: function () {
-      this.core.eruda();
-    },
-    onFullScreen: function () {
-      this.core.toggleFullScreen(this.$el);
-    },
-    onMouseDown: function(buttonId) {
-      if(this.mousepresses[buttonId] === false) {
-        this.mousepresses[buttonId] = true;
-      }
-    },
-    onMouseUp: function(buttonId) {
-      if(this.mousepresses[buttonId] === true) {
-        this.mousepresses[buttonId] = false;
-      }
-    },
-    onTouchStart: function(buttonId) {
-      if(this.touches[buttonId] === false) {
-        this.touches[buttonId] = true;
-      }
-    },
-    onTouchEnd: function(buttonId) {
-      if(this.touches[buttonId] === true) {
-        this.touches[buttonId] = false;
-      }
-    },
-    onTouchCancel: function(buttonId) {
-      if(this.touches[buttonId] === true) {
-        this.touches[buttonId] = false;
-      }
-    },
-    run: function () {
-      this.tileMapViewer = new TileMapViewer(
-        {
-          map: this.tileMap,
-          spriteSheet: this.$refs.tiles,
-          tilesize: 32,
-          outputEl: this.$refs.layer1
-        }
-      );
-      this.kb.start();
-      this.changed = true;
-      this.boundUpdate = this.update.bind(this);
-      this.boundUpdate(0);
-    },
-    update: function (timestamp) {
-      if (this.touches.left) { this.move(-1,0); }
-      if (this.touches.right) { this.move(1,0); }
-      if (this.touches.up) { this.move(0,-1); }
-      if (this.touches.down) { this.move(0,1); }
-      if (!this.changed) {
-        if (this.mousepresses.left) { this.move(-1,0); }
-        if (this.mousepresses.right) { this.move(1,0); }
-        if (this.mousepresses.up) { this.move(0,-1); }
-        if (this.mousepresses.down) { this.move(0,1); }
-      }
-      if (!this.changed) {
-        if (this.kb.key.left) { this.move(-1,0); }
-        if (this.kb.key.right) { this.move(1,0); }
-        if (this.kb.key.up) { this.move(0,-1); }
-        if (this.kb.key.down) { this.move(0,1); }
-      }
-      if (this.changed === true) { 
-        this.changed = false;
-        this.tileMapViewer.update();
-      }
-      window.requestAnimationFrame(this.boundUpdate);
-    },
-    move: function (moveX,moveY) {
-      this.tileMapViewer.changeXY(moveX * this.moveRate, moveY * this.moveRate);
-      this.changed = true;
-    }
-  }
-});   </script>
-
-
-
+</div>
+    
+    
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.0/dist/vue.min.js"></script>
+    
+    
+    
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    
+    
+    
+    <script src="/assets/src/core.js"></script>
+    
+    
+    
+    <script src="/assets/src/KeyHandler.js"></script>
+    
+    
+    
+    <script src="/assets/src/TileMapViewer.js"></script>
+    
+    
+    
+    <script src="/assets/src/panel.js"></script>
+    
+    
+    
+    <script src="/assets/canvasimages/app.js"></script>
+    
+    
+    
   </body>
-
 </html>

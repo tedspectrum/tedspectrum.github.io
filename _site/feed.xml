@@ -6,21 +6,18 @@
 </description>
     <link>http://localhost:4000/</link>
     <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Mon, 30 Dec 2019 20:02:16 +0000</pubDate>
-    <lastBuildDate>Mon, 30 Dec 2019 20:02:16 +0000</lastBuildDate>
+    <pubDate>Mon, 30 Dec 2019 23:30:16 +0000</pubDate>
+    <lastBuildDate>Mon, 30 Dec 2019 23:30:16 +0000</lastBuildDate>
     <generator>Jekyll v4.0.0</generator>
     
       <item>
-        <title>Canvas Images</title>
+        <title>Tilemap View</title>
         <description>&lt;div id=&quot;app&quot; class=&quot;app&quot;&gt;
   
   &lt;div class=&quot;hidden&quot;&gt;
     &lt;image ref=&quot;tiles&quot; width=&quot;640&quot; height=&quot;640&quot; src=&quot;/assets/canvasimages/tiles.png&quot;&gt;&lt;/image&gt;
   &lt;/div&gt;
   &lt;div&gt;
-    &lt;button class=&quot;app-button&quot; 
-    :disabled=&quot;controlButton.disabled&quot;
-    @click.prevent=&quot;run()&quot;&gt;{{ controlButton.activeMsg }}&lt;/button&gt;
     &lt;button @click=&quot;onFullScreen&quot;&gt;Full Screen&lt;/button&gt;
     &lt;button @click=&quot;onEruda&quot;&gt;Dev Console&lt;/button&gt;
   &lt;/div&gt;
@@ -58,6 +55,20 @@
       @touchcancel.prevent=&quot;onTouchCancel('down')&quot;
     &gt;Down (s)&lt;/div&gt;
   &lt;/div&gt;
+  &lt;panel 
+  :active=&quot;showStartPanel&quot;
+  classes=&quot;panel-full&quot; 
+  overlay=&quot;true&quot;
+  transition=&quot;zoomin&quot;&gt;
+    &lt;div class=&quot;panel--start-content&quot;&gt;
+      &lt;div class=&quot;panel--start-griditem&quot;&gt;
+      &lt;button class=&quot;app-button&quot; 
+      :disabled=&quot;controlButton.disabled&quot;
+      @click.prevent=&quot;run()&quot;&gt;{{ controlButton.activeMsg }}
+      &lt;/button&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/panel&gt;
   
 &lt;/div&gt;</description>
         <pubDate>Fri, 27 Dec 2019 00:00:00 +0000</pubDate>
