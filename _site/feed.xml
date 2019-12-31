@@ -6,13 +6,13 @@
 </description>
     <link>http://localhost:4000/</link>
     <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Mon, 30 Dec 2019 23:30:16 +0000</pubDate>
-    <lastBuildDate>Mon, 30 Dec 2019 23:30:16 +0000</lastBuildDate>
+    <pubDate>Tue, 31 Dec 2019 08:34:40 +0000</pubDate>
+    <lastBuildDate>Tue, 31 Dec 2019 08:34:40 +0000</lastBuildDate>
     <generator>Jekyll v4.0.0</generator>
     
       <item>
         <title>Tilemap View</title>
-        <description>&lt;div id=&quot;app&quot; class=&quot;app&quot;&gt;
+        <description>&lt;div id=&quot;app&quot; class=&quot;app&quot; v-cloak&gt;
   
   &lt;div class=&quot;hidden&quot;&gt;
     &lt;image ref=&quot;tiles&quot; width=&quot;640&quot; height=&quot;640&quot; src=&quot;/assets/canvasimages/tiles.png&quot;&gt;&lt;/image&gt;
@@ -21,39 +21,42 @@
     &lt;button @click=&quot;onFullScreen&quot;&gt;Full Screen&lt;/button&gt;
     &lt;button @click=&quot;onEruda&quot;&gt;Dev Console&lt;/button&gt;
   &lt;/div&gt;
-  &lt;canvas ref=&quot;layer1&quot;
-    :width=&quot;viewWidth&quot; :height=&quot;viewHeight&quot;
-  &gt;
-  &lt;/canvas&gt;
-  &lt;div class=&quot;grid--div-controller&quot;&gt;
-    &lt;div class=&quot;grid--button-top grid--button-controller&quot; 
-      @mousedown=&quot;onMouseDown('up')&quot;
-      @mouseup=&quot;onMouseUp('up')&quot;
-      @touchstart.prevent=&quot;onTouchStart('up')&quot;
-      @touchend.prevent=&quot;onTouchEnd('up')&quot;
-      @touchcancel.prevent=&quot;onTouchCancel('up')&quot;
-    &gt;Up (w)&lt;/div&gt;
-    &lt;div class=&quot;grid--button-left grid--button-controller&quot; 
-      @mousedown=&quot;onMouseDown('left')&quot;
-      @mouseup=&quot;onMouseUp('left')&quot;
-      @touchstart.prevent=&quot;onTouchStart('left')&quot;
-      @touchend.prevent=&quot;onTouchEnd('left')&quot;
-      @touchcancel.prevent=&quot;onTouchCancel('left')&quot;
-    &gt;Left (a)&lt;/div&gt;
-    &lt;div class=&quot;grid--button-right grid--button-controller&quot; 
-      @mousedown=&quot;onMouseDown('right')&quot;
-      @mouseup=&quot;onMouseUp('right')&quot;
-      @touchstart.prevent=&quot;onTouchStart('right')&quot;
-      @touchend.prevent=&quot;onTouchEnd('right')&quot;
-      @touchcancel.prevent=&quot;onTouchCancel(right)&quot;
-    &gt;Right (d)&lt;/div&gt;
-    &lt;div class=&quot;grid--button-bottom grid--button-controller&quot; 
-      @mousedown=&quot;onMouseDown('down')&quot;
-      @mouseup=&quot;onMouseUp('down')&quot;
-      @touchstart.prevent=&quot;onTouchStart('down')&quot;
-      @touchend.prevent=&quot;onTouchEnd('down')&quot;
-      @touchcancel.prevent=&quot;onTouchCancel('down')&quot;
-    &gt;Down (s)&lt;/div&gt;
+  &lt;div class=&quot;app--grid&quot;&gt;
+    &lt;div class=&quot;app--grid-main&quot;&gt;
+    &lt;canvas ref=&quot;layer1&quot; :width=&quot;viewWidth&quot; :height=&quot;viewHeight&quot;&gt;&lt;/canvas&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;app--grid--controller&quot;&gt;
+      &lt;div class=&quot;grid--div-controller&quot;&gt;
+        &lt;div class=&quot;grid--button-top grid--button-controller&quot; 
+          @mousedown=&quot;onMouseDown('up')&quot;
+          @mouseup=&quot;onMouseUp('up')&quot;
+          @touchstart.prevent=&quot;onTouchStart('up')&quot;
+          @touchend.prevent=&quot;onTouchEnd('up')&quot;
+          @touchcancel.prevent=&quot;onTouchCancel('up')&quot;
+        &gt;Up (w)&lt;/div&gt;
+        &lt;div class=&quot;grid--button-left grid--button-controller&quot; 
+          @mousedown=&quot;onMouseDown('left')&quot;
+          @mouseup=&quot;onMouseUp('left')&quot;
+          @touchstart.prevent=&quot;onTouchStart('left')&quot;
+          @touchend.prevent=&quot;onTouchEnd('left')&quot;
+          @touchcancel.prevent=&quot;onTouchCancel('left')&quot;
+        &gt;Left (a)&lt;/div&gt;
+        &lt;div class=&quot;grid--button-right grid--button-controller&quot; 
+          @mousedown=&quot;onMouseDown('right')&quot;
+          @mouseup=&quot;onMouseUp('right')&quot;
+          @touchstart.prevent=&quot;onTouchStart('right')&quot;
+          @touchend.prevent=&quot;onTouchEnd('right')&quot;
+          @touchcancel.prevent=&quot;onTouchCancel(right)&quot;
+        &gt;Right (d)&lt;/div&gt;
+        &lt;div class=&quot;grid--button-bottom grid--button-controller&quot; 
+          @mousedown=&quot;onMouseDown('down')&quot;
+          @mouseup=&quot;onMouseUp('down')&quot;
+          @touchstart.prevent=&quot;onTouchStart('down')&quot;
+          @touchend.prevent=&quot;onTouchEnd('down')&quot;
+          @touchcancel.prevent=&quot;onTouchCancel('down')&quot;
+        &gt;Down (s)&lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
   &lt;/div&gt;
   &lt;panel 
   :active=&quot;showStartPanel&quot;

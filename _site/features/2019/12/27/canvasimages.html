@@ -24,7 +24,7 @@
     <noscript>
       <strong>We're sorry but this doesn't work properly without JavaScript enabled. Please enable it to continue.</strong>
     </noscript>
-    <div id="app" class="app">
+    <div id="app" class="app" v-cloak>
   
   <div class="hidden">
     <image ref="tiles" width="640" height="640" src="/assets/canvasimages/tiles.png"></image>
@@ -33,39 +33,42 @@
     <button @click="onFullScreen">Full Screen</button>
     <button @click="onEruda">Dev Console</button>
   </div>
-  <canvas ref="layer1"
-    :width="viewWidth" :height="viewHeight"
-  >
-  </canvas>
-  <div class="grid--div-controller">
-    <div class="grid--button-top grid--button-controller" 
-      @mousedown="onMouseDown('up')"
-      @mouseup="onMouseUp('up')"
-      @touchstart.prevent="onTouchStart('up')"
-      @touchend.prevent="onTouchEnd('up')"
-      @touchcancel.prevent="onTouchCancel('up')"
-    >Up (w)</div>
-    <div class="grid--button-left grid--button-controller" 
-      @mousedown="onMouseDown('left')"
-      @mouseup="onMouseUp('left')"
-      @touchstart.prevent="onTouchStart('left')"
-      @touchend.prevent="onTouchEnd('left')"
-      @touchcancel.prevent="onTouchCancel('left')"
-    >Left (a)</div>
-    <div class="grid--button-right grid--button-controller" 
-      @mousedown="onMouseDown('right')"
-      @mouseup="onMouseUp('right')"
-      @touchstart.prevent="onTouchStart('right')"
-      @touchend.prevent="onTouchEnd('right')"
-      @touchcancel.prevent="onTouchCancel(right)"
-    >Right (d)</div>
-    <div class="grid--button-bottom grid--button-controller" 
-      @mousedown="onMouseDown('down')"
-      @mouseup="onMouseUp('down')"
-      @touchstart.prevent="onTouchStart('down')"
-      @touchend.prevent="onTouchEnd('down')"
-      @touchcancel.prevent="onTouchCancel('down')"
-    >Down (s)</div>
+  <div class="app--grid">
+    <div class="app--grid-main">
+    <canvas ref="layer1" :width="viewWidth" :height="viewHeight"></canvas>
+    </div>
+    <div class="app--grid--controller">
+      <div class="grid--div-controller">
+        <div class="grid--button-top grid--button-controller" 
+          @mousedown="onMouseDown('up')"
+          @mouseup="onMouseUp('up')"
+          @touchstart.prevent="onTouchStart('up')"
+          @touchend.prevent="onTouchEnd('up')"
+          @touchcancel.prevent="onTouchCancel('up')"
+        >Up (w)</div>
+        <div class="grid--button-left grid--button-controller" 
+          @mousedown="onMouseDown('left')"
+          @mouseup="onMouseUp('left')"
+          @touchstart.prevent="onTouchStart('left')"
+          @touchend.prevent="onTouchEnd('left')"
+          @touchcancel.prevent="onTouchCancel('left')"
+        >Left (a)</div>
+        <div class="grid--button-right grid--button-controller" 
+          @mousedown="onMouseDown('right')"
+          @mouseup="onMouseUp('right')"
+          @touchstart.prevent="onTouchStart('right')"
+          @touchend.prevent="onTouchEnd('right')"
+          @touchcancel.prevent="onTouchCancel(right)"
+        >Right (d)</div>
+        <div class="grid--button-bottom grid--button-controller" 
+          @mousedown="onMouseDown('down')"
+          @mouseup="onMouseUp('down')"
+          @touchstart.prevent="onTouchStart('down')"
+          @touchend.prevent="onTouchEnd('down')"
+          @touchcancel.prevent="onTouchCancel('down')"
+        >Down (s)</div>
+      </div>
+    </div>
   </div>
   <panel 
   :active="showStartPanel"
