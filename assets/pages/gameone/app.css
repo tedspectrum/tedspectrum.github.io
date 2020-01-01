@@ -5,6 +5,12 @@ body {
 .app {
   border: 1px solid darkgray;
 }
+.unselectable {
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
 .app--grid {
   display: grid;
   grid-template-columns: auto;
