@@ -1,0 +1,28 @@
+---
+layout: page
+title: Game One
+page_type: project
+styles:
+  - url: "/assets/pages/gameone/app.css"
+    type: "relative"
+  - url: "/assets/styles/panel.css"
+    type: "relative"
+  - url: "/assets/styles/transitions.css"
+    type: "relative"
+scripts:
+  - url: "https://cdn.jsdelivr.net/npm/vue@2.6.0/dist/vue.min.js"
+    type: "absolute"
+  - url: "https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"
+    type: "absolute"
+  - url: "/assets/src/core.js"
+    type: "relative"
+  - url: "/assets/src/KeyHandler.js"
+    type: "relative"
+  - url: "/assets/src/TileMapViewer.js"
+    type: "relative"
+  - url: "/assets/src/Panel.js"
+    type: "relative"
+  - url: "/assets/pages/gameone/app.js"
+    type: "relative"
+---
+{% include_relative gameone/apptemplate.html %}

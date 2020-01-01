@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Game One</title>
+  <meta name="description" content="My awesome website
+">
+
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="canonical" href="http://localhost:4000/assets/pages/gameone.html">
+  <link rel="alternate" type="application/rss+xml" title="Ted Spectrum" href="http://localhost:4000/feed.xml">
+  
+  
+  <link rel="stylesheet" href="/assets/pages/gameone/app.css">
+  
+  
+  
+  <link rel="stylesheet" href="/assets/styles/panel.css">
+  
+  
+  
+  <link rel="stylesheet" href="/assets/styles/transitions.css">
+  
+  
+  
+</head>
+
+
+  <body>
+    <header class="site-header">
+    <div class="wrapper">
+      <h1><a href="/" id="top">Ted Spectrum</a></h1>
+    </div>
+    </header>
+    <div class="page-content">
+      <div class="wrapper">
+        <article class="post">
+
+  <header class="post-header">
+    <h1 class="post-title">Game One</h1>
+  </header>
+
+  <div class="post-content">
+    
+<div id="app" class="app" v-cloak>
+  <div class="hidden">
+    <image ref="tiles" width="640" height="640" src="/assets/pages/gameone/tiles.png"></image>
+  </div>
+  <panel 
+  :active="showMenuPanel"
+  classes="panel-fulllengthleft" 
+  overlay="true"
+  transition="slideright"
+  @close="showMenuPanel = false">
+  <div class="panel--menu">
+    <h2>Menu</h2>
+    <button @click="onFullScreen">Full Screen</button>
+    <button @click="onEruda">Dev Console</button>
+    <div>w: {{ appwidth }}</div>
+    <div>h: {{ appheight }}</div>
+  </div>
+  </panel>
+  <button @click="showMenuPanel = true">Menu</button>
+  <div class="app--grid">
+    <div class="app--grid-main">
+    <canvas ref="layer1" :width="viewWidth" :height="viewHeight"></canvas>
+    </div>
+    <div class="app--grid-controller">
+      <div class="grid--div-controller">
+        <div class="grid--button-top grid--button-controller" 
+          @mousedown="onMouseDown('up')"
+          @mouseup="onMouseUp('up')"
+          @touchstart.prevent="onTouchStart('up')"
+          @touchend.prevent="onTouchEnd('up')"
+          @touchcancel.prevent="onTouchCancel('up')"
+        >
+        <svg width="50px" height="50px" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+          <image href="/assets/pages/gameone/controller-button.png" x="0" y="0" height="50px" width="50px"/>
+        </svg>
+        </div>
+        <div class="grid--button-left grid--button-controller" 
+          @mousedown="onMouseDown('left')"
+          @mouseup="onMouseUp('left')"
+          @touchstart.prevent="onTouchStart('left')"
+          @touchend.prevent="onTouchEnd('left')"
+          @touchcancel.prevent="onTouchCancel('left')"
+        >
+        <svg width="50px" height="50px" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+          <image href="/assets/pages/gameone/controller-button.png" x="0" y="0" height="50px" width="50px" transform="rotate(-90, 25, 25)"/>
+        </svg>
+        </div>
+        <div class="grid--button-right grid--button-controller" 
+          @mousedown="onMouseDown('right')"
+          @mouseup="onMouseUp('right')"
+          @touchstart.prevent="onTouchStart('right')"
+          @touchend.prevent="onTouchEnd('right')"
+          @touchcancel.prevent="onTouchCancel(right)"
+        >
+        <svg width="50px" height="50px" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+          <image href="/assets/pages/gameone/controller-button.png" x="0" y="0" height="50px" width="50px" transform="rotate(90, 25, 25)"/>
+        </svg>
+        </div>
+        <div class="grid--button-bottom grid--button-controller" 
+          @mousedown="onMouseDown('down')"
+          @mouseup="onMouseUp('down')"
+          @touchstart.prevent="onTouchStart('down')"
+          @touchend.prevent="onTouchEnd('down')"
+          @touchcancel.prevent="onTouchCancel('down')"
+        ><svg width="50px" height="50px" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+          <image href="/assets/pages/gameone/controller-button.png" x="0" y="0" height="50px" width="50px" transform="rotate(180, 25, 25)"/>
+        </svg>
+        </div>
+      </div>
+    </div>
+  </div>
+  <panel 
+  :active="showStartPanel"
+  classes="panel-full" 
+  overlay="true"
+  transition="zoomin">
+    <div class="panel--start-content">
+      <div class="panel--start-griditem">
+      <button class="app-button" 
+      :disabled="controlButton.disabled"
+      @click.prevent="run()">{{ controlButton.activeMsg }}
+      </button>
+      </div>
+    </div>
+  </panel>
+</div>
+
+  </div>
+
+</article>
+
+      </div>
+    </div>
+
+    <footer class="site-footer">
+  <div class="wrapper">
+    <p><a href="#top">Top</a></p>
+  </div>
+</footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.6.0/dist/vue.min.js"></script>
+  
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  
+
+  
+  <script src="/assets/src/core.js"></script>
+  
+
+  
+  <script src="/assets/src/KeyHandler.js"></script>
+  
+
+  
+  <script src="/assets/src/TileMapViewer.js"></script>
+  
+
+  
+  <script src="/assets/src/Panel.js"></script>
+  
+
+  
+  <script src="/assets/pages/gameone/app.js"></script>
+  
+
+
+
+  </body>
+
+</html>

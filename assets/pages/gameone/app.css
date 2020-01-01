@@ -1,18 +1,19 @@
 body {
   margin: 0px;
 }
+/*
 .app {
   width: 100vw;
   height: 100vh;
-  text-align: center;
 }
+*/
 .app--grid {
   display: grid;
-  grid-template-columns: 25% 50% 25%;
+  grid-template-columns: auto;
   grid-template-rows: auto;
   grid-template-areas: "left main right";
 }
-@media all and (max-width: 900px) {
+@media all and (max-width: 660px) {
   .app--grid {
     grid-template-columns: 50% 50%;
     grid-template-rows: auto;
@@ -26,6 +27,7 @@ body {
 .app--grid-controller {
   grid-area: left;
   justify-self: right;
+  align-self: end;
 }
 .hidden, [v-cloak] {
   display: none;
@@ -36,6 +38,7 @@ canvas {
 }
 .grid--div-controller {
   display: grid;
+  width: 160px;
   grid-template-columns: 50% 50%;
   grid-template-rows: auto;
   grid-template-areas: "top top" "left right" "bottom bottom";
@@ -46,21 +49,19 @@ canvas {
 }
 .grid--button-left {
   grid-area: left;
-  justify-self: center;
+  justify-self: left;
 }
 .grid--button-right {
   grid-area: right;
-  justify-self: center;
+  justify-self: right;
 }
 .grid--button-bottom {
   grid-area: bottom;
   justify-self: center;
 }
 .grid--button-controller {
-  padding: 1.5em;
-  margin: 0.5em;
-  width: 4em;
-  border-radius: 4em;
+  padding: 0.25em;
+  border-radius: 25px;
   background: gray;
   border:black 1px solid;
 }
@@ -73,4 +74,8 @@ canvas {
 .panel--start-griditem {
   justify-self: center;
   align-self: center;
+}
+.panel--menu button {
+  width: 100%;
+  padding: 1em 0 1em 0;
 }

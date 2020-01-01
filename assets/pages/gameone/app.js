@@ -2,6 +2,8 @@ const app = new Vue({
   el: '#app',
   data: function () {
     let d = {
+      appheight: 0,
+      appwidth: 0,
       changed: false,
       core: {},
       controlButton: {
@@ -12,6 +14,7 @@ const app = new Vue({
       },
       kb: {},
       showMain: false,
+      showMenuPanel: false,
       showStartPanel: true,
       tileMapViewer: {},
       viewHeight: 240,
@@ -23,7 +26,7 @@ const app = new Vue({
         left: false,
         right: false
       },
-      tileMapURL: '/assets/canvasimages/tilemap.json',
+      tileMapURL: '/assets/pages/gameone/tilemap.json',
       tileMap: {},
       touches: {
         up: false,
@@ -44,6 +47,8 @@ const app = new Vue({
       'right': 'd'
     });
     this.controlButton.activeMsg = this.controlButton.msgLoading;
+    this.onResize();
+    window.addEventListener('resize', this.onResize.bind(this));
     axios.get(this.tileMapURL).then(function (res) {
       myself.$set(myself, 'tileMap', res.data);
       myself.controlButton.activeMsg = myself.controlButton.msgReady;
@@ -66,6 +71,10 @@ const app = new Vue({
       if (this.mousepresses[buttonId] === true) {
         this.mousepresses[buttonId] = false;
       }
+    },
+    onResize: function () {
+      this.appwidth = this.$el.offsetWidth;
+      this.appheight = this.$el.offsetHeight;
     },
     onTouchStart: function (buttonId) {
       if (this.touches[buttonId] === false) {

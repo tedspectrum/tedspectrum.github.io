@@ -3,15 +3,36 @@ layout: post
 title: "UI Elements"
 categories: [features]
 styles:
-  - url: "/assets/styles/uimain.css"
+  - url: "/assets/styles/panel.css"
+    type: "relative"
+  - url: "/assets/styles/transitions.css"
     type: "relative"
 scripts: 
   - url: "https://cdn.jsdelivr.net/npm/vue@2.6.0/dist/vue.js"
     type: "absolute"
   - url: "/assets/src/core.js"
     type: "relative"
-  - url: "/assets/src/panel.js"
+  - url: "/assets/src/Panel.js"
     type: "relative"
+inlinestyle: >
+  <style>
+  .app {
+    position: relative;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    margin: 0 auto 0 auto;
+    border: 1px solid lightgray;
+    overflow: hidden;
+  }
+  .hidden {
+    visibility: hidden;
+  }
+  .padded {
+    padding: 1em;
+  }
+  </style>
 inlinescript: >
   <script>
   const app = new Vue({
