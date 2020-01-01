@@ -19,6 +19,7 @@ function TileMapViewer(config) {
     tileMap,
     tileMapCols,
     tileMapRows,
+    tileMapTiles,
     tilesize,
     tileSpriteSheet,
     spriteSheetCols;
@@ -29,9 +30,10 @@ function TileMapViewer(config) {
   height = config.outputEl.height;
   tilesize = config.tilesize;
   tileMap = config.map;
-  tileMapCols = config.map[0].length;
-  tileMapRows = config.map.length;
+  tileMapCols = config.map.width;
+  tileMapRows = config.map.height;
   tileSpriteSheet = config.spriteSheet;
+  tileMapTiles = tileMapCols * tileMapRows;
   spriteSheetCols = Math.round(config.spriteSheet.width / tilesize);
   maxCols = Math.ceil(width / tilesize);
   maxRows = Math.ceil(height / tilesize);
@@ -50,7 +52,7 @@ function TileMapViewer(config) {
       startCol, endCol,
       startRow, endRow,
       offsetX, offsetY,
-      tileId;
+      tileId, tilePos;
     startCol = Math.floor(x / tilesize);
     endCol = startCol + maxCols;
     startRow = Math.floor(y / tilesize);
@@ -63,11 +65,12 @@ function TileMapViewer(config) {
     while (row <= endRow) {
       col = startCol;
       while (col <= endCol) {
-        tileId = (tileMap[row] && tileMap[row][col]) ? tileMap[row][col] : 0;
+        tilePos = row * tileMapCols + col;
+        tileId = (tilePos >= 0 && tilePos < tileMapTiles) ? tileMap.data[tilePos] : 0;
         if (tileId !== 0) {
           ctx.drawImage(tileSpriteSheet,
-            Math.round(tileId % spriteSheetCols) * tilesize,
-            Math.round(tileId / spriteSheetCols) * tilesize,
+            Math.round((tileId - 1) % spriteSheetCols) * tilesize,
+            Math.round((tileId - 1) / spriteSheetCols) * tilesize,
             tilesize,
             tilesize,
             Math.round((col - startCol) * tilesize + offsetX),

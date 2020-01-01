@@ -26,7 +26,7 @@ const app = new Vue({
         left: false,
         right: false
       },
-      tileMapURL: '/assets/pages/gameone/tilemap.json',
+      tileMapURL: '/assets/pages/gameone/gamemap0.json',
       tileMap: {},
       touches: {
         up: false,
@@ -94,7 +94,7 @@ const app = new Vue({
     run: function () {
       this.tileMapViewer = new TileMapViewer(
         {
-          map: this.tileMap,
+          map: this.tileMap.layers[0],
           spriteSheet: this.$refs.tiles,
           tilesize: 32,
           outputEl: this.$refs.layer1
