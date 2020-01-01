@@ -1,12 +1,10 @@
 body {
   margin: 0px;
 }
-/*
+
 .app {
-  width: 100vw;
-  height: 100vh;
+  border: 1px solid darkgray;
 }
-*/
 .app--grid {
   display: grid;
   grid-template-columns: auto;
@@ -59,15 +57,19 @@ canvas {
   grid-area: bottom;
   justify-self: center;
 }
+svg, image {
+  vertical-align: bottom;
+}
 .grid--button-controller {
-  padding: 0.25em;
+  padding: 0px;
+  margin: 0px;
   border-radius: 25px;
   background: gray;
   border:black 1px solid;
 }
 .panel--start-content {
   display: grid;
-  height: 100vh;
+  height: 100%;
   grid-template-columns: 100%;
   grid-template-rows: 100%;
 }

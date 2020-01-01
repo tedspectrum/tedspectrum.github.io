@@ -17,7 +17,9 @@
 .overlay-leave-active {
   transition: opacity 0.2s ease-out;
 }
-
+.panel-container {
+  position: relative;
+}
 .panel {
   position: absolute;
   z-index: 1000;
