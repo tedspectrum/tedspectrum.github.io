@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "2020 New Year site tidy up"
-categories: [site]
+categories: [news]
 ---
 The site structure has been updated.
 
