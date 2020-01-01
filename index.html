@@ -5,7 +5,7 @@ layout: default
 <div class="home">
   <h1 class="page-heading">Site Pages</h1>
   <p>
-    {% assign titledpages = site.pages | where_exp: "pg", "pg.title and pg.page_type == 'site'" %}
+    {% assign titledpages = site.pages | where_exp: "pg", "pg.title" %}
     {% for my_page in titledpages %}
       {% if my_page.title %}
         <a class="page-link" href="{{ my_page.url | prepend: site.baseurl }}">{{ my_page.title }}</a>
@@ -16,7 +16,7 @@ layout: default
 
   <h1 class="page-heading">Project Pages</h1>
   <p>
-    {% assign titledpages = site.pages | where_exp: "pg", "pg.title and pg.page_type == 'project'" %}
+    {% assign titledpages = site.pages | where_exp: "pg", "pg.title" %}
     {% for my_page in titledpages %}
       {% if my_page.title %}
         <a class="page-link" href="{{ my_page.url | prepend: site.baseurl }}">{{ my_page.title }}</a>
