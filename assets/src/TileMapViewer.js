@@ -1,86 +1,82 @@
 function TileMapViewer(config) {
   /* 
     config {
-      map: the map data
-      spriteSheet: an Image of tiles,
+      map: the map data { data: [], width: n, height: n }
+      spriteSheet: an Image of tiles (with width property)
       tilesize: 32,
-      outputEl: the output element form which a 2d context is used
+      outputEl: the output element from which a 2d context is used
     }
   */
-  var ctx,
-    x,
-    y,
-    width,
-    height,
-    maxX,
-    maxY,
-    maxCols,
-    maxRows,
-    tileMap,
-    tileMapCols,
-    tileMapRows,
-    tileMapTiles,
-    tilesize,
-    tileSpriteSheet,
-    spriteSheetCols;
-  ctx = config.outputEl.getContext('2d', { alpha: false });
-  x = 0;
-  y = 0;
-  width = config.outputEl.width;
-  height = config.outputEl.height;
-  tilesize = config.tilesize;
-  tileMap = config.map;
-  tileMapCols = config.map.width;
-  tileMapRows = config.map.height;
-  tileSpriteSheet = config.spriteSheet;
-  tileMapTiles = tileMapCols * tileMapRows;
-  spriteSheetCols = Math.round(config.spriteSheet.width / tilesize);
-  maxCols = Math.ceil(width / tilesize);
-  maxRows = Math.ceil(height / tilesize);
-  maxX = tileMapCols * tilesize - width;
-  maxY = tileMapRows * tilesize - height;
+  var displayContext,
+    map,
+    mapCols,
+    mapRows,
+    mapTileSize,
+    spriteSheet,
+    spriteSheetWidth,
+    viewX,
+    viewY,
+    viewWidth,
+    viewHeight;
+  displayContext = config.outputEl.getContext('2d', { alpha: false });
+  map = config.map;
+  mapCols = config.map.width;
+  mapRows = config.map.height;
+  mapTileSize = config.tilesize;
+  spriteSheet = config.spriteSheet;
+  spriteSheetWidth = config.spriteSheet.width;
+  viewX = 0;
+  viewY = 0;
+  viewWidth = config.outputEl.width;
+  viewHeight = config.outputEl.height;
   this.setXY = function (newX, newY) {
-    // top left of view in map coordinates
-    x = Math.max(0, Math.min(newX, maxX));
-    y = Math.max(0, Math.min(newY, maxY));
+    // top left of view
+    viewX = Math.max(0, Math.min(newX, mapCols * mapTileSize - viewWidth));
+    viewY = Math.max(0, Math.min(newY, mapRows * mapTileSize - viewHeight));
   };
   this.changeXY = function (xChange, yChange) {
-    this.setXY(x + xChange, y + yChange);
+    this.setXY(viewX + xChange, viewY + yChange);
   }
   this.update = function () {
     let col, row,
-      startCol, endCol,
-      startRow, endRow,
-      offsetX, offsetY,
-      tileId, tilePos;
-    startCol = Math.floor(x / tilesize);
-    endCol = startCol + maxCols;
-    startRow = Math.floor(y / tilesize);
-    endRow = startRow + maxRows;
-    offsetX = -x + startCol * tilesize;
-    offsetY = -y + startRow * tilesize;
+      drawX, drawY,
+      startCol,
+      startRow,
+      spriteSheetPos,
+      tileId;
+    startCol = Math.floor(viewX / mapTileSize);
+    startRow = Math.floor(viewY / mapTileSize);
     // display loop
     row = startRow;
-    ctx.clearRect(0, 0, width, height);
-    while (row <= endRow) {
+    drawY = 0;
+    displayContext.clearRect(0, 0, viewWidth, viewHeight);
+    // translate the context instead of offsetting drawing
+    //displayContext.translate(-viewX + startCol * mapTileSize, -viewY + startRow * mapTileSize);
+    displayContext.translate(-viewX % mapTileSize, -viewY % mapTileSize);
+    while (drawY <= viewHeight) {
       col = startCol;
-      while (col <= endCol) {
-        tilePos = row * tileMapCols + col;
-        tileId = (tilePos >= 0 && tilePos < tileMapTiles) ? tileMap.data[tilePos] : 0;
+      drawX = 0;
+      while (drawX <= viewWidth) {
+        tileId = map.data[row * mapCols + col];
+        // if tileId is undefined, tileId !== 0 returns true
         if (tileId !== 0) {
-          ctx.drawImage(tileSpriteSheet,
-            Math.round((tileId - 1) % spriteSheetCols) * tilesize,
-            Math.round((tileId - 1) / spriteSheetCols) * tilesize,
-            tilesize,
-            tilesize,
-            Math.round((col - startCol) * tilesize + offsetX),
-            Math.round((row - startRow) * tilesize + offsetY),
-            tilesize,
-            tilesize);
+          spriteSheetPos = tileId - 1;
+          displayContext.drawImage(spriteSheet,
+            (spriteSheetPos * mapTileSize) % spriteSheetWidth,
+            Math.floor(spriteSheetPos / spriteSheetWidth),
+            mapTileSize,
+            mapTileSize,
+            drawX,
+            drawY,
+            mapTileSize,
+            mapTileSize);
         }
         col++;
+        drawX = drawX + mapTileSize;
       }
       row++;
+      drawY = drawY + mapTileSize;
     }
+    displayContext.setTransform(1, 0, 0, 1, 0, 0);
   }
 } 
