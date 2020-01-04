@@ -94,10 +94,10 @@ const app = new Vue({
     run: function () {
       this.tileMapViewer = new TileMapViewer(
         {
-          map: this.tileMap.layers[0],
+          map: this.tileMap,
           spriteSheet: this.$refs.tiles,
-          tilesize: 32,
-          outputEl: this.$refs.layer1
+          outputEl: [this.$refs.layer1],
+          view: { width: 320, height: 240 }
         }
       );
       this.kb.start();
