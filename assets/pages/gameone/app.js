@@ -18,7 +18,7 @@ const app = new Vue({
       showStartPanel: true,
       tileMapViewer: {},
       viewHeight: 240,
-      viewWidth: 320,
+      viewWidth: 330,
       moveRate: 8,
       mousepresses: {
         up: false,
@@ -97,7 +97,7 @@ const app = new Vue({
           map: this.tileMap,
           spriteSheet: this.$refs.tiles,
           outputEl: [this.$refs.layer1],
-          view: { width: 320, height: 240 }
+          view: { width: this.viewWidth, height: this.viewHeight }
         }
       );
       this.kb.start();

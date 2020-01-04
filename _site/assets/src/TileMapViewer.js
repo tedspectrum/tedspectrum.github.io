@@ -2,7 +2,8 @@ function TileMapViewer(config) {
   /* 
     config {
       view: { width: n, height: n },
-      map: the map data { data: [], width: n, height: n, tilewidth: n, tileheight: n }
+      map: the map data { layers: [], width: n, height: n, tilewidth: n, tileheight: n }
+      each map layer { data: [], width: n, height: n, opacity: n, visible: boolean }
       spriteSheet: an Image of tiles (with width property)
       outputEl: the output elements [] from which 2d contexts are used
     }
@@ -14,7 +15,7 @@ function TileMapViewer(config) {
     mapTileWidth,
     mapTileHeight,
     spriteSheet,
-    spriteSheetWidth,
+    spriteSheetCols,
     viewX,
     viewY,
     viewWidth,
@@ -24,12 +25,14 @@ function TileMapViewer(config) {
   });
   //displayContext = config.outputEl.getContext('2d', { alpha: false });
   layers = config.map.layers;
+  // overall map dimensions used by viewer to set limits of display
   mapCols = config.map.width;
   mapRows = config.map.height;
+  // only one tile size and spritesheet per viewer.
   mapTileHeight = config.map.tileheight;
   mapTileWidth = config.map.tilewidth;
   spriteSheet = config.spriteSheet;
-  spriteSheetWidth = config.spriteSheet.width;
+  spriteSheetCols = Math.floor(config.spriteSheet.width / mapTileWidth);
   viewX = 0;
   viewY = 0;
   viewWidth = config.view.width;
@@ -37,26 +40,33 @@ function TileMapViewer(config) {
   function updateTileLayer(layer, ctx) {
     let col,
       drawX, drawY,
-      row,
+      drawMaxX, drawMaxY,
+      layerData, layerCols,
       startCol,
+      tileRowStart,
       tileId;
+    layerData = layer.data;
+    layerCols = layer.width;
     startCol = Math.floor(viewX / mapTileWidth);
+    drawMaxX = viewWidth + mapTileWidth;
+    drawMaxY = viewHeight + mapTileHeight;
     ctx.clearRect(0, 0, viewWidth, viewHeight);
+    ctx.globalAlpha = layer.opacity;
     ctx.translate(-viewX % mapTileWidth, -viewY % mapTileHeight);
     // display loop
-    row = Math.floor(viewY / mapTileHeight);  // startRow
+    tileRowStart = Math.floor(viewY / mapTileHeight) * layerCols;  // start of row
     drawY = 0;
-    while (drawY <= viewHeight) {
+    while (drawY <= drawMaxY) {
       col = startCol;
       drawX = 0;
-      while (drawX <= viewWidth) {
-        tileId = layer.data[row * mapCols + col];
+      while (drawX <= drawMaxX) {
+        tileId = layerData[tileRowStart + col];
         // if tileId is undefined, tileId !== 0 returns true
         if (tileId !== 0) {
           tileId = tileId - 1;
           ctx.drawImage(spriteSheet,
-            (tileId * mapTileWidth) % spriteSheetWidth,
-            Math.floor(tileId / spriteSheetWidth),
+            (tileId % spriteSheetCols) * mapTileWidth,
+            Math.floor(tileId / spriteSheetCols) * mapTileHeight,
             mapTileWidth,
             mapTileHeight,
             drawX,
@@ -67,7 +77,7 @@ function TileMapViewer(config) {
         col++;
         drawX = drawX + mapTileWidth;
       }
-      row++;  // because drawing each row that is mapCols wide
+      tileRowStart = tileRowStart + layerCols;  // because drawing each row that is mapCols wide
       drawY = drawY + mapTileHeight;
     }
     ctx.setTransform(1, 0, 0, 1, 0, 0);
@@ -82,7 +92,9 @@ function TileMapViewer(config) {
   };
   this.update = function () {
     for (let i = 0; i < layers.length; i++) {
-      updateTileLayer(layers[i], displayContexts[i]);
+      if(layers[i].visible && layers[i].type === 'tilelayer') {
+        updateTileLayer(layers[i], displayContexts[i]);
+      }
     }
   };
 } 
