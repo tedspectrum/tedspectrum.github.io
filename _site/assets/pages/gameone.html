@@ -67,7 +67,11 @@
   <button @click="showMenuPanel = true">Menu</button>
   <div class="app--grid">
     <div class="app--grid-main">
-    <canvas ref="layer1" :width="viewWidth" :height="viewHeight"></canvas>
+      <div class="canvas-container">
+    <canvas ref="background" :width="viewWidth" :height="viewHeight"></canvas>
+    <canvas ref="player" :width="viewWidth" :height="viewHeight"></canvas>
+    <canvas ref="foreground" :width="viewWidth" :height="viewHeight"></canvas>
+      </div>
     </div>
     <div class="app--grid-controller">
       <div class="grid--div-controller">

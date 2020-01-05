@@ -96,7 +96,7 @@ const app = new Vue({
         {
           map: this.tileMap,
           spriteSheet: this.$refs.tiles,
-          outputEl: [this.$refs.layer1],
+          outputEl: [this.$refs.background, this.$refs.foreground],
           view: { width: this.viewWidth, height: this.viewHeight }
         }
       );
@@ -130,8 +130,12 @@ const app = new Vue({
       window.requestAnimationFrame(this.boundUpdate);
     },
     move: function (moveX, moveY) {
+      let currentX = this.tileMapViewer.getX(),
+        currentY = this.tileMapViewer.getY();
       this.tileMapViewer.changeXY(moveX * this.moveRate, moveY * this.moveRate);
-      this.changed = true;
+      if (currentX !== this.tileMapViewer.getX() || currentY !== this.tileMapViewer.getY()) {
+        this.changed = true;
+      }
     }
   }
 });

@@ -13,7 +13,7 @@ body {
 }
 .app--grid {
   display: grid;
-  grid-template-columns: auto;
+  grid-template-columns: 25% 50% 25%;
   grid-template-rows: auto;
   grid-template-areas: "left main right";
 }
@@ -36,8 +36,13 @@ body {
 .hidden, [v-cloak] {
   display: none;
 }
-canvas {
-  background: lightblue;
+.canvas-container {
+  display: grid;
+  background: #3a8b18;
+}
+.canvas-container canvas {
+  grid-column: 1;
+  grid-row: 1;
   border: 1px solid black;
 }
 .grid--div-controller {

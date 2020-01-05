@@ -47,14 +47,17 @@ function TileMapViewer(config) {
       tileId;
     layerData = layer.data;
     layerCols = layer.width;
-    startCol = Math.floor(viewX / mapTileWidth);
-    drawMaxX = viewWidth + mapTileWidth;
-    drawMaxY = viewHeight + mapTileHeight;
+    startCol = Math.floor(layer.x / mapTileWidth);
+    //drawMaxX = viewWidth + mapTileWidth;
+    //drawMaxY = viewHeight + mapTileHeight;
+    drawMaxX = (layer.width + 1) * mapTileWidth;
+    drawMaxY = (layer.height + 1) * mapTileHeight;
     ctx.clearRect(0, 0, viewWidth, viewHeight);
     ctx.globalAlpha = layer.opacity;
-    ctx.translate(-viewX % mapTileWidth, -viewY % mapTileHeight);
+    ctx.translate(-layer.x % mapTileWidth, -layer.y % mapTileHeight);
     // display loop
-    tileRowStart = Math.floor(viewY / mapTileHeight) * layerCols;  // start of row
+    tileRowStart = layerCols * Math.floor(layer.y / mapTileHeight);  // start row
+    // console.log(layer.name, layer.x, layer.y, startCol, tileRowStart);
     drawY = 0;
     while (drawY <= drawMaxY) {
       col = startCol;
@@ -82,10 +85,22 @@ function TileMapViewer(config) {
     }
     ctx.setTransform(1, 0, 0, 1, 0, 0);
   }
+  this.getX = function () {
+    return viewX;
+  }
+  this.getY = function () {
+    return viewY;
+  }
   this.setXY = function (newX, newY) {
     // top left of view
-    viewX = Math.max(0, Math.min(newX, mapCols * mapTileWidth - viewWidth));
-    viewY = Math.max(0, Math.min(newY, mapRows * mapTileHeight - viewHeight));
+    let newLayerX = Math.max(0, Math.min(newX, mapCols * mapTileWidth - viewWidth));
+    let newLayerY = Math.max(0, Math.min(newY, mapRows * mapTileHeight - viewHeight));
+    viewX = newLayerX;
+    viewY = newLayerY;
+    layers[0].x = newLayerX;
+    layers[0].y = newLayerY;
+    layers[1].x = newLayerX;
+    layers[1].y = newLayerY;
   };
   this.changeXY = function (xChange, yChange) {
     this.setXY(viewX + xChange, viewY + yChange);
