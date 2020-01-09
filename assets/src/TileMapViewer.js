@@ -3,67 +3,70 @@ function TileMapViewer(config) {
     config {
       view: { width: n, height: n },
       map: the map data { layers: [], width: n, height: n, tilewidth: n, tileheight: n }
-      each map layer { data: [], width: n, height: n, opacity: n, visible: boolean }
+      each map layer { data: [], width: n, height: n, opacity: n, type: 'tilelayer', visible: boolean }
       spriteSheet: an Image of tiles (with width property)
       outputEl: the output elements [] from which 2d contexts are used
     }
   */
   var displayContexts = [],
     layers,
-    mapCols,
-    mapRows,
     mapTileWidth,
     mapTileHeight,
     spriteSheet,
     spriteSheetCols,
-    viewX,
-    viewY,
-    viewWidth,
-    viewHeight;
+    view;
   config.outputEl.forEach(function (v) {
     displayContexts.push(v.getContext('2d'));
   });
   //displayContext = config.outputEl.getContext('2d', { alpha: false });
   layers = config.map.layers;
-  // overall map dimensions used by viewer to set limits of display
-  mapCols = config.map.width;
-  mapRows = config.map.height;
   // only one tile size and spritesheet per viewer.
   mapTileHeight = config.map.tileheight;
   mapTileWidth = config.map.tilewidth;
   spriteSheet = config.spriteSheet;
   spriteSheetCols = Math.floor(config.spriteSheet.width / mapTileWidth);
-  viewX = 0;
-  viewY = 0;
-  viewWidth = config.view.width;
-  viewHeight = config.view.height;
+  view = config.view;
   function updateTileLayer(layer, ctx) {
-    let col,
+    let col, row,
       drawX, drawY,
-      drawMaxX, drawMaxY,
-      layerData, layerCols,
-      startCol,
+      drawStartX, drawStartY,
+      mapColStart, mapColMax,
+      mapRowStart, mapRowMax,
       tileRowStart,
       tileId;
-    layerData = layer.data;
-    layerCols = layer.width;
-    startCol = Math.floor(layer.x / mapTileWidth);
-    //drawMaxX = viewWidth + mapTileWidth;
-    //drawMaxY = viewHeight + mapTileHeight;
-    drawMaxX = (layer.width + 1) * mapTileWidth;
-    drawMaxY = (layer.height + 1) * mapTileHeight;
-    ctx.clearRect(0, 0, viewWidth, viewHeight);
+    // these convert camera dimensions to tilemap columns and rows,
+    // capped at layer dimensions
+    mapColMax = Math.min(layer.width, Math.ceil((view.x + view.width) / mapTileWidth));
+    mapColStart = Math.floor(view.x / mapTileWidth);
+    if (mapColMax - mapColStart <= 0) {
+      mapColStart = 0;
+    }
+    mapRowMax = Math.min(layer.height, Math.ceil((view.y + view.height) / mapTileHeight));
+    mapRowStart = Math.floor(view.y / mapTileHeight);
+    if (mapRowMax - mapRowStart <= 0) {
+      mapRowStart = 0;
+    }
+    // this is for finding tiles in the tilemap layer data
+    tileRowStart = layer.width * mapRowStart;
+    // these are the offset the start of drawing to line up tilemap with camera
+    if (layer.x !== 0 || layer.y !== 0) {
+      drawStartX = layer.x;
+      drawStartY = layer.y;
+    } else {
+      drawStartX = -view.x % mapTileWidth;
+      drawStartY = -view.y % mapTileHeight;
+    }
+    // clear the drawing
+    ctx.clearRect(0, 0, view.width, view.height);
     ctx.globalAlpha = layer.opacity;
-    ctx.translate(-layer.x % mapTileWidth, -layer.y % mapTileHeight);
-    // display loop
-    tileRowStart = layerCols * Math.floor(layer.y / mapTileHeight);  // start row
-    // console.log(layer.name, layer.x, layer.y, startCol, tileRowStart);
-    drawY = 0;
-    while (drawY <= drawMaxY) {
-      col = startCol;
-      drawX = 0;
-      while (drawX <= drawMaxX) {
-        tileId = layerData[tileRowStart + col];
+    // loop start
+    row = mapRowStart;
+    drawY = drawStartY;
+    while (row < mapRowMax) {
+      col = mapColStart;
+      drawX = drawStartX;
+      while (col < mapColMax) {
+        tileId = layer.data[tileRowStart + col];
         // if tileId is undefined, tileId !== 0 returns true
         if (tileId !== 0) {
           tileId = tileId - 1;
@@ -80,34 +83,14 @@ function TileMapViewer(config) {
         col++;
         drawX = drawX + mapTileWidth;
       }
-      tileRowStart = tileRowStart + layerCols;  // because drawing each row that is mapCols wide
+      tileRowStart = tileRowStart + layer.width;  // because drawing each row that is mapCols wide
+      row++;
       drawY = drawY + mapTileHeight;
     }
-    ctx.setTransform(1, 0, 0, 1, 0, 0);
   }
-  this.getX = function () {
-    return viewX;
-  }
-  this.getY = function () {
-    return viewY;
-  }
-  this.setXY = function (newX, newY) {
-    // top left of view
-    let newLayerX = Math.max(0, Math.min(newX, mapCols * mapTileWidth - viewWidth));
-    let newLayerY = Math.max(0, Math.min(newY, mapRows * mapTileHeight - viewHeight));
-    viewX = newLayerX;
-    viewY = newLayerY;
-    layers[0].x = newLayerX;
-    layers[0].y = newLayerY;
-    layers[1].x = newLayerX;
-    layers[1].y = newLayerY;
-  };
-  this.changeXY = function (xChange, yChange) {
-    this.setXY(viewX + xChange, viewY + yChange);
-  };
   this.update = function () {
     for (let i = 0; i < layers.length; i++) {
-      if(layers[i].visible && layers[i].type === 'tilelayer') {
+      if (layers[i].visible && layers[i].type === 'tilelayer') {
         updateTileLayer(layers[i], displayContexts[i]);
       }
     }

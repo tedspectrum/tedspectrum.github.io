@@ -69,6 +69,7 @@
     <div class="app--grid-main">
       <div class="canvas-container">
     <canvas ref="background" :width="viewWidth" :height="viewHeight"></canvas>
+    <canvas ref="playermap" :width="viewWidth" :height="viewHeight"></canvas>
     <canvas ref="player" :width="viewWidth" :height="viewHeight"></canvas>
     <canvas ref="foreground" :width="viewWidth" :height="viewHeight"></canvas>
       </div>
@@ -76,8 +77,8 @@
     <div class="app--grid-controller">
       <div class="grid--div-controller">
         <div class="grid--button-top grid--button-controller" 
-          @mousedown="onMouseDown('up')"
-          @mouseup="onMouseUp('up')"
+          @mousedown.prevent="onMouseDown('up')"
+          @mouseup.prevent="onMouseUp('up')"
           @touchstart.prevent="onTouchStart('up')"
           @touchend.prevent="onTouchEnd('up')"
           @touchcancel.prevent="onTouchCancel('up')"
@@ -87,8 +88,8 @@
         </svg>
         </div>
         <div class="grid--button-left grid--button-controller" 
-          @mousedown="onMouseDown('left')"
-          @mouseup="onMouseUp('left')"
+          @mousedown.prevent="onMouseDown('left')"
+          @mouseup.prevent="onMouseUp('left')"
           @touchstart.prevent="onTouchStart('left')"
           @touchend.prevent="onTouchEnd('left')"
           @touchcancel.prevent="onTouchCancel('left')"
@@ -98,8 +99,8 @@
         </svg>
         </div>
         <div class="grid--button-right grid--button-controller" 
-          @mousedown="onMouseDown('right')"
-          @mouseup="onMouseUp('right')"
+          @mousedown.prevent="onMouseDown('right')"
+          @mouseup.prevent="onMouseUp('right')"
           @touchstart.prevent="onTouchStart('right')"
           @touchend.prevent="onTouchEnd('right')"
           @touchcancel.prevent="onTouchCancel(right)"
@@ -109,8 +110,8 @@
         </svg>
         </div>
         <div class="grid--button-bottom grid--button-controller" 
-          @mousedown="onMouseDown('down')"
-          @mouseup="onMouseUp('down')"
+          @mousedown.prevent="onMouseDown('down')"
+          @mouseup.prevent="onMouseUp('down')"
           @touchstart.prevent="onTouchStart('down')"
           @touchend.prevent="onTouchEnd('down')"
           @touchcancel.prevent="onTouchCancel('down')"
@@ -168,6 +169,14 @@
 
   
   <script src="/assets/src/TileMapViewer.js"></script>
+  
+
+  
+  <script src="/assets/src/Player.js"></script>
+  
+
+  
+  <script src="/assets/src/Camera.js"></script>
   
 
   

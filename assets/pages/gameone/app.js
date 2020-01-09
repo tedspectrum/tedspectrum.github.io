@@ -17,7 +17,7 @@ const app = new Vue({
       showMenuPanel: false,
       showStartPanel: true,
       tileMapViewer: {},
-      viewHeight: 240,
+      viewHeight: 230,
       viewWidth: 330,
       moveRate: 8,
       mousepresses: {
@@ -26,6 +26,7 @@ const app = new Vue({
         left: false,
         right: false
       },
+      player: {},
       tileMapURL: '/assets/pages/gameone/gamemap0.json',
       tileMap: {},
       touches: {
@@ -92,14 +93,28 @@ const app = new Vue({
       }
     },
     run: function () {
+      this.camera = new Camera(this.tileMap, this.viewWidth, this.viewHeight);
+      this.tileMap.layers.splice(1,0, {
+        "data":[61],
+        "height":1,
+        "name":"Player",
+        "opacity":1,
+        "type":"tilelayer",
+        "visible":true,
+        "width":1,
+        "x":0,
+        "y":0
+       }), 
       this.tileMapViewer = new TileMapViewer(
         {
           map: this.tileMap,
           spriteSheet: this.$refs.tiles,
-          outputEl: [this.$refs.background, this.$refs.foreground],
-          view: { width: this.viewWidth, height: this.viewHeight }
+          outputEl: [this.$refs.background, this.$refs.playermap, this.$refs.foreground],
+          view: this.camera
         }
       );
+      this.player = new Player(this.tileMap, 0, 0);
+      this.camera.follow(this.player);
       this.kb.start();
       this.changed = true;
       this.boundUpdate = this.update.bind(this);
@@ -125,17 +140,17 @@ const app = new Vue({
       }
       if (this.changed === true) {
         this.changed = false;
+        this.camera.update();
+        this.tileMap.layers[1].x = this.camera.following.screenX;
+        this.tileMap.layers[1].y = this.camera.following.screenY;
         this.tileMapViewer.update();
       }
       window.requestAnimationFrame(this.boundUpdate);
     },
     move: function (moveX, moveY) {
-      let currentX = this.tileMapViewer.getX(),
-        currentY = this.tileMapViewer.getY();
-      this.tileMapViewer.changeXY(moveX * this.moveRate, moveY * this.moveRate);
-      if (currentX !== this.tileMapViewer.getX() || currentY !== this.tileMapViewer.getY()) {
-        this.changed = true;
-      }
+      // move player
+      this.player.move(moveX, moveY);
+      this.changed = true;
     }
   }
 });
