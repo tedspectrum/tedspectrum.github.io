@@ -2,8 +2,8 @@ function Player(map, x, y) {
   this.x = x;
   this.y = y;
   this.speed = 5;
-  this.screenX = 0;
-  this.screenY = 0;
+  //this.screenX = 0;
+  //this.screenY = 0;
   this.map = map;
   this.width = this.map.tilewidth;
   this.height = this.map.tileheight;

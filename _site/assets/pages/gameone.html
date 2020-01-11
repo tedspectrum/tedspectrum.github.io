@@ -46,7 +46,8 @@
 
   <div class="post-content">
     
-<div id="app" class="app panel-container unselectable" v-cloak>
+<div id="app" class="app panel-container unselectable" v-cloak
+  @mouseup="onMouseUp('')">
   <div class="hidden">
     <image ref="tiles" width="640" height="640" src="/assets/pages/gameone/tiles.png"></image>
   </div>
@@ -69,8 +70,8 @@
     <div class="app--grid-main">
       <div class="canvas-container">
     <canvas ref="background" :width="viewWidth" :height="viewHeight"></canvas>
-    <canvas ref="playermap" :width="viewWidth" :height="viewHeight"></canvas>
-    <canvas ref="player" :width="viewWidth" :height="viewHeight"></canvas>
+    <canvas ref="player2" :width="viewWidth" :height="viewHeight"></canvas>
+    <canvas ref="player1" :width="viewWidth" :height="viewHeight"></canvas>
     <canvas ref="foreground" :width="viewWidth" :height="viewHeight"></canvas>
       </div>
     </div>

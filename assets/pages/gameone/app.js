@@ -20,11 +20,12 @@ const app = new Vue({
       viewHeight: 230,
       viewWidth: 330,
       moveRate: 8,
+      mousepress: '',
       mousepresses: {
-        up: false,
-        down: false,
-        left: false,
-        right: false
+        up: true,
+        down: true,
+        left: true,
+        right: true
       },
       player: {},
       tileMapURL: '/assets/pages/gameone/gamemap0.json',
@@ -64,14 +65,13 @@ const app = new Vue({
       this.core.toggleFullScreen(this.$el);
     },
     onMouseDown: function (buttonId) {
-      if (this.mousepresses[buttonId] === false) {
-        this.mousepresses[buttonId] = true;
+      this.mousepress = '';
+      if (this.mousepresses[buttonId]) {
+        this.mousepress = buttonId;
       }
     },
     onMouseUp: function (buttonId) {
-      if (this.mousepresses[buttonId] === true) {
-        this.mousepresses[buttonId] = false;
-      }
+      this.mousepress = '';
     },
     onResize: function () {
       this.appwidth = this.$el.offsetWidth;
@@ -104,12 +104,23 @@ const app = new Vue({
         "width":1,
         "x":0,
         "y":0
-       }), 
+       });
+       this.tileMap.layers.splice(2,0, {
+        "data":[84, 85, 86, 104, 105, 106, 124, 125, 126],
+        "height":3,
+        "name":"Player2",
+        "opacity":1,
+        "type":"tilelayer",
+        "visible":true,
+        "width":3,
+        "x": 250,
+        "y": 40
+       });
       this.tileMapViewer = new TileMapViewer(
         {
           map: this.tileMap,
           spriteSheet: this.$refs.tiles,
-          outputEl: [this.$refs.background, this.$refs.playermap, this.$refs.foreground],
+          outputEl: [this.$refs.background, this.$refs.player1, this.$refs.player2, this.$refs.foreground],
           view: this.camera
         }
       );
@@ -127,10 +138,10 @@ const app = new Vue({
       if (this.touches.up) { this.move(0, -1); }
       if (this.touches.down) { this.move(0, 1); }
       if (!this.changed) {
-        if (this.mousepresses.left) { this.move(-1, 0); }
-        if (this.mousepresses.right) { this.move(1, 0); }
-        if (this.mousepresses.up) { this.move(0, -1); }
-        if (this.mousepresses.down) { this.move(0, 1); }
+        if (this.mousepress === 'left') { this.move(-1, 0); }
+        if (this.mousepress === 'right') { this.move(1, 0); }
+        if (this.mousepress === 'up') { this.move(0, -1); }
+        if (this.mousepress === 'down') { this.move(0, 1); }
       }
       if (!this.changed) {
         if (this.kb.key.left) { this.move(-1, 0); }
@@ -141,8 +152,8 @@ const app = new Vue({
       if (this.changed === true) {
         this.changed = false;
         this.camera.update();
-        this.tileMap.layers[1].x = this.camera.following.screenX;
-        this.tileMap.layers[1].y = this.camera.following.screenY;
+        this.tileMap.layers[1].x = this.player.x;
+        this.tileMap.layers[1].y = this.player.y;
         this.tileMapViewer.update();
       }
       window.requestAnimationFrame(this.boundUpdate);

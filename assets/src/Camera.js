@@ -10,8 +10,8 @@ function Camera(map, width, height) {
 }
 Camera.prototype.follow = function (sprite) {
   this.following = sprite;
-  sprite.screenX = 0;
-  sprite.screenY = 0;
+  //sprite.screenX = 0;
+  //sprite.screenY = 0;
 };
 Camera.prototype.update = function () {
   // make the camera follow the sprite
@@ -23,6 +23,7 @@ Camera.prototype.update = function () {
   // in map corners, the sprite cannot be placed in the center of the screen
   // and we have to change its screen coordinates
   // left and right sides
+  /*
   if (this.following.x < this.midWidth ||
     this.following.x > this.maxX + this.midWidth) {
     this.following.screenX = this.following.x - this.x;
@@ -36,4 +37,5 @@ Camera.prototype.update = function () {
   } else {
     this.following.screenY = this.midHeight;
   }
+  */
 };
