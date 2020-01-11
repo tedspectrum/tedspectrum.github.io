@@ -31,7 +31,6 @@ function KeyHandler(eventSrc, config) {
   this.setKeys = function (newKeys) {
     keyAction = {};
     key = {};
-    action = {};
     for (var prop in newKeys) {
       if (newKeys.hasOwnProperty(prop)) {
         key[newKeys[prop]] = true;

@@ -87,6 +87,7 @@ svg, image {
 .panel--start-griditem {
   justify-self: center;
   align-self: center;
+  text-align: center;
 }
 .panel--menu button {
   width: 100%;

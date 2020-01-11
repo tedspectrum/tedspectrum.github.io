@@ -4,6 +4,7 @@ function TileMapViewer(config) {
       view: { width: n, height: n },
       map: the map data { layers: [], width: n, height: n, tilewidth: n, tileheight: n }
       each map layer { data: [], width: n, height: n, opacity: n, type: 'tilelayer', visible: boolean }
+      or map layer { type: 'objectlayer', data: [{ x: n, y: n,  width: n, height: n, id: n }], opacity: n, visible: boolean }
       spriteSheet: an Image of tiles (with width property)
       outputEl: the output elements [] from which 2d contexts are used
     }
@@ -33,6 +34,7 @@ function TileMapViewer(config) {
       drawStartX, drawStartY,
       mapColStart, mapColMax,
       mapRowStart, mapRowMax,
+      layerItem,
       tileRowStart,
       tileId;
     for (let i = 0; i < layers.length; i++) {
@@ -41,49 +43,69 @@ function TileMapViewer(config) {
       // clear the drawing
       ctx.clearRect(0, 0, view.width, view.height);
       ctx.globalAlpha = layers.opacity;
-      if (layer.visible
-        && layer.type === 'tilelayer'
-        // and layer intersects view
-        && layer.x < (view.x + view.width)
-        && (layer.x + layer.width * mapTileWidth) > view.x
-        && layer.y < (view.y + view.height)
-        && (layer.y + layer.height * mapTileHeight) > view.y
-      ) {
-        mapColStart = Math.max(0, -Math.ceil((layer.x - view.x) / mapTileWidth));
-        mapRowStart = Math.max(0, -Math.ceil((layer.y - view.y) / mapTileHeight));
-        mapColMax = Math.min(layer.width, Math.ceil((view.x + view.width) / mapTileWidth));
-        mapRowMax = Math.min(layer.height, Math.ceil((view.y + view.height) / mapTileHeight));
-        drawStartX = layer.x - view.x + mapColStart * mapTileWidth;
-        drawStartY = layer.y - view.y + mapRowStart * mapTileHeight;
-        // this is for finding tiles in the tilemap layer data
-        tileRowStart = layer.width * mapRowStart;
-        // loop start
-        row = mapRowStart;
-        drawY = drawStartY;
-        while (row < mapRowMax) {
-          col = mapColStart;
-          drawX = drawStartX;
-          while (col < mapColMax) {
-            tileId = layer.data[tileRowStart + col];
-            // if tileId is undefined, tileId !== 0 returns true
-            if (tileId !== 0) {
-              tileId = tileId - 1;
+      if (layer.visible) {
+        if (layer.type === 'tilelayer'
+          // and layer intersects view
+          && layer.x < (view.x + view.width)
+          && (layer.x + layer.width * mapTileWidth) > view.x
+          && layer.y < (view.y + view.height)
+          && (layer.y + layer.height * mapTileHeight) > view.y
+        ) {
+          mapColStart = Math.max(0, -Math.ceil((layer.x - view.x) / mapTileWidth));
+          mapRowStart = Math.max(0, -Math.ceil((layer.y - view.y) / mapTileHeight));
+          mapColMax = Math.min(layer.width, Math.ceil((view.x + view.width) / mapTileWidth));
+          mapRowMax = Math.min(layer.height, Math.ceil((view.y + view.height) / mapTileHeight));
+          drawStartX = layer.x - view.x + mapColStart * mapTileWidth;
+          drawStartY = layer.y - view.y + mapRowStart * mapTileHeight;
+          // this is for finding tiles in the tilemap layer data
+          tileRowStart = layer.width * mapRowStart;
+          // loop start
+          row = mapRowStart;
+          drawY = drawStartY;
+          while (row < mapRowMax) {
+            col = mapColStart;
+            drawX = drawStartX;
+            while (col < mapColMax) {
+              tileId = layer.data[tileRowStart + col];
+              // if tileId is undefined, tileId !== 0 returns true
+              if (tileId !== 0) {
+                tileId = tileId - 1;
+                ctx.drawImage(spriteSheet,
+                  (tileId % spriteSheetCols) * mapTileWidth,
+                  Math.floor(tileId / spriteSheetCols) * mapTileHeight,
+                  mapTileWidth,
+                  mapTileHeight,
+                  drawX,
+                  drawY,
+                  mapTileWidth,
+                  mapTileHeight);
+              }
+              col++;
+              drawX = drawX + mapTileWidth;
+            }
+            tileRowStart = tileRowStart + layer.width;  // because drawing each row that is mapCols wide
+            row++;
+            drawY = drawY + mapTileHeight;
+          }
+        } else if (layer.type === 'objectlayer') {
+          for (let o = 0; o < layer.data.length; o++) {
+            layerItem = layer.data[o];
+            if (layerItem.x < (view.x + view.width)
+              && (layerItem.x + layerItem.width * mapTileWidth) > view.x
+              && layerItem.y < (view.y + view.height)
+              && (layerItem.y + layerItem.height * mapTileHeight) > view.y) {
+              tileId = layerItem.id - 1;
               ctx.drawImage(spriteSheet,
                 (tileId % spriteSheetCols) * mapTileWidth,
                 Math.floor(tileId / spriteSheetCols) * mapTileHeight,
-                mapTileWidth,
-                mapTileHeight,
-                drawX,
-                drawY,
-                mapTileWidth,
-                mapTileHeight);
+                layerItem.width * mapTileWidth,
+                layerItem.height * mapTileHeight,
+                layerItem.x - view.x,
+                layerItem.y - view.y,
+                layerItem.width * mapTileWidth,
+                layerItem.height * mapTileHeight);
             }
-            col++;
-            drawX = drawX + mapTileWidth;
           }
-          tileRowStart = tileRowStart + layer.width;  // because drawing each row that is mapCols wide
-          row++;
-          drawY = drawY + mapTileHeight;
         }
       }
     }
