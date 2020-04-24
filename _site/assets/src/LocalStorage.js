@@ -6,27 +6,27 @@
 function LocalStorage() {
   this.src = window.localStorage;
   this.size = this.src.length;
-  function StorageIterator(store) {
+  this[Symbol.iterator] = function() {
     var index = -1,
-      state = { value: { key: null, value: null }, done: false };
-    this.next = function () {
-      index++;
-      if (index >= store.count()) {
-        state.value = null;
-        state.done = true;
-      } else {
-        state.value.key = store.src.key(index);
-        state.value.value = store.get(store.src.key(index));
-        state.done = false;
+      store = this;
+    return {
+      next: function() {
+        let state = { value: { key: null, value: null }, done: false };
+        index++;
+        if (index >= store.count()) {
+          state.value = null;
+          state.done = true;
+        } else {
+          state.value.key = store.src.key(index);
+          state.value.value = store.get(store.src.key(index));
+          state.done = false;
+        }
+        return state;
       }
-      return state;
-    }
-  }
-  this.entries = function () {
-    return new StorageIterator(this);
+    };
   }
 }
-LocalStorage.prototype[Symbol.iterator] = function () { return this.entries(); }
+
 /**
 * Add a key value pair to the storage
 * @method isAvailable

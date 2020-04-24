@@ -7,15 +7,17 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <title>Geolocation - Continuous</title>
-  <meta name="description" content="  Latitude, Longitude  ({{ lat }},{{ long }})  {{ msg ? msg : '&nbsp;' }}  Start  Stop">
+  <meta name="description" content="          Latitude, Longitude  ({{ lat }},{{ long }})  {{ msg ? msg : '&nbsp;' }}    Start  Stop      Save    {{ storedValue.key + "," + storedValue.value }}...">
 
   <link rel="stylesheet" href="/css/main.css">
-  <link rel="canonical" href="http://localhost:4000/features/2020/04/24/geolocate-continuous.html">
-  <link rel="alternate" type="application/rss+xml" title="Ted Spectrum" href="http://localhost:4000/feed.xml">
+  <link rel="canonical" href="http://tedspectrum.github.io/features/2020/04/24/geolocate-continuous.html">
+  <link rel="alternate" type="application/rss+xml" title="Ted Spectrum" href="http://tedspectrum.github.io/feed.xml">
   
   
   <style> .app .geolocation--button {
   font-size: 1.5rem;
+} .hidden {
+  display: none;
 } </style>
 
   
@@ -40,11 +42,27 @@
   <div class="post-content" itemprop="articleBody">
     
 <div id="geolocationapp" class="app">
+  <div class="hidden">
+    <a ref="fileWrite"></a>
+  </div>
   <h2>Latitude, Longitude</h2>
   <h3>({{ lat }},{{ long }})</h3>
   <p>{{ msg ? msg : '&nbsp;' }}</p>
+  <p>
   <button class="geolocation--button" @click.prevent="onLocationStart()">Start</button>
   <button class="geolocation--button" @click.prevent="onLocationStop()">Stop</button>
+  </p>
+  <p>
+  <button class="geolocation--button" @click.prevent="onStoreAdd()">Save</button>
+  </p>
+  <p v-for="storedValue in stored">{{ storedValue.key + "," + storedValue.value }}</p>
+  <p>
+  <button class="geolocation--button" @click.prevent="onStoreDownload()">Download</button>
+  </p>
+  <p>&nbsp;</p>
+  <p>
+  <button class="geolocation--button" @click.prevent="onStoreClear()">Clear</button>
+  </p>
 </div>
 
   </div>
@@ -64,6 +82,10 @@
   <script src="https://cdn.jsdelivr.net/npm/vue@2.6.0/dist/vue.min.js"></script>
   
 
+  
+  <script src="/assets/src/LocalStorage.js"></script>
+  
+
 
 <script> const app = new Vue({
   el: '#geolocationapp',
@@ -76,12 +98,21 @@
     lat: 0,
     long: 0,
     msg: '',
+    store: new LocalStorage(),
+    storeAvailable: false,
+    stored: [],
     str: {
       idle: '',
       progress: 'working...',
       nolocation: 'geolocation unavailable'
     },
     watchId: 0
+  },
+  mounted: function() {
+    this.storeAvailable = LocalStorage.isAvailable();
+    if(this.storeAvailable) {
+      this.storeList();
+    }
   },
   methods: {
     geolocateStart: function (onSuccess, onErr, opts) {
@@ -98,6 +129,22 @@
         navigator.geolocation.clearWatch(id);
       } else {
         onErr({ message: this.str.nolocation });
+      }
+    },
+    fileWriteText: function (fileName, fileContents) {
+      let fwEl, 
+        txtBlob,
+        w = window;
+      if (w && w.Blob && w.URL && w.URL.createObjectURL && fileName && fileContents) {
+        txtBlob = new Blob([fileContents], { type: 'text/plain' });
+        if (navigator && navigator.msSaveOrOpenBlob) {
+          navigator.msSaveOrOpenBlob(txtBlob, fileName);
+        } else {
+          fwEl = this.$refs.fileWrite;
+          fwEl.download = fileName;
+          fwEl.href = window.URL.createObjectURL(txtBlob);
+          fwEl.click();
+        }
       }
     },
     onLocateError: function (e) {
@@ -118,6 +165,32 @@
     },
     onLocationStop: function () {
       this.geolocateStop(this.watchId);
+    },
+    onStoreAdd: function() {
+      if(this.storeAvailable) {
+        this.store.add(Date.now(),this.lat + "," + this.long);
+        this.storeList();
+      }
+    },
+    onStoreClear: function() {
+      if (this.storeAvailable) {
+        this.store.clear();
+        this.storeList();
+      }
+    },
+    onStoreDownload: function() {
+      let contents = "";
+      for(let entry of this.stored) {
+        contents = entry.key + "," + entry.value + "\n" + contents;
+      }
+      this.fileWriteText("save.txt", contents);
+    },
+    storeList: function() {
+      this.$set(this, 'stored', []);
+      for(let entry of this.store) {
+        this.stored.push(entry);
+      }
+      this.stored.sort(function(a,b) { return b.key - a.key; });
     }
   }
 }); </script>
