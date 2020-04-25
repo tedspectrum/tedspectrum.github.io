@@ -21,13 +21,14 @@ inlinescript: >
   const app = new Vue({
     el: '#geolocationapp',
     data: {
+      dateString: '',
       geoLocationOptions: {
         enableHighAccuracy: true,
         timeout: 30000,
         maximumAge: 1000
       },
-      lat: 0,
-      long: 0,
+      lat: Number.parseFloat(0).toFixed(7),
+      long: Number.parseFloat(0).toFixed(7),
       msg: '',
       store: new LocalStorage(),
       storeAvailable: false,
@@ -37,6 +38,7 @@ inlinescript: >
         progress: 'working...',
         nolocation: 'geolocation unavailable'
       },
+      timestamp: 0,
       watchId: 0
     },
     mounted: function() {
@@ -84,6 +86,8 @@ inlinescript: >
       onLocateSuccess: function (pos) {
         this.lat = pos.coords.latitude.toFixed(7);
         this.long = pos.coords.longitude.toFixed(7);
+        this.timestamp = pos.timestamp;
+        this.dateString = new Date(this.timestamp).toLocaleString();
         this.msg = this.str.idle;
       },
       onLocationStart: function () {
@@ -99,7 +103,11 @@ inlinescript: >
       },
       onStoreAdd: function() {
         if(this.storeAvailable) {
-          this.store.add(Date.now(),this.lat + "," + this.long);
+          this.store.add(this.timestamp, {
+            date: this.dateString,
+            latitude: this.lat,
+            longitude: this.long
+          });
           this.storeList();
         }
       },
@@ -112,8 +120,9 @@ inlinescript: >
       onStoreDownload: function() {
         let contents = "";
         for(let entry of this.stored) {
-          contents = entry.key + "," + entry.value + "\n" + contents;
+          contents = [entry.key, entry.value.date, entry.value.latitude, entry.value.longitude].join(",") + "\n" + contents;
         }
+        contents = "timestamp, date, latitude, longitude" + "\n" + contents;
         this.fileWriteText("save.txt", contents);
       },
       storeList: function() {
@@ -132,17 +141,30 @@ inlinescript: >
   <div class="hidden">
     <a ref="fileWrite"></a>
   </div>
+  <p>
+    <button class="geolocation--button" @click.prevent="onLocationStart()">Start</button>
+    <button class="geolocation--button" @click.prevent="onLocationStop()">Stop</button>
+  </p>
   <h2>Latitude, Longitude</h2>
   <h3>({{ lat }},{{ long }})</h3>
+  <h4>{{ dateString }}</h4>
   <p>{{ msg ? msg : '&nbsp;' }}</p>
-  <p>
-  <button class="geolocation--button" @click.prevent="onLocationStart()">Start</button>
-  <button class="geolocation--button" @click.prevent="onLocationStop()">Stop</button>
-  </p>
   <p>
   <button class="geolocation--button" @click.prevent="onStoreAdd()">Save</button>
   </p>
-  <p v-for="storedValue in stored">{{ storedValue.key + "," + storedValue.value }}</p>
+  <table>
+    <thead>
+      <th>timestamp</th><th>date</th><th>latitude</th><th>longitude</th>
+    </thead>
+    <tbody>
+      <tr v-for="storedValue in stored">
+        <td>{{ storedValue.key }}</td>
+        <td>{{ storedValue.value.date }}</td>
+        <td>{{ storedValue.value.latitude }}</td>
+        <td>{{ storedValue.value.longitude }}</td>
+      </tr>
+    </tbody>
+  </table>
   <p>
   <button class="geolocation--button" @click.prevent="onStoreDownload()">Download</button>
   </p>

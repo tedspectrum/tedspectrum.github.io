@@ -4,10 +4,10 @@
     <title>Ted Spectrum</title>
     <description>My awesome website
 </description>
-    <link>http://tedspectrum.github.io/</link>
-    <atom:link href="http://tedspectrum.github.io/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Fri, 24 Apr 2020 19:05:56 +0100</pubDate>
-    <lastBuildDate>Fri, 24 Apr 2020 19:05:56 +0100</lastBuildDate>
+    <link>http://localhost:4000/</link>
+    <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml"/>
+    <pubDate>Sat, 25 Apr 2020 07:34:14 +0100</pubDate>
+    <lastBuildDate>Sat, 25 Apr 2020 07:34:14 +0100</lastBuildDate>
     <generator>Jekyll v4.0.0</generator>
     
       <item>
@@ -17,17 +17,30 @@
   &lt;div class=&quot;hidden&quot;&gt;
     &lt;a ref=&quot;fileWrite&quot;&gt;&lt;/a&gt;
   &lt;/div&gt;
+  &lt;p&gt;
+    &lt;button class=&quot;geolocation--button&quot; @click.prevent=&quot;onLocationStart()&quot;&gt;Start&lt;/button&gt;
+    &lt;button class=&quot;geolocation--button&quot; @click.prevent=&quot;onLocationStop()&quot;&gt;Stop&lt;/button&gt;
+  &lt;/p&gt;
   &lt;h2&gt;Latitude, Longitude&lt;/h2&gt;
   &lt;h3&gt;({{ lat }},{{ long }})&lt;/h3&gt;
+  &lt;h4&gt;{{ dateString }}&lt;/h4&gt;
   &lt;p&gt;{{ msg ? msg : '&amp;nbsp;' }}&lt;/p&gt;
-  &lt;p&gt;
-  &lt;button class=&quot;geolocation--button&quot; @click.prevent=&quot;onLocationStart()&quot;&gt;Start&lt;/button&gt;
-  &lt;button class=&quot;geolocation--button&quot; @click.prevent=&quot;onLocationStop()&quot;&gt;Stop&lt;/button&gt;
-  &lt;/p&gt;
   &lt;p&gt;
   &lt;button class=&quot;geolocation--button&quot; @click.prevent=&quot;onStoreAdd()&quot;&gt;Save&lt;/button&gt;
   &lt;/p&gt;
-  &lt;p v-for=&quot;storedValue in stored&quot;&gt;{{ storedValue.key + &quot;,&quot; + storedValue.value }}&lt;/p&gt;
+  &lt;table&gt;
+    &lt;thead&gt;
+      &lt;th&gt;timestamp&lt;/th&gt;&lt;th&gt;date&lt;/th&gt;&lt;th&gt;latitude&lt;/th&gt;&lt;th&gt;longitude&lt;/th&gt;
+    &lt;/thead&gt;
+    &lt;tbody&gt;
+      &lt;tr v-for=&quot;storedValue in stored&quot;&gt;
+        &lt;td&gt;{{ storedValue.key }}&lt;/td&gt;
+        &lt;td&gt;{{ storedValue.value.date }}&lt;/td&gt;
+        &lt;td&gt;{{ storedValue.value.latitude }}&lt;/td&gt;
+        &lt;td&gt;{{ storedValue.value.longitude }}&lt;/td&gt;
+      &lt;/tr&gt;
+    &lt;/tbody&gt;
+  &lt;/table&gt;
   &lt;p&gt;
   &lt;button class=&quot;geolocation--button&quot; @click.prevent=&quot;onStoreDownload()&quot;&gt;Download&lt;/button&gt;
   &lt;/p&gt;
@@ -38,8 +51,8 @@
 &lt;/div&gt;
 </description>
         <pubDate>Fri, 24 Apr 2020 00:00:00 +0100</pubDate>
-        <link>http://tedspectrum.github.io/features/2020/04/24/geolocate-continuous.html</link>
-        <guid isPermaLink="true">http://tedspectrum.github.io/features/2020/04/24/geolocate-continuous.html</guid>
+        <link>http://localhost:4000/features/2020/04/24/geolocate-continuous.html</link>
+        <guid isPermaLink="true">http://localhost:4000/features/2020/04/24/geolocate-continuous.html</guid>
         
         
         <category>features</category>
@@ -69,8 +82,8 @@ static text posts.  In Posts, styles and scripts maybe inline in that page.&lt;/
 
 </description>
         <pubDate>Wed, 01 Jan 2020 00:00:00 +0000</pubDate>
-        <link>http://tedspectrum.github.io/news/2020/01/01/sitetidyup.html</link>
-        <guid isPermaLink="true">http://tedspectrum.github.io/news/2020/01/01/sitetidyup.html</guid>
+        <link>http://localhost:4000/news/2020/01/01/sitetidyup.html</link>
+        <guid isPermaLink="true">http://localhost:4000/news/2020/01/01/sitetidyup.html</guid>
         
         
         <category>news</category>
@@ -104,8 +117,8 @@ static text posts.  In Posts, styles and scripts maybe inline in that page.&lt;/
 &lt;/div&gt;
 </description>
         <pubDate>Tue, 24 Dec 2019 00:00:00 +0000</pubDate>
-        <link>http://tedspectrum.github.io/data%20structures/2019/12/24/treeiterator.html</link>
-        <guid isPermaLink="true">http://tedspectrum.github.io/data%20structures/2019/12/24/treeiterator.html</guid>
+        <link>http://localhost:4000/data%20structures/2019/12/24/treeiterator.html</link>
+        <guid isPermaLink="true">http://localhost:4000/data%20structures/2019/12/24/treeiterator.html</guid>
         
         
         <category>data structures</category>
@@ -145,8 +158,8 @@ static text posts.  In Posts, styles and scripts maybe inline in that page.&lt;/
 &lt;/div&gt;
 </description>
         <pubDate>Sat, 14 Dec 2019 00:00:00 +0000</pubDate>
-        <link>http://tedspectrum.github.io/features/2019/12/14/buttontree.html</link>
-        <guid isPermaLink="true">http://tedspectrum.github.io/features/2019/12/14/buttontree.html</guid>
+        <link>http://localhost:4000/features/2019/12/14/buttontree.html</link>
+        <guid isPermaLink="true">http://localhost:4000/features/2019/12/14/buttontree.html</guid>
         
         
         <category>features</category>
@@ -193,8 +206,8 @@ static text posts.  In Posts, styles and scripts maybe inline in that page.&lt;/
 &lt;/div&gt;
 </description>
         <pubDate>Sat, 23 Nov 2019 00:00:00 +0000</pubDate>
-        <link>http://tedspectrum.github.io/features/2019/11/23/uielements.html</link>
-        <guid isPermaLink="true">http://tedspectrum.github.io/features/2019/11/23/uielements.html</guid>
+        <link>http://localhost:4000/features/2019/11/23/uielements.html</link>
+        <guid isPermaLink="true">http://localhost:4000/features/2019/11/23/uielements.html</guid>
         
         
         <category>features</category>
@@ -212,8 +225,8 @@ static text posts.  In Posts, styles and scripts maybe inline in that page.&lt;/
 &lt;/div&gt;
 </description>
         <pubDate>Thu, 21 Nov 2019 00:00:00 +0000</pubDate>
-        <link>http://tedspectrum.github.io/features/2019/11/21/aceeditor.html</link>
-        <guid isPermaLink="true">http://tedspectrum.github.io/features/2019/11/21/aceeditor.html</guid>
+        <link>http://localhost:4000/features/2019/11/21/aceeditor.html</link>
+        <guid isPermaLink="true">http://localhost:4000/features/2019/11/21/aceeditor.html</guid>
         
         
         <category>features</category>
@@ -259,8 +272,8 @@ static text posts.  In Posts, styles and scripts maybe inline in that page.&lt;/
 &lt;/div&gt;
 </description>
         <pubDate>Sat, 16 Nov 2019 00:00:00 +0000</pubDate>
-        <link>http://tedspectrum.github.io/features/2019/11/16/svggrid.html</link>
-        <guid isPermaLink="true">http://tedspectrum.github.io/features/2019/11/16/svggrid.html</guid>
+        <link>http://localhost:4000/features/2019/11/16/svggrid.html</link>
+        <guid isPermaLink="true">http://localhost:4000/features/2019/11/16/svggrid.html</guid>
         
         
         <category>features</category>
@@ -280,8 +293,8 @@ static text posts.  In Posts, styles and scripts maybe inline in that page.&lt;/
 &lt;/div&gt;
 </description>
         <pubDate>Fri, 08 Nov 2019 00:00:00 +0000</pubDate>
-        <link>http://tedspectrum.github.io/features/2019/11/08/filemanipulation.html</link>
-        <guid isPermaLink="true">http://tedspectrum.github.io/features/2019/11/08/filemanipulation.html</guid>
+        <link>http://localhost:4000/features/2019/11/08/filemanipulation.html</link>
+        <guid isPermaLink="true">http://localhost:4000/features/2019/11/08/filemanipulation.html</guid>
         
         
         <category>features</category>
@@ -319,8 +332,8 @@ static text posts.  In Posts, styles and scripts maybe inline in that page.&lt;/
 &lt;/div&gt;
 </description>
         <pubDate>Sun, 03 Nov 2019 00:00:00 +0000</pubDate>
-        <link>http://tedspectrum.github.io/features/2019/11/03/firstsvg.html</link>
-        <guid isPermaLink="true">http://tedspectrum.github.io/features/2019/11/03/firstsvg.html</guid>
+        <link>http://localhost:4000/features/2019/11/03/firstsvg.html</link>
+        <guid isPermaLink="true">http://localhost:4000/features/2019/11/03/firstsvg.html</guid>
         
         
         <category>features</category>
@@ -395,8 +408,8 @@ etc. in the content.&lt;/p&gt;
 &lt;span class=&quot;p&quot;&gt;{%&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;kr&quot;&gt;endif&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;%}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 </description>
         <pubDate>Thu, 31 Oct 2019 00:00:00 +0000</pubDate>
-        <link>http://tedspectrum.github.io/jekyll/2019/10/31/webapp2.html</link>
-        <guid isPermaLink="true">http://tedspectrum.github.io/jekyll/2019/10/31/webapp2.html</guid>
+        <link>http://localhost:4000/jekyll/2019/10/31/webapp2.html</link>
+        <guid isPermaLink="true">http://localhost:4000/jekyll/2019/10/31/webapp2.html</guid>
         
         
         <category>jekyll</category>
