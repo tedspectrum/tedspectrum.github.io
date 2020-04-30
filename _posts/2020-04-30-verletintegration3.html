@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Verlet Integration 2"
+title: "Verlet Integration 3"
 scripts:
 categories: [features]
 inlinestyle: >
@@ -65,7 +65,7 @@ inlinescript: >
         { p0: points[1], p1: points[2] },
         { p0: points[2], p1: points[3] },
         { p0: points[3], p1: points[0] },
-        { p0: points[0], p1: points[2] },
+        { p0: points[0], p1: points[2], hidden: true },
         //{ p0: points[1], p1: points[3] }
       )
       //canvas.addEventListener('click', onClick);
@@ -102,12 +102,13 @@ inlinescript: >
         if (timeElapsed > 50) {
           // slow it down
           // context.clearRect(0, 0, width, height);
+          context.clearRect(0, 0, width, height);
           updatePoints();
           for (var i = 0; i < 3; i++) {
             constrainPoints();
             updateSticks();
           }
-          renderPoints();
+          // renderPoints();
           renderSticks();
           timeLast = timeNow;
           timeElapsed = 0;
@@ -200,7 +201,7 @@ inlinescript: >
   </script>
 ---
 {% raw %}
-<h1>Verlet Integration 2</h1>
+<h1>Verlet Integration 3</h1>
 <p>Following along with a video from Youtube by "Coding Math"</p>
 <div class="app">
   <canvas id="canvas" width="320" height="240"></canvas>
