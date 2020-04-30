@@ -22,70 +22,57 @@ inlinescript: >
         context = canvas.getContext("2d"),
         width = canvas.width,
         height = canvas.height,
+        worldWidth = 3200,
+        worldHeight = 2400,
+        scaleX = width / worldWidth,
+        scaleY = height / worldHeight,
         points = [],
         sticks = [],
-        bounce = 0.9,
+        timeElapsed = 0,
+        timeNow = 0,
+        timeLast = 0,
         gravity = 0.5,
         friction = 0.995;
       points.push({
-        x: 12,
-        y: 12,
-        oldx: 10,
-        oldy: 10
+        x: 120,
+        y: 120,
+        oldx: 110,
+        oldy: 110
       },
       {
-        x: 30,
-        y: 12,
-        oldx: 30,
-        oldy: 12
+        x: 300,
+        y: 120,
+        oldx: 300,
+        oldy: 120
       },
       {
-        x: 30,
-        y: 30,
-        oldx: 34,
-        oldy: 26
+        x: 300,
+        y: 300,
+        oldx: 340,
+        oldy: 260
       },
       {
-        x: 12,
-        y: 30,
-        oldx: 12,
-        oldy: 30
+        x: 120,
+        y: 300,
+        oldx: 120,
+        oldy: 300
       }
       );
-      sticks.push({
-        p0: points[0],
-        p1: points[1],
-        length: distance(points[0], points[1])
-      },
-      {
-        p0: points[1],
-        p1: points[2],
-        length: distance(points[1], points[2])
-      },
-      {
-        p0: points[2],
-        p1: points[3],
-        length: distance(points[2], points[3])
-      },
-      {
-        p0: points[3],
-        p1: points[0],
-        length: distance(points[3], points[0])
-      },
-      {
-        p0: points[0],
-        p1: points[2],
-        length: distance(points[0], points[2])
-      },
-      {
-        p0: points[1],
-        p1: points[3],
-        length: distance(points[1], points[3])
-      },
+      sticks.push(
+        { p0: points[0], p1: points[1] },
+        { p0: points[1], p1: points[2] },
+        { p0: points[2], p1: points[3] },
+        { p0: points[3], p1: points[0] },
+        { p0: points[0], p1: points[2] },
+        { p0: points[1], p1: points[3] }
       )
     //canvas.addEventListener('click', onClick);
     //console.log(points, sticks);
-    update();
+    for(var si = 0; si < sticks.length; si++) {
+      // set initial length of each stick
+      sticks[si].length = distance(sticks[si].p0, sticks[si].p1);
+    }
+    update(0);
 
     function distance(p0, p1) {
       var dx = p1.x - p0.x,
@@ -93,6 +80,7 @@ inlinescript: >
       // Pythagoras h2 = a2 + b2
       return Math.sqrt(dx * dx + dy * dy);
     }
+    /*
     function onClick(e) {
       points.push({
         x: e.offsetX,
@@ -105,14 +93,21 @@ inlinescript: >
         points.splice(0,1);
       }
     }
+    */
 
-    function update() {
-      updatePoints();
-      updateSticks();
-      renderPoints();
-      renderSticks();
+    function update(timeNow) {
+      timeElapsed = timeElapsed + timeNow - timeLast;
+      if(timeElapsed > 100) {
+        // slow it down
+        updatePoints();
+        updateSticks();
+        renderPoints();
+        renderSticks();
+        timeLast = timeNow;
+        timeElapsed = 0;
+      }
       //console.log(points, sticks);
-      requestAnimationFrame(update);
+      window.requestAnimationFrame(update);
     }
 
     function updateSticks() {
@@ -137,42 +132,47 @@ inlinescript: >
       var p, vx, vy;
       for(var i = 0; i < points.length; i++) {
           p = points[i],
-          vx = (p.x - p.oldx) * friction,
-          vy = (p.y - p.oldy) * friction;
+          vx = p.x - p.oldx,
+          vy = p.y - p.oldy;
+        // friction and gravity, clamping
+        vx = vx * friction;
+        vy = (vy * friction) + gravity;
+        if (Math.abs(vx) < 0.75) vx = 0;
+        if (Math.abs(vy) < 0.75) vy = 0;
         // integration
         p.oldx = p.x;
         p.oldy = p.y;
         p.x = p.x + vx;
-        p.y = p.y + vy + gravity;
+        p.y = p.y + vy;
         // collision detection
-        if(p.x > width) {
-          p.x = width;
-          p.oldx = p.x + vx * bounce;
+        if(p.x > worldWidth) {
+          p.x = worldWidth;
+          p.oldx = p.x + vx;
         }
         else if(p.x < 0) {
           p.x = 0;
-          p.oldx = p.x + vx * bounce;
+          p.oldx = p.x + vx;
         }
-        if(p.y > height) {
-          p.y = height;
-          p.oldy = p.y + vy * bounce;
+        if(p.y > worldHeight) {
+          p.y = worldHeight;
+          p.oldy = p.y + vy;
         }
         else if(p.y < 0) {
           p.y = 0;
-          p.oldy = p.y + vy * bounce;
+          p.oldy = p.y + vy;
         }
       }
     }
 
     function renderPoints() {
-      var p, i;
+      var p, i, doublePI = Math.PI * 2;
       // clear all
       context.clearRect(0, 0, width, height);
       // draw all
       for(i = 0; i < points.length; i++) {
         p = points[i];
         context.beginPath();
-        context.arc(Math.round(p.x), Math.round(p.y), 5, 0, Math.PI * 2);
+        context.arc(Math.round(p.x * scaleX), Math.round(p.y * scaleY), 5, 0, doublePI);
         context.fill();
       }
     }
@@ -181,8 +181,8 @@ inlinescript: >
       context.beginPath();
       for(i = 0; i < sticks.length; i++) {
         s = sticks[i];
-        context.moveTo(s.p0.x, s.p0.y);
-        context.lineTo(s.p1.x, s.p1.y);
+        context.moveTo(Math.round(s.p0.x * scaleX), Math.round(s.p0.y * scaleY));
+        context.lineTo(Math.round(s.p1.x * scaleX), Math.round(s.p1.y * scaleY));
       }
       context.stroke();
     }
