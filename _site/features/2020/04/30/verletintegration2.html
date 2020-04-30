@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Verlet Integration 2</title>
+  <meta name="description" content="Verlet Integration 2Following along with a video from Youtube by "Coding Math"  ">
+
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="canonical" href="http://localhost:4000/features/2020/04/30/verletintegration2.html">
+  <link rel="alternate" type="application/rss+xml" title="Ted Spectrum" href="http://localhost:4000/feed.xml">
+  
+  
+  <style> .app {
+  font-size: 1.5rem;
+} canvas {
+  display: block;
+  top: 0px;
+  left: 0px;
+  border: 1px solid black;
+} </style>
+
+  
+</head>
+
+
+  <body>
+    <header class="site-header">
+    <div class="wrapper">
+      <h1><a href="/" id="top">Ted Spectrum</a></h1>
+    </div>
+    </header>
+    <div class="page-content">
+      <div class="wrapper">
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">Verlet Integration 2</h1>
+    <p class="post-meta"><time datetime="2020-04-30T00:00:00+01:00" itemprop="datePublished">Apr 30, 2020</time></p>
+  </header>
+
+  <div class="post-content" itemprop="articleBody">
+    
+<h1>Verlet Integration 2</h1>
+<p>Following along with a video from Youtube by "Coding Math"</p>
+<div class="app">
+  <canvas id="canvas" width="320" height="240"></canvas>
+</div>
+
+  </div>
+
+</article>
+
+      </div>
+    </div>
+
+    <footer class="site-footer">
+  <div class="wrapper">
+    <p><a href="#top">Top</a></p>
+  </div>
+</footer>
+
+
+<script> window.onload = function() {
+    var canvas = document.getElementById("canvas"),
+      context = canvas.getContext("2d"),
+      width = canvas.width,
+      height = canvas.height,
+      points = [],
+      sticks = [],
+      bounce = 0.9,
+      gravity = 0.5,
+      friction = 0.995;
+    points.push({
+      x: 12,
+      y: 12,
+      oldx: 10,
+      oldy: 10
+    },
+    {
+      x: 30,
+      y: 12,
+      oldx: 30,
+      oldy: 12
+    },
+    {
+      x: 30,
+      y: 30,
+      oldx: 34,
+      oldy: 26
+    },
+    {
+      x: 12,
+      y: 30,
+      oldx: 12,
+      oldy: 30
+    }
+    );
+    sticks.push({
+      p0: points[0],
+      p1: points[1],
+      length: distance(points[0], points[1])
+    },
+    {
+      p0: points[1],
+      p1: points[2],
+      length: distance(points[1], points[2])
+    },
+    {
+      p0: points[2],
+      p1: points[3],
+      length: distance(points[2], points[3])
+    },
+    {
+      p0: points[3],
+      p1: points[0],
+      length: distance(points[3], points[0])
+    },
+    {
+      p0: points[0],
+      p1: points[2],
+      length: distance(points[0], points[2])
+    },
+    {
+      p0: points[1],
+      p1: points[3],
+      length: distance(points[1], points[3])
+    },
+    )
+  //canvas.addEventListener('click', onClick);
+  //console.log(points, sticks);
+  update();
+
+  function distance(p0, p1) {
+    var dx = p1.x - p0.x,
+      dy = p1.y - p0.y;
+    // Pythagoras h2 = a2 + b2
+    return Math.sqrt(dx * dx + dy * dy);
+  }
+  function onClick(e) {
+    points.push({
+      x: e.offsetX,
+      y: e.offsetY,
+      oldx: e.offsetX - 2,
+      oldy: e.offsetY - 2
+    })
+    //console.log(e.offsetX, e.offsetY);
+    if(points.length > 8) {
+      points.splice(0,1);
+    }
+  }
+
+  function update() {
+    updatePoints();
+    updateSticks();
+    renderPoints();
+    renderSticks();
+    //console.log(points, sticks);
+    requestAnimationFrame(update);
+  }
+
+  function updateSticks() {
+    var s, dx, dy, distance, difference, percent, offsetX, offsetY;
+    for(var i = 0; i < sticks.length; i++) {
+      s = sticks[i];
+      dx = s.p1.x - s.p0.x;
+      dy = s.p1.y - s.p0.y;
+      distance = Math.sqrt(dx * dx + dy * dy);
+      difference = s.length - distance;
+      (difference !== 0) ? percent = difference / distance / 2 : percent = 0;
+      //console.log(difference, percent);
+      offsetX = dx * percent;
+      offsetY = dy * percent;
+      s.p0.x = s.p0.x - offsetX;
+      s.p0.y = s.p0.y - offsetY;
+      s.p1.x = s.p1.x + offsetX;
+      s.p1.y = s.p1.y + offsetY;
+    }
+  }
+  function updatePoints() {
+    var p, vx, vy;
+    for(var i = 0; i < points.length; i++) {
+        p = points[i],
+        vx = (p.x - p.oldx) * friction,
+        vy = (p.y - p.oldy) * friction;
+      // integration
+      p.oldx = p.x;
+      p.oldy = p.y;
+      p.x = p.x + vx;
+      p.y = p.y + vy + gravity;
+      // collision detection
+      if(p.x > width) {
+        p.x = width;
+        p.oldx = p.x + vx * bounce;
+      }
+      else if(p.x < 0) {
+        p.x = 0;
+        p.oldx = p.x + vx * bounce;
+      }
+      if(p.y > height) {
+        p.y = height;
+        p.oldy = p.y + vy * bounce;
+      }
+      else if(p.y < 0) {
+        p.y = 0;
+        p.oldy = p.y + vy * bounce;
+      }
+    }
+  }
+
+  function renderPoints() {
+    var p, i;
+    // clear all
+    context.clearRect(0, 0, width, height);
+    // draw all
+    for(i = 0; i < points.length; i++) {
+      p = points[i];
+      context.beginPath();
+      context.arc(Math.round(p.x), Math.round(p.y), 5, 0, Math.PI * 2);
+      context.fill();
+    }
+  }
+  function renderSticks() {
+    var s, i;
+    context.beginPath();
+    for(i = 0; i < sticks.length; i++) {
+      s = sticks[i];
+      context.moveTo(s.p0.x, s.p0.y);
+      context.lineTo(s.p1.x, s.p1.y);
+    }
+    context.stroke();
+  }
+}; </script>
+
+
+
+  </body>
+
+</html>

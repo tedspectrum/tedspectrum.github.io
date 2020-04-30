@@ -6,9 +6,27 @@
 </description>
     <link>http://localhost:4000/</link>
     <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Wed, 29 Apr 2020 19:22:43 +0100</pubDate>
-    <lastBuildDate>Wed, 29 Apr 2020 19:22:43 +0100</lastBuildDate>
+    <pubDate>Thu, 30 Apr 2020 07:49:50 +0100</pubDate>
+    <lastBuildDate>Thu, 30 Apr 2020 07:49:50 +0100</lastBuildDate>
     <generator>Jekyll v4.0.0</generator>
+    
+      <item>
+        <title>Verlet Integration 2</title>
+        <description>
+&lt;h1&gt;Verlet Integration 2&lt;/h1&gt;
+&lt;p&gt;Following along with a video from Youtube by &quot;Coding Math&quot;&lt;/p&gt;
+&lt;div class=&quot;app&quot;&gt;
+  &lt;canvas id=&quot;canvas&quot; width=&quot;320&quot; height=&quot;240&quot;&gt;&lt;/canvas&gt;
+&lt;/div&gt;
+</description>
+        <pubDate>Thu, 30 Apr 2020 00:00:00 +0100</pubDate>
+        <link>http://localhost:4000/features/2020/04/30/verletintegration2.html</link>
+        <guid isPermaLink="true">http://localhost:4000/features/2020/04/30/verletintegration2.html</guid>
+        
+        
+        <category>features</category>
+        
+      </item>
     
       <item>
         <title>Verlet Integration 1</title>
@@ -314,45 +332,6 @@ static text posts.  In Posts, styles and scripts maybe inline in that page.&lt;/
         <pubDate>Fri, 08 Nov 2019 00:00:00 +0000</pubDate>
         <link>http://localhost:4000/features/2019/11/08/filemanipulation.html</link>
         <guid isPermaLink="true">http://localhost:4000/features/2019/11/08/filemanipulation.html</guid>
-        
-        
-        <category>features</category>
-        
-      </item>
-    
-      <item>
-        <title>SVG logo</title>
-        <description>
-&lt;div id=&quot;app&quot; class=&quot;app&quot;&gt;
-	&lt;svg xml:space=&quot;preserve&quot; 
-		:width=&quot;(20 * radius) + (9 * spacing) + (2 * padding)&quot; 
-		:height=&quot;(2 * radius) + (2 * padding)&quot; zoomAndPan=&quot;disable&quot;&gt;
-		&lt;title&gt;Tedspectrum logo&lt;/title&gt;
-		&lt;desc&gt;10 circles in each of the colors of the rainbow&lt;/desc&gt;
-		&lt;defs&gt;
-		&lt;circle id=&quot;circ&quot; :cx=&quot;0&quot; :cy=&quot;0&quot; :r=&quot;radius&quot;/&gt;
-		&lt;circle id=&quot;smallcirc&quot; :cx=&quot;-smallradius&quot; :cy=&quot;-smallradius&quot; :r=&quot;smallradius&quot; /&gt;
-		&lt;/defs&gt;
-		&lt;g v-for=&quot;(circ, index) in circles&quot; :transform=&quot;circ.transform&quot;&gt;
-			&lt;use :width=&quot;radius * 2&quot; :height=&quot;radius * 2&quot; xlink:href=&quot;#circ&quot; :style=&quot;circ.style&quot;/&gt;
-			&lt;use v-for=&quot;smallcirc in circ.smallcircles&quot;
-				:x=&quot;smallcirc.x&quot; :y=&quot;smallcirc.y&quot;
-				:width=&quot;smallradius * 2&quot; :height=&quot;smallradius * 2&quot; 
-				xlink:href=&quot;#smallcirc&quot; :style=&quot;smallcirc.style&quot;/&gt;
-			&lt;line
-				v-if=&quot;(index !== 0)&quot; 
-				:x1=&quot;0&quot; :y1=&quot;0&quot; 
-				:x2=&quot;0&quot; :y2=&quot;(-0.6 * radius)&quot;
-				:style=&quot;circ.handStyle&quot;
-				:transform=&quot;circ.handTransform&quot; 
-				/&gt;
-		&lt;/g&gt;
-	&lt;/svg&gt;
-&lt;/div&gt;
-</description>
-        <pubDate>Sun, 03 Nov 2019 00:00:00 +0000</pubDate>
-        <link>http://localhost:4000/features/2019/11/03/firstsvg.html</link>
-        <guid isPermaLink="true">http://localhost:4000/features/2019/11/03/firstsvg.html</guid>
         
         
         <category>features</category>
