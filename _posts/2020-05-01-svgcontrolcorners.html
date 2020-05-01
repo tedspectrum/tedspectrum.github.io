@@ -1,0 +1,133 @@
+---
+layout: post
+title:  "SVG Rectangle with controllable corners"
+scripts: 
+  - url: "https://cdn.jsdelivr.net/npm/vue@2.6.0/dist/vue.min.js"
+    type: "absolute"
+  - url: "/assets/src/LocalStorage.js"
+    type: "relative"
+categories: [features]
+inlinestyle: >
+  <style>
+  .app {
+    font-size: 1.5rem;
+  }
+  .app svg {
+      border: 1px solid black;
+  }
+  .app svg path {
+      stroke-width: 2px;
+      stroke: black;
+      fill: lightskyblue;
+  }
+  .hidden {
+    display: none;
+  }
+  </style>
+inlinescript: > 
+  <script>
+  const app = new Vue({
+    el: '#postapp',
+    data: {
+      svg: {
+        width: 320,
+        height: 240,
+        title: "rectangle with rounded corner(s)",
+        desc: "controllable corners on a SVG rectangle"
+      },
+      rect: {
+        path: "",
+        width: 120,
+        height: 75,
+        rx: 20,
+        ry: 20,
+        topright: {
+          rx: 10,
+          ry: 10
+        },
+        bottomright: {
+          rx: 25,
+          ry: 25
+        },
+        bottomleft: {
+          rx: 5,
+          ry: 5
+        },
+        topleft: {
+          rx: 30,
+          ry: 30
+        }
+      }
+    },
+    computed: {
+      rectPath: function() {
+        return this.getRectPath();
+      }
+    },
+    methods: {
+      cornerPath: function(rx, ry, pos) {
+        // corners drawn with clockwise arcs
+        let ret =  "a" + rx + "," + ry + " 0 0 1 ";
+        switch(pos) {
+          case "topright": ret += rx + "," + ry + " "; break;
+          case "bottomright": ret += "-" + rx + "," + ry + " "; break;
+          case "bottomleft": ret += "-" + rx + ",-" + ry + " "; break;
+          case "topleft": ret += rx + ",-" + ry + " "; break;
+        }
+        return ret;
+      },
+      onChangeWidth: function(e) {
+        this.rect.width = Math.round(this.svg.width / 100 * e.target.value); 
+      },
+      onChangeHeight: function(e) {
+        this.rect.height = Math.round(this.svg.height / 100 * e.target.value);
+      },
+      getRectPath: function() {
+        let ret = "", topW, bottomW, leftH, rightH;
+          topW = this.rect.width - this.rect.topright.rx - this.rect.topleft.rx;
+          bottomW = this.rect.width - this.rect.bottomright.rx - this.rect.bottomleft.rx;
+          leftH = this.rect.height - this.rect.topleft.ry - this.rect.bottomleft.ry;
+          rightH = this.rect.height - this.rect.topright.ry - this.rect.bottomright.ry;
+          ret = 
+            "M -" + (this.rect.width / 2) + ",-" + (this.rect.height / 2) + " "
+            + "m " + this.rect.topleft.rx + ",0 " 
+            + "h" + topW + " "
+            + this.cornerPath(this.rect.topright.rx, this.rect.topright.ry, "topright")
+            + "v" + rightH + " " 
+            + this.cornerPath(this.rect.bottomright.rx, this.rect.bottomright.ry, "bottomright")
+            + "h-" + bottomW + " "
+            + this.cornerPath(this.rect.bottomleft.rx, this.rect.bottomleft.ry, "bottomleft")
+            + "v-" + leftH + " "
+            + this.cornerPath(this.rect.topleft.rx, this.rect.topleft.ry, "topleft")
+            + "z";
+        //console.log(ret);
+        return ret;
+      }
+    }
+  });
+  </script>
+---
+{% raw %}
+<div id="postapp" class="app">
+  <div class="hidden">
+    <!-- cache, give elements ref="" to reference in methods -->
+  </div>
+  <svg xml:space="preserve" :width="svg.width" :height="svg.height" zoomAndPan="disable">
+    <title v-if="svg.title && svg.title !== ''">{{ svg.title }}</title>
+    <desc v-if="svg.desc && svg.desc !== ''">{{ svg.desc }}</desc>
+    <defs>
+    </defs>
+    <g :transform="'translate(' + svg.width / 2 + ',' + svg.height / 2 + ')'">
+      <path :d="rectPath" />
+    </g>
+  </svg>
+  <div>
+    <label for="svgwidth">Width</label>
+    <input @change="onChangeWidth" type="range" id="width" name="svgwidth" min="0" max="100" :value="Math.round(rect.width / svg.width * 100)">
+  </div>
+  <div>
+    <label for="svgheight">Height</label>
+    <input @change="onChangeHeight" type="range" id="height" name="svgheight" min="0" max="100" :value="Math.round(rect.height / svg.height * 100)">
+  </div>
+</div>
+{% endraw %}

@@ -1,0 +1,41 @@
+---
+layout: post
+title:  "Title goes here"
+scripts: 
+  - url: "https://cdn.jsdelivr.net/npm/vue@2.6.0/dist/vue.min.js"
+    type: "absolute"
+  - url: "/assets/src/LocalStorage.js"
+    type: "relative"
+categories: [features]
+inlinestyle: >
+  <style>
+  .app {
+    font-size: 1.5rem;
+  }
+  .hidden {
+    display: none;
+  }
+  </style>
+inlinescript: > 
+  <script>
+  const app = new Vue({
+    el: '#postapp',
+    data: {
+      
+    },
+    mounted: function() {
+      
+    },
+    methods: {
+      
+    }
+  });
+  </script>
+---
+{% raw %}
+<div id="postapp" class="app">
+  <div class="hidden">
+    <!-- cache, give elements ref="" to reference in methods -->
+  </div>
+</div>
+{% endraw %}

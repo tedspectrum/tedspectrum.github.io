@@ -6,8 +6,8 @@
 </description>
     <link>http://localhost:4000/</link>
     <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Fri, 01 May 2020 10:49:32 +0100</pubDate>
-    <lastBuildDate>Fri, 01 May 2020 10:49:32 +0100</lastBuildDate>
+    <pubDate>Fri, 01 May 2020 20:06:22 +0100</pubDate>
+    <lastBuildDate>Fri, 01 May 2020 20:06:22 +0100</lastBuildDate>
     <generator>Jekyll v4.0.0</generator>
     
       <item>
@@ -43,6 +43,41 @@
         <pubDate>Fri, 01 May 2020 00:00:00 +0100</pubDate>
         <link>http://localhost:4000/features/2020/05/01/verletintegration3-5.html</link>
         <guid isPermaLink="true">http://localhost:4000/features/2020/05/01/verletintegration3-5.html</guid>
+        
+        
+        <category>features</category>
+        
+      </item>
+    
+      <item>
+        <title>SVG Rectangle with controllable corners</title>
+        <description>
+&lt;div id=&quot;postapp&quot; class=&quot;app&quot;&gt;
+  &lt;div class=&quot;hidden&quot;&gt;
+    &lt;!-- cache, give elements ref=&quot;&quot; to reference in methods --&gt;
+  &lt;/div&gt;
+  &lt;svg xml:space=&quot;preserve&quot; :width=&quot;svg.width&quot; :height=&quot;svg.height&quot; zoomAndPan=&quot;disable&quot;&gt;
+    &lt;title v-if=&quot;svg.title &amp;&amp; svg.title !== ''&quot;&gt;{{ svg.title }}&lt;/title&gt;
+    &lt;desc v-if=&quot;svg.desc &amp;&amp; svg.desc !== ''&quot;&gt;{{ svg.desc }}&lt;/desc&gt;
+    &lt;defs&gt;
+    &lt;/defs&gt;
+    &lt;g :transform=&quot;'translate(' + svg.width / 2 + ',' + svg.height / 2 + ')'&quot;&gt;
+      &lt;path :d=&quot;rectPath&quot; /&gt;
+    &lt;/g&gt;
+  &lt;/svg&gt;
+  &lt;div&gt;
+    &lt;label for=&quot;svgwidth&quot;&gt;Width&lt;/label&gt;
+    &lt;input @change=&quot;onChangeWidth&quot; type=&quot;range&quot; id=&quot;width&quot; name=&quot;svgwidth&quot; min=&quot;0&quot; max=&quot;100&quot; :value=&quot;Math.round(rect.width / svg.width * 100)&quot;&gt;
+  &lt;/div&gt;
+  &lt;div&gt;
+    &lt;label for=&quot;svgheight&quot;&gt;Height&lt;/label&gt;
+    &lt;input @change=&quot;onChangeHeight&quot; type=&quot;range&quot; id=&quot;height&quot; name=&quot;svgheight&quot; min=&quot;0&quot; max=&quot;100&quot; :value=&quot;Math.round(rect.height / svg.height * 100)&quot;&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+</description>
+        <pubDate>Fri, 01 May 2020 00:00:00 +0100</pubDate>
+        <link>http://localhost:4000/features/2020/05/01/svgcontrolcorners.html</link>
+        <guid isPermaLink="true">http://localhost:4000/features/2020/05/01/svgcontrolcorners.html</guid>
         
         
         <category>features</category>
@@ -255,54 +290,6 @@ static text posts.  In Posts, styles and scripts maybe inline in that page.&lt;/
         <pubDate>Sat, 14 Dec 2019 00:00:00 +0000</pubDate>
         <link>http://localhost:4000/features/2019/12/14/buttontree.html</link>
         <guid isPermaLink="true">http://localhost:4000/features/2019/12/14/buttontree.html</guid>
-        
-        
-        <category>features</category>
-        
-      </item>
-    
-      <item>
-        <title>UI Elements</title>
-        <description>
-&lt;div id=&quot;app&quot; class=&quot;app&quot;&gt;
-  &lt;div class=&quot;app-header&quot;&gt;
-    &lt;h1&gt;UI Elements&lt;/h1&gt;
-  &lt;/div&gt;
-  &lt;div class=&quot;app-main padded&quot;&gt;
-    &lt;button type=&quot;button&quot; @click=&quot;onMenuButtonClick('left')&quot;&gt;Left Menu&lt;/button&gt;
-    &lt;button type=&quot;button&quot; @click=&quot;onMenuButtonClick('right')&quot;&gt;Right Menu&lt;/button&gt;
-    &lt;button type=&quot;button&quot; @click=&quot;onMenuButtonClick('top')&quot;&gt;Top Menu&lt;/button&gt;
-    &lt;button type=&quot;button&quot; @click=&quot;onMenuButtonClick('bottom')&quot;&gt;Bottom Menu&lt;/button&gt;
-    &lt;button type=&quot;button&quot; @click=&quot;onMenuButtonClick('full')&quot;&gt;Full Menu&lt;/button&gt;
-    {{ content }}
-  &lt;/div&gt;
-  &lt;div class=&quot;app-footer&quot;&gt;
-    &lt;h1&gt;By Tedspectrum&lt;/h1&gt;
-  &lt;/div&gt;
-  &lt;panel 
-    :active=&quot;activePanelVisible&quot;
-    :classes=&quot;activePanel.classes&quot; 
-    :overlay=&quot;activePanel.overlay&quot;
-    :transition=&quot;activePanel.transition&quot; 
-    @close=&quot;(activePanelVisible = false)&quot;&gt;
-    &lt;div&gt;
-      &lt;div class=&quot;panel-header padded&quot;&gt;
-        &lt;h2 class=&quot;griditem-left&quot;&gt;Menu&lt;/h2&gt;
-        &lt;button type=&quot;button&quot; class=&quot;griditem-right&quot; 
-          @click=&quot;(activePanelVisible = false)&quot;&gt;X&lt;/button&gt;
-      &lt;/div&gt;
-      &lt;template v-for=&quot;item in activePanel.items&quot;&gt;
-      	&lt;button type=&quot;button&quot; class=&quot;panel-button&quot;
-      		@click=&quot;onMenuItemClick(item.name)&quot;&gt;{{ item.text }}
-      	&lt;/button&gt;
-      &lt;/template&gt;
-    &lt;/div&gt;
-  &lt;/panel&gt;
-&lt;/div&gt;
-</description>
-        <pubDate>Sat, 23 Nov 2019 00:00:00 +0000</pubDate>
-        <link>http://localhost:4000/features/2019/11/23/uielements.html</link>
-        <guid isPermaLink="true">http://localhost:4000/features/2019/11/23/uielements.html</guid>
         
         
         <category>features</category>
