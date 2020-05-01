@@ -6,9 +6,29 @@
 </description>
     <link>http://localhost:4000/</link>
     <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Fri, 01 May 2020 07:55:34 +0100</pubDate>
-    <lastBuildDate>Fri, 01 May 2020 07:55:34 +0100</lastBuildDate>
+    <pubDate>Fri, 01 May 2020 10:49:32 +0100</pubDate>
+    <lastBuildDate>Fri, 01 May 2020 10:49:32 +0100</lastBuildDate>
     <generator>Jekyll v4.0.0</generator>
+    
+      <item>
+        <title>Verlet Integration 3.75</title>
+        <description>
+&lt;h1&gt;Verlet Integration 3.75&lt;/h1&gt;
+&lt;p&gt;Following along with a video from Youtube by &quot;Coding Math&quot;&lt;/p&gt;
+&lt;p&gt;Click mouse to position square&lt;/p&gt;
+&lt;div class=&quot;app&quot;&gt;
+  &lt;img id=&quot;crate&quot; src=&quot;/assets/images/crate.png&quot; width=&quot;24&quot; height=&quot;24&quot; /&gt;
+  &lt;canvas id=&quot;canvas&quot; width=&quot;320&quot; height=&quot;240&quot;&gt;&lt;/canvas&gt;
+&lt;/div&gt;
+</description>
+        <pubDate>Fri, 01 May 2020 00:00:00 +0100</pubDate>
+        <link>http://localhost:4000/features/2020/05/01/verletintegration3-75.html</link>
+        <guid isPermaLink="true">http://localhost:4000/features/2020/05/01/verletintegration3-75.html</guid>
+        
+        
+        <category>features</category>
+        
+      </item>
     
       <item>
         <title>Verlet Integration 3.5</title>
@@ -283,25 +303,6 @@ static text posts.  In Posts, styles and scripts maybe inline in that page.&lt;/
         <pubDate>Sat, 23 Nov 2019 00:00:00 +0000</pubDate>
         <link>http://localhost:4000/features/2019/11/23/uielements.html</link>
         <guid isPermaLink="true">http://localhost:4000/features/2019/11/23/uielements.html</guid>
-        
-        
-        <category>features</category>
-        
-      </item>
-    
-      <item>
-        <title>ACE Editor</title>
-        <description>
-&lt;div id=&quot;app&quot; class=&quot;app&quot;&gt;
-  &lt;input type=&quot;text&quot; v-model=&quot;url&quot;&gt;&lt;/input&gt;
-  &lt;button type=&quot;button&quot; id=&quot;btnGet&quot; @click=&quot;onGetClick&quot;&gt;{{ buttonGetMsg }}&lt;/button&gt;
-  &lt;button type=&quot;button&quot; id=&quot;btnPost&quot; @click=&quot;onPostClick&quot;&gt;{{ buttonPostMsg }}&lt;/button&gt;
-  &lt;div id=&quot;editor&quot;&gt;// Hello World&lt;/div&gt;
-&lt;/div&gt;
-</description>
-        <pubDate>Thu, 21 Nov 2019 00:00:00 +0000</pubDate>
-        <link>http://localhost:4000/features/2019/11/21/aceeditor.html</link>
-        <guid isPermaLink="true">http://localhost:4000/features/2019/11/21/aceeditor.html</guid>
         
         
         <category>features</category>
