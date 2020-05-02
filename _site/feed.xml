@@ -6,8 +6,8 @@
 </description>
     <link>http://localhost:4000/</link>
     <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sat, 02 May 2020 17:04:17 +0100</pubDate>
-    <lastBuildDate>Sat, 02 May 2020 17:04:17 +0100</lastBuildDate>
+    <pubDate>Sat, 02 May 2020 19:32:37 +0100</pubDate>
+    <lastBuildDate>Sat, 02 May 2020 19:32:37 +0100</lastBuildDate>
     <generator>Jekyll v4.0.0</generator>
     
       <item>
@@ -49,6 +49,15 @@
         /&gt;
       &lt;/g&gt;
     &lt;/g&gt;
+    &lt;g v-for=&quot;(rect, index) in rects&quot;&gt;
+      &lt;g :transform=&quot;'translate(' + rect.x + ',' + rect.y + ')'&quot;&gt;
+        &lt;rect :x=&quot;-(rect.width / 2)&quot; :y=&quot;-(rect.height / 2)&quot;
+          :width=&quot;rect.width&quot; :height=&quot;rect.height&quot;
+          stroke=&quot;none&quot; fill=&quot;none&quot;&gt;&lt;/rect&gt;
+        &lt;text text-anchor=&quot;middle&quot; dominant-baseline=&quot;central&quot;&gt;{{ rect.title }}&lt;/text&gt;
+      &lt;/g&gt;
+    &lt;/g&gt;
+
   &lt;/svg&gt;
   &lt;div&gt;
     &lt;label for=&quot;rectwidth&quot;&gt;Width&lt;/label&gt;

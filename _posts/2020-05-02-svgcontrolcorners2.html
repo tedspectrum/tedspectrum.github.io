@@ -34,6 +34,7 @@ inlinescript: >
         x: 160,
         y: 120,
         path: "",
+        title: "one",
         width: 120,
         height: 75,
         topright: { rx: 10, ry: 10 },
@@ -48,6 +49,7 @@ inlinescript: >
         x: 240,
         y: 50,
         path: "",
+        title: "two",
         width: 60,
         height: 40,
         topright: { rx: 10, ry: 10 },
@@ -184,6 +186,15 @@ inlinescript: >
         />
       </g>
     </g>
+    <g v-for="(rect, index) in rects">
+      <g :transform="'translate(' + rect.x + ',' + rect.y + ')'">
+        <rect :x="-(rect.width / 2)" :y="-(rect.height / 2)"
+          :width="rect.width" :height="rect.height"
+          stroke="none" fill="none"></rect>
+        <text text-anchor="middle" dominant-baseline="central">{{ rect.title }}</text>
+      </g>
+    </g>
+
   </svg>
   <div>
     <label for="rectwidth">Width</label>

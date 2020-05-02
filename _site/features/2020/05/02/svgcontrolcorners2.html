@@ -7,7 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <title>SVG Rectangle with controllable corners 2</title>
-  <meta name="description" content="              {{ svg.title }}    {{ svg.desc }}                                                                                Width            Height       ...">
+  <meta name="description" content="              {{ svg.title }}    {{ svg.desc }}                                                                                                  {{ rect.titl...">
 
   <link rel="stylesheet" href="/css/main.css">
   <link rel="canonical" href="http://localhost:4000/features/2020/05/02/svgcontrolcorners2.html">
@@ -79,6 +79,15 @@
         />
       </g>
     </g>
+    <g v-for="(rect, index) in rects">
+      <g :transform="'translate(' + rect.x + ',' + rect.y + ')'">
+        <rect :x="-(rect.width / 2)" :y="-(rect.height / 2)"
+          :width="rect.width" :height="rect.height"
+          stroke="none" fill="none"></rect>
+        <text text-anchor="middle" dominant-baseline="central">{{ rect.title }}</text>
+      </g>
+    </g>
+
   </svg>
   <div>
     <label for="rectwidth">Width</label>
@@ -142,6 +151,7 @@
       x: 160,
       y: 120,
       path: "",
+      title: "one",
       width: 120,
       height: 75,
       topright: { rx: 10, ry: 10 },
@@ -156,6 +166,7 @@
       x: 240,
       y: 50,
       path: "",
+      title: "two",
       width: 60,
       height: 40,
       topright: { rx: 10, ry: 10 },
