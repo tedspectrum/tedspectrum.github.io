@@ -6,8 +6,8 @@
 </description>
     <link>http://localhost:4000/</link>
     <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Fri, 01 May 2020 20:06:22 +0100</pubDate>
-    <lastBuildDate>Fri, 01 May 2020 20:06:22 +0100</lastBuildDate>
+    <pubDate>Sat, 02 May 2020 07:13:52 +0100</pubDate>
+    <lastBuildDate>Sat, 02 May 2020 07:13:52 +0100</lastBuildDate>
     <generator>Jekyll v4.0.0</generator>
     
       <item>
@@ -66,12 +66,30 @@
     &lt;/g&gt;
   &lt;/svg&gt;
   &lt;div&gt;
-    &lt;label for=&quot;svgwidth&quot;&gt;Width&lt;/label&gt;
-    &lt;input @change=&quot;onChangeWidth&quot; type=&quot;range&quot; id=&quot;width&quot; name=&quot;svgwidth&quot; min=&quot;0&quot; max=&quot;100&quot; :value=&quot;Math.round(rect.width / svg.width * 100)&quot;&gt;
+    &lt;label for=&quot;rectwidth&quot;&gt;Width&lt;/label&gt;
+    &lt;input @change=&quot;onChange&quot; type=&quot;range&quot; id=&quot;width&quot; name=&quot;rectwidth&quot; min=&quot;1&quot; :max=&quot;svg.width&quot; :value=&quot;rect.width&quot;&gt;
   &lt;/div&gt;
   &lt;div&gt;
-    &lt;label for=&quot;svgheight&quot;&gt;Height&lt;/label&gt;
-    &lt;input @change=&quot;onChangeHeight&quot; type=&quot;range&quot; id=&quot;height&quot; name=&quot;svgheight&quot; min=&quot;0&quot; max=&quot;100&quot; :value=&quot;Math.round(rect.height / svg.height * 100)&quot;&gt;
+    &lt;label for=&quot;rectheight&quot;&gt;Height&lt;/label&gt;
+    &lt;input @change=&quot;onChange&quot; type=&quot;range&quot; id=&quot;height&quot; name=&quot;rectheight&quot; min=&quot;1&quot; :max=&quot;svg.height&quot; :value=&quot;rect.height&quot;&gt;
+  &lt;/div&gt;
+  &lt;div&gt;
+    &lt;label for=&quot;cornername&quot;&gt;Corner&lt;/label&gt;
+    &lt;select v-model=&quot;selectedCorner&quot; name=&quot;cornername&quot;&gt;
+      &lt;option value=&quot;&quot;&gt;Please select one&lt;/option&gt;
+      &lt;option value=&quot;topleft&quot;&gt;Top Left&lt;/option&gt;
+      &lt;option value=&quot;topright&quot;&gt;Top Right&lt;/option&gt;
+      &lt;option value=&quot;bottomleft&quot;&gt;Bottom Left&lt;/option&gt;
+      &lt;option value=&quot;bottomright&quot;&gt;Bottom Right&lt;/option&gt;
+    &lt;/select&gt;
+  &lt;/div&gt;
+  &lt;div&gt;
+    &lt;label for=&quot;cornerrx&quot;&gt;Corner rx&lt;/label&gt;
+    &lt;input @change=&quot;onChange&quot; type=&quot;range&quot; id=&quot;rx&quot; name=&quot;cornerrx&quot; min=&quot;0&quot; max=&quot;30&quot; :value=&quot;cornerRx&quot;&gt;
+  &lt;/div&gt;
+  &lt;div&gt;
+    &lt;label for=&quot;cornerry&quot;&gt;Corner ry&lt;/label&gt;
+    &lt;input @change=&quot;onChange&quot; type=&quot;range&quot; id=&quot;ry&quot; name=&quot;cornerry&quot; min=&quot;0&quot; max=&quot;30&quot; :value=&quot;cornerRy&quot;&gt;
   &lt;/div&gt;
 &lt;/div&gt;
 </description>

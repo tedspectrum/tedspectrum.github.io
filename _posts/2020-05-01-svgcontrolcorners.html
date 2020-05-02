@@ -29,6 +29,7 @@ inlinescript: >
   const app = new Vue({
     el: '#postapp',
     data: {
+      selectedCorner: "",
       svg: {
         width: 320,
         height: 240,
@@ -39,33 +40,59 @@ inlinescript: >
         path: "",
         width: 120,
         height: 75,
-        rx: 20,
-        ry: 20,
-        topright: {
-          rx: 10,
-          ry: 10
-        },
-        bottomright: {
-          rx: 25,
-          ry: 25
-        },
-        bottomleft: {
-          rx: 5,
-          ry: 5
-        },
-        topleft: {
-          rx: 30,
-          ry: 30
-        }
+        topright: { rx: 10, ry: 10 },
+        bottomright: { rx: 25, ry: 25 },
+        bottomleft: { rx: 5, ry: 5 },
+        topleft: { rx: 30, ry: 30 }
       }
     },
     computed: {
       rectPath: function() {
-        return this.getRectPath();
+        return this.getRectPath(this.rect);
+      },
+      cornerRx: function() {
+        let ret = 0;
+        switch(this.selectedCorner) {
+          case "topright": ret = this.rect.topright.rx; break;
+          case "bottomright": ret = this.rect.bottomright.rx; break;
+          case "bottomleft": ret = this.rect.bottomleft.rx; break;
+          case "topleft": ret = this.rect.topleft.rx; break;
+        }
+        return ret;
+      },
+      cornerRy: function() {
+        let ret = 0;
+        switch(this.selectedCorner) {
+          case "topright": ret = this.rect.topright.ry; break;
+          case "bottomright": ret = this.rect.bottomright.ry; break;
+          case "bottomleft": ret = this.rect.bottomleft.ry; break;
+          case "topleft": ret = this.rect.topleft.ry; break;
+        }
+        return ret;
       }
     },
     methods: {
-      cornerPath: function(rx, ry, pos) {
+      onChange: function(e) {
+        switch(e.target.id) {
+          case "width": this.rect.width = Math.round(e.target.value); break;
+          case "height": this.rect.height = Math.round(e.target.value); break;
+          case "rx": 
+            switch(this.selectedCorner) {
+              case "topright": this.rect.topright.rx = Math.round(e.target.value); break;
+              case "bottomright": this.rect.bottomright.rx = Math.round(e.target.value); break;
+              case "bottomleft": this.rect.bottomleft.rx = Math.round(e.target.value); break;
+              case "topleft": this.rect.topleft.rx = Math.round(e.target.value); break;
+            }; break;
+          case "ry":             
+            switch(this.selectedCorner) {
+              case "topright": this.rect.topright.ry = Math.round(e.target.value); break;
+              case "bottomright": this.rect.bottomright.ry = Math.round(e.target.value); break;
+              case "bottomleft": this.rect.bottomleft.ry = Math.round(e.target.value); break;
+              case "topleft": this.rect.topleft.ry = Math.round(e.target.value); break;
+            }; break;
+        }
+      },
+      getCornerArcPath: function(rx, ry, pos) {
         // corners drawn with clockwise arcs
         let ret =  "a" + rx + "," + ry + " 0 0 1 ";
         switch(pos) {
@@ -76,29 +103,23 @@ inlinescript: >
         }
         return ret;
       },
-      onChangeWidth: function(e) {
-        this.rect.width = Math.round(this.svg.width / 100 * e.target.value); 
-      },
-      onChangeHeight: function(e) {
-        this.rect.height = Math.round(this.svg.height / 100 * e.target.value);
-      },
-      getRectPath: function() {
+      getRectPath: function(rect) {
         let ret = "", topW, bottomW, leftH, rightH;
-          topW = this.rect.width - this.rect.topright.rx - this.rect.topleft.rx;
-          bottomW = this.rect.width - this.rect.bottomright.rx - this.rect.bottomleft.rx;
-          leftH = this.rect.height - this.rect.topleft.ry - this.rect.bottomleft.ry;
-          rightH = this.rect.height - this.rect.topright.ry - this.rect.bottomright.ry;
+          topW = rect.width - rect.topright.rx - rect.topleft.rx;
+          bottomW = rect.width - rect.bottomright.rx - rect.bottomleft.rx;
+          leftH = rect.height - rect.topleft.ry - rect.bottomleft.ry;
+          rightH = rect.height - rect.topright.ry - rect.bottomright.ry;
           ret = 
-            "M -" + (this.rect.width / 2) + ",-" + (this.rect.height / 2) + " "
-            + "m " + this.rect.topleft.rx + ",0 " 
+            "M -" + (rect.width / 2) + ",-" + (rect.height / 2) + " "
+            + "m " + rect.topleft.rx + ",0 " 
             + "h" + topW + " "
-            + this.cornerPath(this.rect.topright.rx, this.rect.topright.ry, "topright")
+            + this.getCornerArcPath(rect.topright.rx, rect.topright.ry, "topright")
             + "v" + rightH + " " 
-            + this.cornerPath(this.rect.bottomright.rx, this.rect.bottomright.ry, "bottomright")
+            + this.getCornerArcPath(rect.bottomright.rx, rect.bottomright.ry, "bottomright")
             + "h-" + bottomW + " "
-            + this.cornerPath(this.rect.bottomleft.rx, this.rect.bottomleft.ry, "bottomleft")
+            + this.getCornerArcPath(rect.bottomleft.rx, rect.bottomleft.ry, "bottomleft")
             + "v-" + leftH + " "
-            + this.cornerPath(this.rect.topleft.rx, this.rect.topleft.ry, "topleft")
+            + this.getCornerArcPath(rect.topleft.rx, rect.topleft.ry, "topleft")
             + "z";
         //console.log(ret);
         return ret;
@@ -122,12 +143,30 @@ inlinescript: >
     </g>
   </svg>
   <div>
-    <label for="svgwidth">Width</label>
-    <input @change="onChangeWidth" type="range" id="width" name="svgwidth" min="0" max="100" :value="Math.round(rect.width / svg.width * 100)">
+    <label for="rectwidth">Width</label>
+    <input @change="onChange" type="range" id="width" name="rectwidth" min="1" :max="svg.width" :value="rect.width">
   </div>
   <div>
-    <label for="svgheight">Height</label>
-    <input @change="onChangeHeight" type="range" id="height" name="svgheight" min="0" max="100" :value="Math.round(rect.height / svg.height * 100)">
+    <label for="rectheight">Height</label>
+    <input @change="onChange" type="range" id="height" name="rectheight" min="1" :max="svg.height" :value="rect.height">
+  </div>
+  <div>
+    <label for="cornername">Corner</label>
+    <select v-model="selectedCorner" name="cornername">
+      <option value="">Please select one</option>
+      <option value="topleft">Top Left</option>
+      <option value="topright">Top Right</option>
+      <option value="bottomleft">Bottom Left</option>
+      <option value="bottomright">Bottom Right</option>
+    </select>
+  </div>
+  <div>
+    <label for="cornerrx">Corner rx</label>
+    <input @change="onChange" type="range" id="rx" name="cornerrx" min="0" max="30" :value="cornerRx">
+  </div>
+  <div>
+    <label for="cornerry">Corner ry</label>
+    <input @change="onChange" type="range" id="ry" name="cornerry" min="0" max="30" :value="cornerRy">
   </div>
 </div>
 {% endraw %}
