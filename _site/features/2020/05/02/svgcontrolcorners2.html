@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>SVG Rectangle with controllable corners 2</title>
+  <meta name="description" content="              {{ svg.title }}    {{ svg.desc }}                                                                                Width            Height       ...">
+
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="canonical" href="http://localhost:4000/features/2020/05/02/svgcontrolcorners2.html">
+  <link rel="alternate" type="application/rss+xml" title="Ted Spectrum" href="http://localhost:4000/feed.xml">
+  
+  
+  <style> .app {
+  font-size: 1.5rem;
+} .app svg {
+    border: 1px solid black;
+} .hidden {
+  display: none;
+} </style>
+
+  
+</head>
+
+
+  <body>
+    <header class="site-header">
+    <div class="wrapper">
+      <h1><a href="/" id="top">Ted Spectrum</a></h1>
+    </div>
+    </header>
+    <div class="page-content">
+      <div class="wrapper">
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">SVG Rectangle with controllable corners 2</h1>
+    <p class="post-meta"><time datetime="2020-05-02T00:00:00+01:00" itemprop="datePublished">May 2, 2020</time></p>
+  </header>
+
+  <div class="post-content" itemprop="articleBody">
+    
+<div id="postapp" class="app">
+  <div class="hidden">
+    <!-- cache, give elements ref="" to reference in methods -->
+  </div>
+  <svg id="appsvg" xml:space="preserve" :width="svg.width" :height="svg.height" zoomAndPan="disable">
+    <title v-if="svg.title && svg.title !== ''">{{ svg.title }}</title>
+    <desc v-if="svg.desc && svg.desc !== ''">{{ svg.desc }}</desc>
+    <defs>
+    </defs>
+    <g v-for="(rect, index) in rects">
+      <g :transform="'translate(' + rect.x + ',' + rect.y + ') skewX(-30)'">
+        <path 
+          :d="getRectPath(rect)" 
+          stroke="none"  
+          fill="black"
+          transform="scale(1.2) translate(6,6)"
+      />
+      </g>
+    </g>
+    <g v-for="(rect, index) in rects">
+      <g :transform="'translate(' + rect.x + ',' + rect.y + ') skewX(-30)'">
+        <path 
+          :d="getRectPath(rect)" 
+          stroke="black"
+          stroke-width="2"  
+          fill="white"
+          transform="scale(1.2, 1.2)"
+        />
+        <path 
+          :d="getRectPath(rect)" 
+          :stroke="rect.stroke" 
+          :stroke-width="rect.strokeWidth" 
+          :fill="rect.fill"
+        />
+      </g>
+    </g>
+  </svg>
+  <div>
+    <label for="rectwidth">Width</label>
+    <input @change="onChange" type="range" id="width" name="rectwidth" min="1" :max="svg.width" :value="activeRect.width">
+  </div>
+  <div>
+    <label for="rectheight">Height</label>
+    <input @change="onChange" type="range" id="height" name="rectheight" min="1" :max="svg.height" :value="activeRect.height">
+  </div>
+  <div>
+    <label for="cornername">Corner</label>
+    <select v-model="activeCorner" name="cornername">
+      <option value="">Please select one</option>
+      <option value="topleft">Top Left</option>
+      <option value="topright">Top Right</option>
+      <option value="bottomleft">Bottom Left</option>
+      <option value="bottomright">Bottom Right</option>
+    </select>
+  </div>
+  <div>
+    <label for="cornerrx">Corner rx</label>
+    <input @change="onChange" type="range" id="rx" name="cornerrx" min="0" max="30" :value="cornerRx">
+  </div>
+  <div>
+    <label for="cornerry">Corner ry</label>
+    <input @change="onChange" type="range" id="ry" name="cornerry" min="0" max="30" :value="cornerRy">
+  </div>
+  <div>
+</div>
+
+  </div>
+
+</article>
+
+      </div>
+    </div>
+
+    <footer class="site-footer">
+  <div class="wrapper">
+    <p><a href="#top">Top</a></p>
+  </div>
+</footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.6.0/dist/vue.min.js"></script>
+  
+
+
+<script> const app = new Vue({
+  el: '#postapp',
+  data: {
+    activeRect: {},
+    activeCorner: "",
+    svg: {
+      width: 320,
+      height: 240,
+      title: "rectangle with rounded corner(s)",
+      desc: "controllable corners on a SVG rectangle"
+    },
+    rect1: {
+      x: 160,
+      y: 120,
+      path: "",
+      width: 120,
+      height: 75,
+      topright: { rx: 10, ry: 10 },
+      bottomright: { rx: 25, ry: 25 },
+      bottomleft: { rx: 5, ry: 5 },
+      topleft: { rx: 30, ry: 30 },
+      strokeWidth: "2px",
+      stroke: "gray",
+      fill: "lightskyblue"
+    },
+    rect2: {
+      x: 240,
+      y: 50,
+      path: "",
+      width: 60,
+      height: 40,
+      topright: { rx: 10, ry: 10 },
+      bottomright: { rx: 10, ry: 10 },
+      bottomleft: { rx: 0, ry: 0 },
+      topleft: { rx: 15, ry: 15 },
+      strokeWidth: "2px",
+      stroke: "gray",
+      fill: "aqua"
+    },
+    rects: []
+  },
+  mounted: function() {
+    this.rects.push(this.rect1);
+    this.rects.push(this.rect2);
+    this.$set(this, 'activeRect', this.rect1);
+  },
+  computed: {
+    rect1Path: function() {
+      return this.getRectPath(this.rect1);
+    },
+    cornerRx: function() {
+      let ret = 0;
+      switch(this.activeCorner) {
+        case "topright": ret = this.activeRect.topright.rx; break;
+        case "bottomright": ret = this.activeRect.bottomright.rx; break;
+        case "bottomleft": ret = this.activeRect.bottomleft.rx; break;
+        case "topleft": ret = this.activeRect.topleft.rx; break;
+      }
+      return ret;
+    },
+    cornerRy: function() {
+      let ret = 0;
+      switch(this.activeCorner) {
+        case "topright": ret = this.activeRect.topright.ry; break;
+        case "bottomright": ret = this.activeRect.bottomright.ry; break;
+        case "bottomleft": ret = this.activeRect.bottomleft.ry; break;
+        case "topleft": ret = this.activeRect.topleft.ry; break;
+      }
+      return ret;
+    }
+  },
+  methods: {
+    onChange: function(e) {
+      switch(e.target.id) {
+        case "width": this.activeRect.width = Math.round(e.target.value); break;
+        case "height": this.activeRect.height = Math.round(e.target.value); break;
+        case "rx": 
+          switch(this.activeCorner) {
+            case "topright": this.activeRect.topright.rx = Math.round(e.target.value); break;
+            case "bottomright": this.activeRect.bottomright.rx = Math.round(e.target.value); break;
+            case "bottomleft": this.activeRect.bottomleft.rx = Math.round(e.target.value); break;
+            case "topleft": this.activeRect.topleft.rx = Math.round(e.target.value); break;
+          }; break;
+        case "ry":             
+          switch(this.activeCorner) {
+            case "topright": this.activeRect.topright.ry = Math.round(e.target.value); break;
+            case "bottomright": this.activeRect.bottomright.ry = Math.round(e.target.value); break;
+            case "bottomleft": this.activeRect.bottomleft.ry = Math.round(e.target.value); break;
+            case "topleft": this.activeRect.topleft.ry = Math.round(e.target.value); break;
+          }; break;
+      }
+    },
+    getCornerArcPath: function(rx, ry, pos) {
+      // corners drawn with clockwise arcs
+      let ret =  "a" + rx + "," + ry + " 0 0 1 ";
+      switch(pos) {
+        case "topright": ret += rx + "," + ry + " "; break;
+        case "bottomright": ret += "-" + rx + "," + ry + " "; break;
+        case "bottomleft": ret += "-" + rx + ",-" + ry + " "; break;
+        case "topleft": ret += rx + ",-" + ry + " "; break;
+      }
+      return ret;
+    },
+    getRectPath: function(rect) {
+      let ret = "", topW, bottomW, leftH, rightH;
+        topW = rect.width - rect.topright.rx - rect.topleft.rx;
+        bottomW = rect.width - rect.bottomright.rx - rect.bottomleft.rx;
+        leftH = rect.height - rect.topleft.ry - rect.bottomleft.ry;
+        rightH = rect.height - rect.topright.ry - rect.bottomright.ry;
+        ret = 
+          "M -" + (rect.width / 2) + ",-" + (rect.height / 2) + " "
+          + "m " + rect.topleft.rx + ",0 " 
+          + "h" + topW + " "
+          + this.getCornerArcPath(rect.topright.rx, rect.topright.ry, "topright")
+          + "v" + rightH + " " 
+          + this.getCornerArcPath(rect.bottomright.rx, rect.bottomright.ry, "bottomright")
+          + "h-" + bottomW + " "
+          + this.getCornerArcPath(rect.bottomleft.rx, rect.bottomleft.ry, "bottomleft")
+          + "v-" + leftH + " "
+          + this.getCornerArcPath(rect.topleft.rx, rect.topleft.ry, "topleft")
+          + "z";
+      //console.log(ret);
+      return ret;
+    }
+  }
+}); </script>
+
+
+
+  </body>
+
+</html>

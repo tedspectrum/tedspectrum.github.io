@@ -6,9 +6,87 @@
 </description>
     <link>http://localhost:4000/</link>
     <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sat, 02 May 2020 07:13:52 +0100</pubDate>
-    <lastBuildDate>Sat, 02 May 2020 07:13:52 +0100</lastBuildDate>
+    <pubDate>Sat, 02 May 2020 17:04:17 +0100</pubDate>
+    <lastBuildDate>Sat, 02 May 2020 17:04:17 +0100</lastBuildDate>
     <generator>Jekyll v4.0.0</generator>
+    
+      <item>
+        <title>SVG Rectangle with controllable corners 2</title>
+        <description>
+&lt;div id=&quot;postapp&quot; class=&quot;app&quot;&gt;
+  &lt;div class=&quot;hidden&quot;&gt;
+    &lt;!-- cache, give elements ref=&quot;&quot; to reference in methods --&gt;
+  &lt;/div&gt;
+  &lt;svg id=&quot;appsvg&quot; xml:space=&quot;preserve&quot; :width=&quot;svg.width&quot; :height=&quot;svg.height&quot; zoomAndPan=&quot;disable&quot;&gt;
+    &lt;title v-if=&quot;svg.title &amp;&amp; svg.title !== ''&quot;&gt;{{ svg.title }}&lt;/title&gt;
+    &lt;desc v-if=&quot;svg.desc &amp;&amp; svg.desc !== ''&quot;&gt;{{ svg.desc }}&lt;/desc&gt;
+    &lt;defs&gt;
+    &lt;/defs&gt;
+    &lt;g v-for=&quot;(rect, index) in rects&quot;&gt;
+      &lt;g :transform=&quot;'translate(' + rect.x + ',' + rect.y + ') skewX(-30)'&quot;&gt;
+        &lt;path 
+          :d=&quot;getRectPath(rect)&quot; 
+          stroke=&quot;none&quot;  
+          fill=&quot;black&quot;
+          transform=&quot;scale(1.2) translate(6,6)&quot;
+      /&gt;
+      &lt;/g&gt;
+    &lt;/g&gt;
+    &lt;g v-for=&quot;(rect, index) in rects&quot;&gt;
+      &lt;g :transform=&quot;'translate(' + rect.x + ',' + rect.y + ') skewX(-30)'&quot;&gt;
+        &lt;path 
+          :d=&quot;getRectPath(rect)&quot; 
+          stroke=&quot;black&quot;
+          stroke-width=&quot;2&quot;  
+          fill=&quot;white&quot;
+          transform=&quot;scale(1.2, 1.2)&quot;
+        /&gt;
+        &lt;path 
+          :d=&quot;getRectPath(rect)&quot; 
+          :stroke=&quot;rect.stroke&quot; 
+          :stroke-width=&quot;rect.strokeWidth&quot; 
+          :fill=&quot;rect.fill&quot;
+        /&gt;
+      &lt;/g&gt;
+    &lt;/g&gt;
+  &lt;/svg&gt;
+  &lt;div&gt;
+    &lt;label for=&quot;rectwidth&quot;&gt;Width&lt;/label&gt;
+    &lt;input @change=&quot;onChange&quot; type=&quot;range&quot; id=&quot;width&quot; name=&quot;rectwidth&quot; min=&quot;1&quot; :max=&quot;svg.width&quot; :value=&quot;activeRect.width&quot;&gt;
+  &lt;/div&gt;
+  &lt;div&gt;
+    &lt;label for=&quot;rectheight&quot;&gt;Height&lt;/label&gt;
+    &lt;input @change=&quot;onChange&quot; type=&quot;range&quot; id=&quot;height&quot; name=&quot;rectheight&quot; min=&quot;1&quot; :max=&quot;svg.height&quot; :value=&quot;activeRect.height&quot;&gt;
+  &lt;/div&gt;
+  &lt;div&gt;
+    &lt;label for=&quot;cornername&quot;&gt;Corner&lt;/label&gt;
+    &lt;select v-model=&quot;activeCorner&quot; name=&quot;cornername&quot;&gt;
+      &lt;option value=&quot;&quot;&gt;Please select one&lt;/option&gt;
+      &lt;option value=&quot;topleft&quot;&gt;Top Left&lt;/option&gt;
+      &lt;option value=&quot;topright&quot;&gt;Top Right&lt;/option&gt;
+      &lt;option value=&quot;bottomleft&quot;&gt;Bottom Left&lt;/option&gt;
+      &lt;option value=&quot;bottomright&quot;&gt;Bottom Right&lt;/option&gt;
+    &lt;/select&gt;
+  &lt;/div&gt;
+  &lt;div&gt;
+    &lt;label for=&quot;cornerrx&quot;&gt;Corner rx&lt;/label&gt;
+    &lt;input @change=&quot;onChange&quot; type=&quot;range&quot; id=&quot;rx&quot; name=&quot;cornerrx&quot; min=&quot;0&quot; max=&quot;30&quot; :value=&quot;cornerRx&quot;&gt;
+  &lt;/div&gt;
+  &lt;div&gt;
+    &lt;label for=&quot;cornerry&quot;&gt;Corner ry&lt;/label&gt;
+    &lt;input @change=&quot;onChange&quot; type=&quot;range&quot; id=&quot;ry&quot; name=&quot;cornerry&quot; min=&quot;0&quot; max=&quot;30&quot; :value=&quot;cornerRy&quot;&gt;
+  &lt;/div&gt;
+  &lt;div&gt;
+&lt;/div&gt;
+</description>
+        <pubDate>Sat, 02 May 2020 00:00:00 +0100</pubDate>
+        <link>http://localhost:4000/features/2020/05/02/svgcontrolcorners2.html</link>
+        <guid isPermaLink="true">http://localhost:4000/features/2020/05/02/svgcontrolcorners2.html</guid>
+        
+        
+        <category>features</category>
+        
+      </item>
     
       <item>
         <title>Verlet Integration 3.75</title>
@@ -270,47 +348,6 @@ static text posts.  In Posts, styles and scripts maybe inline in that page.&lt;/
         
         
         <category>data structures</category>
-        
-      </item>
-    
-      <item>
-        <title>Button Tree</title>
-        <description>
-&lt;div id=&quot;app&quot; class=&quot;app&quot;&gt;
-  &lt;div class=&quot;app-header&quot;&gt;
-    &lt;h2&gt;A tree of buttons&lt;/h2&gt;
-    &lt;div class=&quot;padded&quot;&gt;
-      &lt;button @click=&quot;onEruda&quot;&gt;Dev Console&lt;/button&gt;
-      &lt;button @click=&quot;onFullScreen&quot;&gt;Full Screen&lt;/button&gt;
-    &lt;/div&gt;
-  &lt;/div&gt;
-  &lt;div class=&quot;app-main&quot;&gt;
-    &lt;p&gt;{{ path ? path : '&amp;nbsp;' }}&lt;/p&gt;
-    &lt;div class=&quot;app-main-grid&quot;&gt;
-      &lt;div class=&quot;mainleft&quot;&gt;
-        &lt;btntree 
-          :tree=&quot;domain&quot;
-          @node-select=&quot;onNodeSelect&quot;
-          @tree-select=&quot;onTreeSelect&quot; 
-          class=&quot;btntree&quot;
-        /&gt;
-      &lt;/div&gt;
-      &lt;div class=&quot;mainright&quot;&gt;
-        &lt;pre&gt;{{ content }}&lt;/pre&gt;
-      &lt;/div&gt;
-    &lt;/div&gt;
-  &lt;/div&gt;
-  &lt;div class=&quot;app-footer&quot;&gt;
-    &lt;h2&gt;By Tedspectrum&lt;/h2&gt;
-  &lt;/div&gt;
-&lt;/div&gt;
-</description>
-        <pubDate>Sat, 14 Dec 2019 00:00:00 +0000</pubDate>
-        <link>http://localhost:4000/features/2019/12/14/buttontree.html</link>
-        <guid isPermaLink="true">http://localhost:4000/features/2019/12/14/buttontree.html</guid>
-        
-        
-        <category>features</category>
         
       </item>
     
