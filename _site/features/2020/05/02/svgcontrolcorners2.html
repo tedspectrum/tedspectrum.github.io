@@ -87,15 +87,29 @@
         <text text-anchor="middle" dominant-baseline="central">{{ rect.title }}</text>
       </g>
     </g>
-
   </svg>
   <div>
+    <label for="rectname">Rectangle</label>
+    <select v-model="activeRectIndex" id="rectindex" name="rectname">
+      <option value="0">Please select one</option>
+      <template v-for="(rect, index) in rects">
+        <option :value="index">{{ rect.name }}</option>
+      </template>
+    </select>   
+  </div>
+  <div>
     <label for="rectwidth">Width</label>
-    <input @change="onChange" type="range" id="width" name="rectwidth" min="1" :max="svg.width" :value="activeRect.width">
+    <input type="range" id="width" name="rectwidth" min="1"
+      @change="onChange"
+      :max="svg.width" 
+      :value="rects[activeRectIndex].width">
   </div>
   <div>
     <label for="rectheight">Height</label>
-    <input @change="onChange" type="range" id="height" name="rectheight" min="1" :max="svg.height" :value="activeRect.height">
+    <input type="range" id="height" name="rectheight" min="1" 
+      @change="onChange"
+      :max="svg.height"
+      :value="rects[activeRectIndex].height">
   </div>
   <div>
     <label for="cornername">Corner</label>
@@ -109,11 +123,17 @@
   </div>
   <div>
     <label for="cornerrx">Corner rx</label>
-    <input @change="onChange" type="range" id="rx" name="cornerrx" min="0" max="30" :value="cornerRx">
+    <input type="range" id="rx" name="cornerrx" min="0" 
+      @change="onChange" 
+      :max="(rects[activeRectIndex].width / 2)" 
+      :value="cornerRx">
   </div>
   <div>
     <label for="cornerry">Corner ry</label>
-    <input @change="onChange" type="range" id="ry" name="cornerry" min="0" max="30" :value="cornerRy">
+    <input type="range" id="ry" name="cornerry" min="0"
+      @change="onChange" 
+      :max="(rects[activeRectIndex].height / 2)" 
+      :value="cornerRy">
   </div>
   <div>
 </div>
@@ -132,26 +152,29 @@
 </footer>
 
   
-  <script src="https://cdn.jsdelivr.net/npm/vue@2.6.0/dist/vue.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.6.0/dist/vue.js"></script>
   
 
 
 <script> const app = new Vue({
   el: '#postapp',
   data: {
-    activeRect: {},
+    activeRectIndex: 0,
     activeCorner: "",
+    cornerPropertyNames: ["topright", "bottomright", "bottomleft", "topleft"],
     svg: {
       width: 320,
       height: 240,
       title: "rectangle with rounded corner(s)",
       desc: "controllable corners on a SVG rectangle"
     },
-    rect1: {
+    rects: [
+    {
       x: 160,
       y: 120,
       path: "",
       title: "one",
+      name: "rect1",
       width: 120,
       height: 75,
       topright: { rx: 10, ry: 10 },
@@ -162,11 +185,12 @@
       stroke: "gray",
       fill: "lightskyblue"
     },
-    rect2: {
+    {
       x: 240,
       y: 50,
       path: "",
       title: "two",
+      name: "rect2",
       width: 60,
       height: 40,
       topright: { rx: 10, ry: 10 },
@@ -176,58 +200,47 @@
       strokeWidth: "2px",
       stroke: "gray",
       fill: "aqua"
-    },
-    rects: []
-  },
-  mounted: function() {
-    this.rects.push(this.rect1);
-    this.rects.push(this.rect2);
-    this.$set(this, 'activeRect', this.rect1);
+    }
+    ]
   },
   computed: {
-    rect1Path: function() {
-      return this.getRectPath(this.rect1);
-    },
     cornerRx: function() {
       let ret = 0;
-      switch(this.activeCorner) {
-        case "topright": ret = this.activeRect.topright.rx; break;
-        case "bottomright": ret = this.activeRect.bottomright.rx; break;
-        case "bottomleft": ret = this.activeRect.bottomleft.rx; break;
-        case "topleft": ret = this.activeRect.topleft.rx; break;
+      if (this.activeRectIndex !== "" 
+        && (this.cornerPropertyNames.includes(this.activeCorner))) {
+        ret = this.rects[this.activeRectIndex][this.activeCorner].rx;        
       }
       return ret;
     },
     cornerRy: function() {
       let ret = 0;
-      switch(this.activeCorner) {
-        case "topright": ret = this.activeRect.topright.ry; break;
-        case "bottomright": ret = this.activeRect.bottomright.ry; break;
-        case "bottomleft": ret = this.activeRect.bottomleft.ry; break;
-        case "topleft": ret = this.activeRect.topleft.ry; break;
+      if (this.activeRectIndex !== "" 
+        && (this.cornerPropertyNames.includes(this.activeCorner))) {
+        ret = this.rects[this.activeRectIndex][this.activeCorner].ry;        
       }
       return ret;
     }
   },
   methods: {
     onChange: function(e) {
-      switch(e.target.id) {
-        case "width": this.activeRect.width = Math.round(e.target.value); break;
-        case "height": this.activeRect.height = Math.round(e.target.value); break;
-        case "rx": 
-          switch(this.activeCorner) {
-            case "topright": this.activeRect.topright.rx = Math.round(e.target.value); break;
-            case "bottomright": this.activeRect.bottomright.rx = Math.round(e.target.value); break;
-            case "bottomleft": this.activeRect.bottomleft.rx = Math.round(e.target.value); break;
-            case "topleft": this.activeRect.topleft.rx = Math.round(e.target.value); break;
-          }; break;
-        case "ry":             
-          switch(this.activeCorner) {
-            case "topright": this.activeRect.topright.ry = Math.round(e.target.value); break;
-            case "bottomright": this.activeRect.bottomright.ry = Math.round(e.target.value); break;
-            case "bottomleft": this.activeRect.bottomleft.ry = Math.round(e.target.value); break;
-            case "topleft": this.activeRect.topleft.ry = Math.round(e.target.value); break;
-          }; break;
+      let val = Math.round(e.target.value),
+        active;
+      if (this.activeRectIndex !== "") {
+        active = this.rects[this.activeRectIndex];       
+        switch(e.target.id) {
+          case "width": active.width = val; break;
+          case "height": active.height = val; break;
+          case "rx":
+            if(this.cornerPropertyNames.includes(this.activeCorner)) {
+              active[this.activeCorner].rx = val;
+            }
+            break;
+          case "ry":             
+            if(this.cornerPropertyNames.includes(this.activeCorner)) {
+              active[this.activeCorner].ry = val;
+            }
+            break;
+        }
       }
     },
     getCornerArcPath: function(rx, ry, pos) {
