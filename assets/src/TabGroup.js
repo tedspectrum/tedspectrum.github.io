@@ -5,18 +5,13 @@ Vue.component('TabGroup', {
     + ":class='{ \"tabgroup-isactive\": tab.isActive }' "
     + "@click='onSelectTab(index)' >"
     + "<span class='tabgroup-title'>"
-    + "{{ tab.title }}"
+    + "{{ tab.$attrs['tab-name'] }}"
     + "</span>"
     + "</li></ul><div><slot></slot></div></div>",
-  props: {
-  },
   data: function() {
     return {
-      tabs: []
+      tabs: this.$children
     }
-  },
-  created: function () {
-    this.tabs = this.$children;
   },
   methods: {
     onSelectTab: function(selectedIndex) {
@@ -26,6 +21,7 @@ Vue.component('TabGroup', {
         } else {
           this.tabs[i].isActive = false;
         }
+        //console.log(this.tabs[i]);
       }
     }
   }
