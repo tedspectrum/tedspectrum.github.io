@@ -1,0 +1,72 @@
+---
+layout: post
+title:  "Tabs in Vue.js 2"
+scripts: 
+  - url: "https://cdn.jsdelivr.net/npm/vue@2.6.0/dist/vue.js"
+    type: "absolute"
+  - url: "/assets/src/ItemControls.js"
+    type: "relative"
+  - url: "/assets/src/Item.js"
+    type: "relative"
+categories: [features]
+inlinestyle: >
+  <style>
+  .app {
+    font-size: 1.5rem;
+  }
+  .v-cloak {
+    display: none;
+  }
+  .item-controls ul {
+    margin: 0;
+    padding-bottom: 0.5em;
+    list-style-type: none;
+  }
+  .item-controls li {
+    display: inline;
+  }
+  .item-controls--button {
+    padding: 0.5em 1em 0.5em 1em;
+  }
+  .item-controls--active, .item-controls--button:hover {
+    background-color: lightskyblue;
+    color: white;
+  }
+  </style>
+inlinescript: > 
+  <script>
+  const app = new Vue({
+    el: '#postapp',
+    name: 'postapp',
+    data: {
+      items1: []
+    },
+    mounted: function() {
+      // wire up items to item-controls
+      this.items1.push(this.$refs.tabOne, this.$refs.tabTwo, this.$refs.tabThree);
+    },
+    methods: {
+      
+    }
+  });
+  </script>
+---
+{% raw %}
+<div id="postapp" class="app" v-cloak>
+  <h2>Tab Controls</h2>
+  <Item-Controls :items="items1"></Item-Controls>
+  <h2>Tabs</h2>
+  <Item name="One" ref="tabOne">
+    <h3>Tab 1</h3>
+    <p>This is tab one</p>
+  </Item>
+  <Item name="Two" ref="tabTwo" selected="true">
+    <h3>Tab two</h3>
+    <p>Tabs are separate to controls</p>
+  </Item>
+  <Item name="Three" ref="tabThree">
+    <h3>Tab 3</h3>
+    <p>Tab three content</p>
+  </Item>
+</div>
+{% endraw %}

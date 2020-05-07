@@ -14,9 +14,6 @@ inlinestyle: >
   .app {
     font-size: 1.5rem;
   }
-  .hidden {
-    display: none;
-  }
   .tabgroup ul {
     margin: 0;
     padding-bottom: 1em;
@@ -51,7 +48,7 @@ inlinescript: >
 ---
 {% raw %}
 <div id="postapp" class="app">
-  <div class="hidden">
+  <div v-show="false">
     <!-- cache, give elements ref="" to reference in methods -->
   </div>
   <div>

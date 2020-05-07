@@ -12,7 +12,7 @@ inlinestyle: >
   .app {
     font-size: 1.5rem;
   }
-  .hidden {
+  .v-cloak {
     display: none;
   }
   </style>
@@ -33,8 +33,8 @@ inlinescript: >
   </script>
 ---
 {% raw %}
-<div id="postapp" class="app">
-  <div class="hidden">
+<div id="postapp" class="app" v-cloak>
+  <div v-show="false">
     <!-- cache, give elements ref="" to reference in methods -->
   </div>
 </div>
