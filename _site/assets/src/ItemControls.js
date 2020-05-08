@@ -1,29 +1,32 @@
-Vue.component('ItemControls', {
-  name: "Item-Controls",
+const ItemControlsComponent = {
+  name: "itemcontrols",
   template: "<div class='item-controls'>"
     + "<ul>"
     + "<li v-for='(item, index) in items' :key='index' "
     + " "
     + ">"
-    + "<button class='item-controls--button' " 
-    + ":class='{ \"item-controls--active\": item.getSelected() }' "
+    + "<button class='item-controls--button' "
+    + ":class='{ \"item-controls--active\": item.active }' "
     + "@click='onClick(index)'>"
-    + "{{ item.$attrs['name'] }}"
+    + "{{ item.name }}"
     + "</button>"
     + "</li></ul>"
     + "</div>",
   props: {
     'items': {
-      // the array of item components to manage.
+      // the array of items to manage.
+      // { name: String, active: Boolean}
       type: Array,
       required: true
     }
   },
+  mixins: [EventBusMixin],
   methods: {
-    onClick: function(selectedIndex) {
-      this.items.forEach(function(v, i) {
-        v.setSelected(i === selectedIndex);
+    onClick: function (selectedIndex) {
+      let myself = this;
+      this.items.forEach(function (v, i) {
+        myself.bus.$emit('itemcontrols:select', v, (i === selectedIndex));
       })
     }
   }
-});
+};

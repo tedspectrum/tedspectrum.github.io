@@ -6,8 +6,8 @@
 </description>
     <link>http://localhost:4000/</link>
     <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Thu, 07 May 2020 21:21:02 +0100</pubDate>
-    <lastBuildDate>Thu, 07 May 2020 21:21:02 +0100</lastBuildDate>
+    <pubDate>Fri, 08 May 2020 10:52:41 +0100</pubDate>
+    <lastBuildDate>Fri, 08 May 2020 10:52:41 +0100</lastBuildDate>
     <generator>Jekyll v4.0.0</generator>
     
       <item>
@@ -15,20 +15,20 @@
         <description>
 &lt;div id=&quot;postapp&quot; class=&quot;app&quot; v-cloak&gt;
   &lt;h2&gt;Tab Controls&lt;/h2&gt;
-  &lt;Item-Controls :items=&quot;items1&quot;&gt;&lt;/Item-Controls&gt;
+  &lt;itemcontrols :items=&quot;items1&quot;&gt;&lt;/itemcontrols&gt;
   &lt;h2&gt;Tabs&lt;/h2&gt;
-  &lt;Item name=&quot;One&quot; ref=&quot;tabOne&quot;&gt;
+  &lt;item :name=&quot;items1[0].name&quot; :selected=&quot;items1[0].active&quot;&gt;
     &lt;h3&gt;Tab 1&lt;/h3&gt;
     &lt;p&gt;This is tab one&lt;/p&gt;
-  &lt;/Item&gt;
-  &lt;Item name=&quot;Two&quot; ref=&quot;tabTwo&quot; selected=&quot;true&quot;&gt;
+  &lt;/item&gt;
+  &lt;item :name=&quot;items1[1].name&quot; :selected=&quot;items1[1].active&quot;&gt;
     &lt;h3&gt;Tab two&lt;/h3&gt;
     &lt;p&gt;Tabs are separate to controls&lt;/p&gt;
-  &lt;/Item&gt;
-  &lt;Item name=&quot;Three&quot; ref=&quot;tabThree&quot;&gt;
+  &lt;/item&gt;
+  &lt;item :name=&quot;items1[2].name&quot; :selected=&quot;items1[2].active&quot;&gt;
     &lt;h3&gt;Tab 3&lt;/h3&gt;
     &lt;p&gt;Tab three content&lt;/p&gt;
-  &lt;/Item&gt;
+  &lt;/item&gt;
 &lt;/div&gt;
 </description>
         <pubDate>Thu, 07 May 2020 00:00:00 +0100</pubDate>

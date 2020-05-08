@@ -54,20 +54,20 @@
     
 <div id="postapp" class="app" v-cloak>
   <h2>Tab Controls</h2>
-  <Item-Controls :items="items1"></Item-Controls>
+  <itemcontrols :items="items1"></itemcontrols>
   <h2>Tabs</h2>
-  <Item name="One" ref="tabOne">
+  <item :name="items1[0].name" :selected="items1[0].active">
     <h3>Tab 1</h3>
     <p>This is tab one</p>
-  </Item>
-  <Item name="Two" ref="tabTwo" selected="true">
+  </item>
+  <item :name="items1[1].name" :selected="items1[1].active">
     <h3>Tab two</h3>
     <p>Tabs are separate to controls</p>
-  </Item>
-  <Item name="Three" ref="tabThree">
+  </item>
+  <item :name="items1[2].name" :selected="items1[2].active">
     <h3>Tab 3</h3>
     <p>Tab three content</p>
-  </Item>
+  </item>
 </div>
 
   </div>
@@ -88,26 +88,41 @@
   
 
   
+  <script src="/assets/src/EventBus.js"></script>
+  
+
+  
   <script src="/assets/src/ItemControls.js"></script>
   
 
   
-  <script src="/assets/src/Item.js"></script>
+  <script src="/assets/src/Item2.js"></script>
   
 
 
 <script> const app = new Vue({
   el: '#postapp',
   name: 'postapp',
+  components: {
+    'itemcontrols': ItemControlsComponent,
+    'item': ItemComponent
+  },
+  mixins: [EventBusMixin],
   data: {
-    items1: []
+    items1: [
+      { 'name': 'One', 'active': false },
+      { 'name': 'Two', 'active': true },
+      { 'name': 'Three', 'active': false }
+    ]
   },
   mounted: function() {
     // wire up items to item-controls
-    this.items1.push(this.$refs.tabOne, this.$refs.tabTwo, this.$refs.tabThree);
+    this.bus.$on('itemcontrols:select', this.onSelect)
   },
   methods: {
-    
+    onSelect: function(m, val) {
+      if(m.active !== val) { m.active = val; };
+    }
   }
 }); </script>
 
