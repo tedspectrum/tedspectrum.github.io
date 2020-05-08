@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Panels, Button lists and content in Vue.js 1</title>
+  <meta name="description" content="      Menu        Content Blocks  Menu      Content 1    This is the first content        Content two    Content is separate to controls        Content 3    ...">
+
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="canonical" href="http://localhost:4000/features/2020/05/08/vuecomponents1.html">
+  <link rel="alternate" type="application/rss+xml" title="Ted Spectrum" href="http://localhost:4000/feed.xml">
+  
+  
+  <link rel="stylesheet" href="/assets/styles/transitions.css">
+  
+  
+  
+  <link rel="stylesheet" href="/assets/styles/components/panel.css">
+  
+  
+  
+  <style> .app {
+  width: 100%;
+  height: 100vh;
+  margin: 0 auto 0 auto;
+  border: 1px solid lightgray;
+  overflow: hidden;
+} .v-cloak {
+  display: none;
+} .buttonlist ul {
+  margin: 0;
+  list-style-type: none;
+} .buttonlist--button {
+  width: 100%;
+  padding: 0.5rem 1rem 0.5rem 1rem;
+  text-align: left;
+} .heading2 {
+  background-color: white;
+  padding-left: 1rem;
+} </style>
+
+  
+</head>
+
+
+  <body>
+    <header class="site-header">
+    <div class="wrapper">
+      <h1><a href="/" id="top">Ted Spectrum</a></h1>
+    </div>
+    </header>
+    <div class="page-content">
+      <div class="wrapper">
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">Panels, Button lists and content in Vue.js 1</h1>
+    <p class="post-meta"><time datetime="2020-05-08T00:00:00+01:00" itemprop="datePublished">May 8, 2020</time></p>
+  </header>
+
+  <div class="post-content" itemprop="articleBody">
+    
+<div id="postapp" class="app panel-container" v-cloak>
+  <teds-panel :model="mainmenu" classes="panel-topleft" transition="slidedownright">
+    <h2 class="heading2">Menu</h2>
+    <teds-buttonlist :items="mainitems"></teds-buttonlist>
+  </teds-panel>
+  <h2 class="heading2">Content Blocks</h2>
+  <button @click="onPanelOpen(mainmenu)">Menu</button>
+  <teds-content :name="mainitems[0].name" :active="mainitems[0].active">
+    <h3>Content 1</h3>
+    <p>This is the first content</p>
+  </teds-content>
+  <teds-content :name="mainitems[1].name" :active="mainitems[1].active">
+    <h3>Content two</h3>
+    <p>Content is separate to controls</p>
+  </teds-content>
+  <teds-content :name="mainitems[2].name" :active="mainitems[2].active">
+    <h3>Content 3</h3>
+    <p>content three</p>
+  </teds-content>
+</div>
+
+  </div>
+
+</article>
+
+      </div>
+    </div>
+
+    <footer class="site-footer">
+  <div class="wrapper">
+    <p><a href="#top">Top</a></p>
+  </div>
+</footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.6.0/dist/vue.js"></script>
+  
+
+  
+  <script src="/assets/src/mixins/eventbus.js"></script>
+  
+
+  
+  <script src="/assets/src/components/panel.js"></script>
+  
+
+  
+  <script src="/assets/src/components/buttonlist.js"></script>
+  
+
+  
+  <script src="/assets/src/components/content.js"></script>
+  
+
+
+<script> const app = new Vue({
+  el: '#postapp',
+  components: {
+    'teds-panel': PanelComponent,
+    'teds-buttonlist': ButtonListComponent,
+    'teds-content': ContentComponent
+  },
+  data: {
+    mainmenu: {
+      name: 'main',
+      active: false
+    },
+    mainitems: [
+      { 'name': 'One', 'active': true },
+      { 'name': 'Two', 'active': false },
+      { 'name': 'Three', 'active': false }
+    ]
+  },
+  mixins: [EventBusMixin],
+  mounted: function() {
+    this.bus.$on('panel:open', this.onPanelOpen);
+    this.bus.$on('panel:close', this.onPanelClose);
+    this.bus.$on('buttonlist:select', this.onSelect)
+  },
+  methods: {
+    onPanelOpen: function(m) {
+      m.active = true;
+    },
+    onPanelClose: function(m) {
+      m.active = false;
+    },
+    onSelect: function(m, val) {
+      if(m.active !== val) { m.active = val; };
+      this.onPanelClose(this.mainmenu);
+    }
+  }
+}); </script>
+
+
+
+  </body>
+
+</html>

@@ -35,6 +35,16 @@
 .slidedown-leave-active {
   transition: transform 0.15s ease-in;
 }
+/* slide down right */
+.slidedownright-enter, .slidedownright-leave-to {
+  transform: translate3d(-2em, -1em, 0);
+}
+.slidedownright-enter-active {
+  transition: transform 0.15s ease-out;
+}
+.slidedownright-leave-active {
+  transition: transform 0.15s ease-in;
+}
 /* slide up */
 .slideup-enter, .slideup-leave-to {
   transform: translate3d(0, 1em, 0);

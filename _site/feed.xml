@@ -6,8 +6,8 @@
 </description>
     <link>http://localhost:4000/</link>
     <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Fri, 08 May 2020 18:50:25 +0100</pubDate>
-    <lastBuildDate>Fri, 08 May 2020 18:50:25 +0100</lastBuildDate>
+    <pubDate>Fri, 08 May 2020 21:10:25 +0100</pubDate>
+    <lastBuildDate>Fri, 08 May 2020 21:10:25 +0100</lastBuildDate>
     <generator>Jekyll v4.0.0</generator>
     
       <item>
@@ -24,6 +24,39 @@
         <pubDate>Fri, 08 May 2020 00:00:00 +0100</pubDate>
         <link>http://localhost:4000/features/2020/05/08/vuepanels.html</link>
         <guid isPermaLink="true">http://localhost:4000/features/2020/05/08/vuepanels.html</guid>
+        
+        
+        <category>features</category>
+        
+      </item>
+    
+      <item>
+        <title>Panels, Button lists and content in Vue.js 1</title>
+        <description>
+&lt;div id=&quot;postapp&quot; class=&quot;app panel-container&quot; v-cloak&gt;
+  &lt;teds-panel :model=&quot;mainmenu&quot; classes=&quot;panel-topleft&quot; transition=&quot;slidedownright&quot;&gt;
+    &lt;h2 class=&quot;heading2&quot;&gt;Menu&lt;/h2&gt;
+    &lt;teds-buttonlist :items=&quot;mainitems&quot;&gt;&lt;/teds-buttonlist&gt;
+  &lt;/teds-panel&gt;
+  &lt;h2 class=&quot;heading2&quot;&gt;Content Blocks&lt;/h2&gt;
+  &lt;button @click=&quot;onPanelOpen(mainmenu)&quot;&gt;Menu&lt;/button&gt;
+  &lt;teds-content :name=&quot;mainitems[0].name&quot; :active=&quot;mainitems[0].active&quot;&gt;
+    &lt;h3&gt;Content 1&lt;/h3&gt;
+    &lt;p&gt;This is the first content&lt;/p&gt;
+  &lt;/teds-content&gt;
+  &lt;teds-content :name=&quot;mainitems[1].name&quot; :active=&quot;mainitems[1].active&quot;&gt;
+    &lt;h3&gt;Content two&lt;/h3&gt;
+    &lt;p&gt;Content is separate to controls&lt;/p&gt;
+  &lt;/teds-content&gt;
+  &lt;teds-content :name=&quot;mainitems[2].name&quot; :active=&quot;mainitems[2].active&quot;&gt;
+    &lt;h3&gt;Content 3&lt;/h3&gt;
+    &lt;p&gt;content three&lt;/p&gt;
+  &lt;/teds-content&gt;
+&lt;/div&gt;
+</description>
+        <pubDate>Fri, 08 May 2020 00:00:00 +0100</pubDate>
+        <link>http://localhost:4000/features/2020/05/08/vuecomponents1.html</link>
+        <guid isPermaLink="true">http://localhost:4000/features/2020/05/08/vuecomponents1.html</guid>
         
         
         <category>features</category>
@@ -315,25 +348,6 @@
         <pubDate>Thu, 30 Apr 2020 00:00:00 +0100</pubDate>
         <link>http://localhost:4000/features/2020/04/30/verletintegration2.html</link>
         <guid isPermaLink="true">http://localhost:4000/features/2020/04/30/verletintegration2.html</guid>
-        
-        
-        <category>features</category>
-        
-      </item>
-    
-      <item>
-        <title>Verlet Integration 1</title>
-        <description>
-&lt;h1&gt;Verlet Integration 1&lt;/h1&gt;
-&lt;p&gt;Following along with a video from Youtube by &quot;Coding Math&quot;&lt;/p&gt;
-&lt;p&gt;Added add ball at mouse click&lt;/p&gt;
-&lt;div class=&quot;app&quot;&gt;
-  &lt;canvas id=&quot;canvas&quot; width=&quot;320&quot; height=&quot;240&quot;&gt;&lt;/canvas&gt;
-&lt;/div&gt;
-</description>
-        <pubDate>Wed, 29 Apr 2020 00:00:00 +0100</pubDate>
-        <link>http://localhost:4000/features/2020/04/29/verletintegration1.html</link>
-        <guid isPermaLink="true">http://localhost:4000/features/2020/04/29/verletintegration1.html</guid>
         
         
         <category>features</category>
