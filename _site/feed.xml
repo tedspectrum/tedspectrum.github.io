@@ -4,11 +4,31 @@
     <title>Ted Spectrum</title>
     <description>My awesome website
 </description>
-    <link>http://tedspectrum.github.io/</link>
-    <atom:link href="http://tedspectrum.github.io/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Fri, 08 May 2020 12:44:15 +0100</pubDate>
-    <lastBuildDate>Fri, 08 May 2020 12:44:15 +0100</lastBuildDate>
+    <link>http://localhost:4000/</link>
+    <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml"/>
+    <pubDate>Fri, 08 May 2020 18:50:25 +0100</pubDate>
+    <lastBuildDate>Fri, 08 May 2020 18:50:25 +0100</lastBuildDate>
     <generator>Jekyll v4.0.0</generator>
+    
+      <item>
+        <title>Panels in Vue.js 1</title>
+        <description>
+&lt;div id=&quot;postapp&quot; class=&quot;app panel-container&quot; v-cloak&gt;
+  &lt;button @click=&quot;onPanelOpen(panel)&quot;&gt;Menu&lt;/button&gt;
+  &lt;teds-panel :model=&quot;panel&quot;&gt;
+    &lt;p&gt;Panel Content&lt;/p&gt;
+  &lt;/teds-panel&gt;
+  &lt;p&gt;Non-panel content&lt;/p&gt;
+&lt;/div&gt;
+</description>
+        <pubDate>Fri, 08 May 2020 00:00:00 +0100</pubDate>
+        <link>http://localhost:4000/features/2020/05/08/vuepanels.html</link>
+        <guid isPermaLink="true">http://localhost:4000/features/2020/05/08/vuepanels.html</guid>
+        
+        
+        <category>features</category>
+        
+      </item>
     
       <item>
         <title>Tabs in Vue.js 2</title>
@@ -32,8 +52,8 @@
 &lt;/div&gt;
 </description>
         <pubDate>Thu, 07 May 2020 00:00:00 +0100</pubDate>
-        <link>http://tedspectrum.github.io/features/2020/05/07/vuetabs2.html</link>
-        <guid isPermaLink="true">http://tedspectrum.github.io/features/2020/05/07/vuetabs2.html</guid>
+        <link>http://localhost:4000/features/2020/05/07/vuetabs2.html</link>
+        <guid isPermaLink="true">http://localhost:4000/features/2020/05/07/vuetabs2.html</guid>
         
         
         <category>features</category>
@@ -57,8 +77,8 @@
 &lt;/div&gt;
 </description>
         <pubDate>Sun, 03 May 2020 00:00:00 +0100</pubDate>
-        <link>http://tedspectrum.github.io/features/2020/05/03/vuetabs.html</link>
-        <guid isPermaLink="true">http://tedspectrum.github.io/features/2020/05/03/vuetabs.html</guid>
+        <link>http://localhost:4000/features/2020/05/03/vuetabs.html</link>
+        <guid isPermaLink="true">http://localhost:4000/features/2020/05/03/vuetabs.html</guid>
         
         
         <category>features</category>
@@ -164,8 +184,8 @@
 &lt;/div&gt;
 </description>
         <pubDate>Sat, 02 May 2020 00:00:00 +0100</pubDate>
-        <link>http://tedspectrum.github.io/features/2020/05/02/svgcontrolcorners2.html</link>
-        <guid isPermaLink="true">http://tedspectrum.github.io/features/2020/05/02/svgcontrolcorners2.html</guid>
+        <link>http://localhost:4000/features/2020/05/02/svgcontrolcorners2.html</link>
+        <guid isPermaLink="true">http://localhost:4000/features/2020/05/02/svgcontrolcorners2.html</guid>
         
         
         <category>features</category>
@@ -184,8 +204,8 @@
 &lt;/div&gt;
 </description>
         <pubDate>Fri, 01 May 2020 00:00:00 +0100</pubDate>
-        <link>http://tedspectrum.github.io/features/2020/05/01/verletintegration3-75.html</link>
-        <guid isPermaLink="true">http://tedspectrum.github.io/features/2020/05/01/verletintegration3-75.html</guid>
+        <link>http://localhost:4000/features/2020/05/01/verletintegration3-75.html</link>
+        <guid isPermaLink="true">http://localhost:4000/features/2020/05/01/verletintegration3-75.html</guid>
         
         
         <category>features</category>
@@ -203,8 +223,8 @@
 &lt;/div&gt;
 </description>
         <pubDate>Fri, 01 May 2020 00:00:00 +0100</pubDate>
-        <link>http://tedspectrum.github.io/features/2020/05/01/verletintegration3-5.html</link>
-        <guid isPermaLink="true">http://tedspectrum.github.io/features/2020/05/01/verletintegration3-5.html</guid>
+        <link>http://localhost:4000/features/2020/05/01/verletintegration3-5.html</link>
+        <guid isPermaLink="true">http://localhost:4000/features/2020/05/01/verletintegration3-5.html</guid>
         
         
         <category>features</category>
@@ -256,8 +276,8 @@
 &lt;/div&gt;
 </description>
         <pubDate>Fri, 01 May 2020 00:00:00 +0100</pubDate>
-        <link>http://tedspectrum.github.io/features/2020/05/01/svgcontrolcorners.html</link>
-        <guid isPermaLink="true">http://tedspectrum.github.io/features/2020/05/01/svgcontrolcorners.html</guid>
+        <link>http://localhost:4000/features/2020/05/01/svgcontrolcorners.html</link>
+        <guid isPermaLink="true">http://localhost:4000/features/2020/05/01/svgcontrolcorners.html</guid>
         
         
         <category>features</category>
@@ -275,8 +295,8 @@
 &lt;/div&gt;
 </description>
         <pubDate>Thu, 30 Apr 2020 00:00:00 +0100</pubDate>
-        <link>http://tedspectrum.github.io/features/2020/04/30/verletintegration3.html</link>
-        <guid isPermaLink="true">http://tedspectrum.github.io/features/2020/04/30/verletintegration3.html</guid>
+        <link>http://localhost:4000/features/2020/04/30/verletintegration3.html</link>
+        <guid isPermaLink="true">http://localhost:4000/features/2020/04/30/verletintegration3.html</guid>
         
         
         <category>features</category>
@@ -293,8 +313,8 @@
 &lt;/div&gt;
 </description>
         <pubDate>Thu, 30 Apr 2020 00:00:00 +0100</pubDate>
-        <link>http://tedspectrum.github.io/features/2020/04/30/verletintegration2.html</link>
-        <guid isPermaLink="true">http://tedspectrum.github.io/features/2020/04/30/verletintegration2.html</guid>
+        <link>http://localhost:4000/features/2020/04/30/verletintegration2.html</link>
+        <guid isPermaLink="true">http://localhost:4000/features/2020/04/30/verletintegration2.html</guid>
         
         
         <category>features</category>
@@ -312,57 +332,8 @@
 &lt;/div&gt;
 </description>
         <pubDate>Wed, 29 Apr 2020 00:00:00 +0100</pubDate>
-        <link>http://tedspectrum.github.io/features/2020/04/29/verletintegration1.html</link>
-        <guid isPermaLink="true">http://tedspectrum.github.io/features/2020/04/29/verletintegration1.html</guid>
-        
-        
-        <category>features</category>
-        
-      </item>
-    
-      <item>
-        <title>Geolocation - Continuous</title>
-        <description>
-&lt;div id=&quot;geolocationapp&quot; class=&quot;app&quot;&gt;
-  &lt;div class=&quot;hidden&quot;&gt;
-    &lt;a ref=&quot;fileWrite&quot;&gt;&lt;/a&gt;
-  &lt;/div&gt;
-  &lt;p&gt;
-    &lt;button class=&quot;geolocation--button&quot; @click.prevent=&quot;onLocationStart()&quot;&gt;Start&lt;/button&gt;
-    &lt;button class=&quot;geolocation--button&quot; @click.prevent=&quot;onLocationStop()&quot;&gt;Stop&lt;/button&gt;
-  &lt;/p&gt;
-  &lt;h2&gt;Latitude, Longitude&lt;/h2&gt;
-  &lt;h3&gt;({{ lat }},{{ long }})&lt;/h3&gt;
-  &lt;h4&gt;{{ dateString }}&lt;/h4&gt;
-  &lt;p&gt;{{ msg ? msg : '&amp;nbsp;' }}&lt;/p&gt;
-  &lt;p&gt;
-  &lt;button class=&quot;geolocation--button&quot; @click.prevent=&quot;onStoreAdd()&quot;&gt;Save&lt;/button&gt;
-  &lt;/p&gt;
-  &lt;table&gt;
-    &lt;thead&gt;
-      &lt;th&gt;timestamp&lt;/th&gt;&lt;th&gt;date&lt;/th&gt;&lt;th&gt;latitude&lt;/th&gt;&lt;th&gt;longitude&lt;/th&gt;
-    &lt;/thead&gt;
-    &lt;tbody&gt;
-      &lt;tr v-for=&quot;storedValue in stored&quot;&gt;
-        &lt;td&gt;{{ storedValue.key }}&lt;/td&gt;
-        &lt;td&gt;{{ storedValue.value.date }}&lt;/td&gt;
-        &lt;td&gt;{{ storedValue.value.latitude }}&lt;/td&gt;
-        &lt;td&gt;{{ storedValue.value.longitude }}&lt;/td&gt;
-      &lt;/tr&gt;
-    &lt;/tbody&gt;
-  &lt;/table&gt;
-  &lt;p&gt;
-  &lt;button class=&quot;geolocation--button&quot; @click.prevent=&quot;onStoreDownload()&quot;&gt;Download&lt;/button&gt;
-  &lt;/p&gt;
-  &lt;p&gt;&amp;nbsp;&lt;/p&gt;
-  &lt;p&gt;
-  &lt;button class=&quot;geolocation--button&quot; @click.prevent=&quot;onStoreClear()&quot;&gt;Clear&lt;/button&gt;
-  &lt;/p&gt;
-&lt;/div&gt;
-</description>
-        <pubDate>Fri, 24 Apr 2020 00:00:00 +0100</pubDate>
-        <link>http://tedspectrum.github.io/features/2020/04/24/geolocate-continuous.html</link>
-        <guid isPermaLink="true">http://tedspectrum.github.io/features/2020/04/24/geolocate-continuous.html</guid>
+        <link>http://localhost:4000/features/2020/04/29/verletintegration1.html</link>
+        <guid isPermaLink="true">http://localhost:4000/features/2020/04/29/verletintegration1.html</guid>
         
         
         <category>features</category>

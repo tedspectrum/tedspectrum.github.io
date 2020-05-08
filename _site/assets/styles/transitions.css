@@ -1,3 +1,13 @@
+/* fade in */
+.fadeinout-enter, .fadeinout-leave-to {
+  opacity: 0;
+}
+.fadeinout-enter-active {
+  transition: opacity 0.15s ease-in;
+}
+.fadeinout-leave-active {
+  transition: opacity 0.15s ease-out;
+}
 /* slide left */
 .slideleft-enter, .slideleft-leave-to {
   transform: translate3d(2em, 0, 0);
