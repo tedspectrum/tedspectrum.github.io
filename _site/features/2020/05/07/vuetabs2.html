@@ -10,23 +10,21 @@
   <meta name="description" content="  Tab Controls    Tabs      Tab 1    This is tab one        Tab two    Tabs are separate to controls        Tab 3    Tab three content  ">
 
   <link rel="stylesheet" href="/css/main.css">
-  <link rel="canonical" href="http://localhost:4000/features/2020/05/07/vuetabs2.html">
-  <link rel="alternate" type="application/rss+xml" title="Ted Spectrum" href="http://localhost:4000/feed.xml">
+  <link rel="canonical" href="http://tedspectrum.github.io/features/2020/05/07/vuetabs2.html">
+  <link rel="alternate" type="application/rss+xml" title="Ted Spectrum" href="http://tedspectrum.github.io/feed.xml">
   
   
-  <style> .app {
-  font-size: 1.5rem;
-} .v-cloak {
+  <style> .v-cloak {
   display: none;
-} .item-controls ul {
+} .buttonlist ul {
   margin: 0;
   padding-bottom: 0.5em;
   list-style-type: none;
-} .item-controls li {
+} .buttonlist li {
   display: inline;
-} .item-controls--button {
+} .buttonlist--button {
   padding: 0.5em 1em 0.5em 1em;
-} .item-controls--active, .item-controls--button:hover {
+} .buttonlist--active, .buttonlist--button:hover {
   background-color: lightskyblue;
   color: white;
 } </style>
@@ -54,20 +52,20 @@
     
 <div id="postapp" class="app" v-cloak>
   <h2>Tab Controls</h2>
-  <itemcontrols :items="items1"></itemcontrols>
+  <teds-buttonlist :items="items1"></teds-buttonlist>
   <h2>Tabs</h2>
-  <item :name="items1[0].name" :selected="items1[0].active">
+  <teds-content :name="items1[0].name" :active="items1[0].active">
     <h3>Tab 1</h3>
     <p>This is tab one</p>
-  </item>
-  <item :name="items1[1].name" :selected="items1[1].active">
+  </teds-content>
+  <teds-content :name="items1[1].name" :active="items1[1].active">
     <h3>Tab two</h3>
     <p>Tabs are separate to controls</p>
-  </item>
-  <item :name="items1[2].name" :selected="items1[2].active">
+  </teds-content>
+  <teds-content :name="items1[2].name" :active="items1[2].active">
     <h3>Tab 3</h3>
     <p>Tab three content</p>
-  </item>
+  </teds-content>
 </div>
 
   </div>
@@ -88,15 +86,15 @@
   
 
   
-  <script src="/assets/src/EventBus.js"></script>
+  <script src="/assets/src/mixins/eventbus.js"></script>
   
 
   
-  <script src="/assets/src/ItemControls.js"></script>
+  <script src="/assets/src/components/buttonlist.js"></script>
   
 
   
-  <script src="/assets/src/Item2.js"></script>
+  <script src="/assets/src/components/content.js"></script>
   
 
 
@@ -104,8 +102,8 @@
   el: '#postapp',
   name: 'postapp',
   components: {
-    'itemcontrols': ItemControlsComponent,
-    'item': ItemComponent
+    'teds-buttonlist': ButtonListComponent,
+    'teds-content': ContentComponent
   },
   mixins: [EventBusMixin],
   data: {
@@ -117,7 +115,7 @@
   },
   mounted: function() {
     // wire up items to item-controls
-    this.bus.$on('itemcontrols:select', this.onSelect)
+    this.bus.$on('buttonlist:select', this.onSelect)
   },
   methods: {
     onSelect: function(m, val) {

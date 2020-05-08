@@ -1,12 +1,12 @@
-const ItemControlsComponent = {
-  name: "itemcontrols",
-  template: "<div class='item-controls'>"
+const ButtonListComponent = {
+  name: "teds-buttonlist",
+  template: "<div class='buttonlist'>"
     + "<ul>"
     + "<li v-for='(item, index) in items' :key='index' "
     + " "
     + ">"
-    + "<button class='item-controls--button' "
-    + ":class='{ \"item-controls--active\": item.active }' "
+    + "<button class='buttonlist--button' "
+    + ":class='{ \"buttonlist--active\": item.active }' "
     + "@click='onClick(index)'>"
     + "{{ item.name }}"
     + "</button>"
@@ -25,7 +25,7 @@ const ItemControlsComponent = {
     onClick: function (selectedIndex) {
       let myself = this;
       this.items.forEach(function (v, i) {
-        myself.bus.$emit('itemcontrols:select', v, (i === selectedIndex));
+        myself.bus.$emit('buttonlist:select', v, (i === selectedIndex));
       })
     }
   }

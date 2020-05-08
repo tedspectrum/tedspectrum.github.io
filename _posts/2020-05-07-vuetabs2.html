@@ -4,33 +4,30 @@ title:  "Tabs in Vue.js 2"
 scripts: 
   - url: "https://cdn.jsdelivr.net/npm/vue@2.6.0/dist/vue.js"
     type: "absolute"
-  - url: "/assets/src/EventBus.js"
+  - url: "/assets/src/mixins/eventbus.js"
     type: "relative"
-  - url: "/assets/src/ItemControls.js"
+  - url: "/assets/src/components/buttonlist.js"
     type: "relative"
-  - url: "/assets/src/Item2.js"
+  - url: "/assets/src/components/content.js"
     type: "relative"
 categories: [features]
 inlinestyle: >
   <style>
-  .app {
-    font-size: 1.5rem;
-  }
   .v-cloak {
     display: none;
   }
-  .item-controls ul {
+  .buttonlist ul {
     margin: 0;
     padding-bottom: 0.5em;
     list-style-type: none;
   }
-  .item-controls li {
+  .buttonlist li {
     display: inline;
   }
-  .item-controls--button {
+  .buttonlist--button {
     padding: 0.5em 1em 0.5em 1em;
   }
-  .item-controls--active, .item-controls--button:hover {
+  .buttonlist--active, .buttonlist--button:hover {
     background-color: lightskyblue;
     color: white;
   }
@@ -41,8 +38,8 @@ inlinescript: >
     el: '#postapp',
     name: 'postapp',
     components: {
-      'itemcontrols': ItemControlsComponent,
-      'item': ItemComponent
+      'teds-buttonlist': ButtonListComponent,
+      'teds-content': ContentComponent
     },
     mixins: [EventBusMixin],
     data: {
@@ -54,7 +51,7 @@ inlinescript: >
     },
     mounted: function() {
       // wire up items to item-controls
-      this.bus.$on('itemcontrols:select', this.onSelect)
+      this.bus.$on('buttonlist:select', this.onSelect)
     },
     methods: {
       onSelect: function(m, val) {
@@ -67,19 +64,19 @@ inlinescript: >
 {% raw %}
 <div id="postapp" class="app" v-cloak>
   <h2>Tab Controls</h2>
-  <itemcontrols :items="items1"></itemcontrols>
+  <teds-buttonlist :items="items1"></teds-buttonlist>
   <h2>Tabs</h2>
-  <item :name="items1[0].name" :selected="items1[0].active">
+  <teds-content :name="items1[0].name" :active="items1[0].active">
     <h3>Tab 1</h3>
     <p>This is tab one</p>
-  </item>
-  <item :name="items1[1].name" :selected="items1[1].active">
+  </teds-content>
+  <teds-content :name="items1[1].name" :active="items1[1].active">
     <h3>Tab two</h3>
     <p>Tabs are separate to controls</p>
-  </item>
-  <item :name="items1[2].name" :selected="items1[2].active">
+  </teds-content>
+  <teds-content :name="items1[2].name" :active="items1[2].active">
     <h3>Tab 3</h3>
     <p>Tab three content</p>
-  </item>
+  </teds-content>
 </div>
 {% endraw %}
