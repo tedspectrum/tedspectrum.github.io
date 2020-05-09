@@ -1,10 +1,12 @@
 const ContentComponent = {
   name: 'teds-content',
-  template: "<div v-show='active'><slot></slot></div>",
+  template: "<div v-show='model.active'><slot></slot></div>",
   props: {
-    active: {
+    model: {
       required: false, 
-      default: false
+      default: {
+        'active': false
+      }
     }
   }
 };

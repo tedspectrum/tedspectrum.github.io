@@ -54,8 +54,10 @@ inlinescript: >
       this.bus.$on('buttonlist:select', this.onSelect)
     },
     methods: {
-      onSelect: function(m, val) {
-        if(m.active !== val) { m.active = val; };
+      onSelect: function(m, val, col) {
+        col.forEach(function (v, i) {
+          v.active = (i === val);
+        })
       }
     }
   });
@@ -64,17 +66,17 @@ inlinescript: >
 {% raw %}
 <div id="postapp" class="app" v-cloak>
   <h2>Tab Controls</h2>
-  <teds-buttonlist :items="items1"></teds-buttonlist>
+  <teds-buttonlist :collection="items1"></teds-buttonlist>
   <h2>Tabs</h2>
-  <teds-content :name="items1[0].name" :active="items1[0].active">
+  <teds-content :model="items1[0]">
     <h3>Tab 1</h3>
     <p>This is tab one</p>
   </teds-content>
-  <teds-content :name="items1[1].name" :active="items1[1].active">
+  <teds-content :model="items1[1]">
     <h3>Tab two</h3>
     <p>Tabs are separate to controls</p>
   </teds-content>
-  <teds-content :name="items1[2].name" :active="items1[2].active">
+  <teds-content :model="items1[2]">
     <h3>Tab 3</h3>
     <p>Tab three content</p>
   </teds-content>

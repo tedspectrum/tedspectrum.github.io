@@ -6,15 +6,15 @@
 </description>
     <link>http://localhost:4000/</link>
     <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Fri, 08 May 2020 21:10:25 +0100</pubDate>
-    <lastBuildDate>Fri, 08 May 2020 21:10:25 +0100</lastBuildDate>
+    <pubDate>Sat, 09 May 2020 08:09:22 +0100</pubDate>
+    <lastBuildDate>Sat, 09 May 2020 08:09:22 +0100</lastBuildDate>
     <generator>Jekyll v4.0.0</generator>
     
       <item>
         <title>Panels in Vue.js 1</title>
         <description>
 &lt;div id=&quot;postapp&quot; class=&quot;app panel-container&quot; v-cloak&gt;
-  &lt;button @click=&quot;onPanelOpen(panel)&quot;&gt;Menu&lt;/button&gt;
+  &lt;button @click=&quot;bus.$emit('panel:activate', panel, true)&quot;&gt;Menu&lt;/button&gt;
   &lt;teds-panel :model=&quot;panel&quot;&gt;
     &lt;p&gt;Panel Content&lt;/p&gt;
   &lt;/teds-panel&gt;
@@ -36,19 +36,19 @@
 &lt;div id=&quot;postapp&quot; class=&quot;app panel-container&quot; v-cloak&gt;
   &lt;teds-panel :model=&quot;mainmenu&quot; classes=&quot;panel-topleft&quot; transition=&quot;slidedownright&quot;&gt;
     &lt;h2 class=&quot;heading2&quot;&gt;Menu&lt;/h2&gt;
-    &lt;teds-buttonlist :items=&quot;mainitems&quot;&gt;&lt;/teds-buttonlist&gt;
+    &lt;teds-buttonlist :collection=&quot;mainitems&quot;&gt;&lt;/teds-buttonlist&gt;
   &lt;/teds-panel&gt;
   &lt;h2 class=&quot;heading2&quot;&gt;Content Blocks&lt;/h2&gt;
-  &lt;button @click=&quot;onPanelOpen(mainmenu)&quot;&gt;Menu&lt;/button&gt;
-  &lt;teds-content :name=&quot;mainitems[0].name&quot; :active=&quot;mainitems[0].active&quot;&gt;
+  &lt;button @click=&quot;bus.$emit('panel:activate', mainmenu, true)&quot;&gt;Menu&lt;/button&gt;
+  &lt;teds-content :model=&quot;mainitems[0]&quot;&gt;
     &lt;h3&gt;Content 1&lt;/h3&gt;
     &lt;p&gt;This is the first content&lt;/p&gt;
   &lt;/teds-content&gt;
-  &lt;teds-content :name=&quot;mainitems[1].name&quot; :active=&quot;mainitems[1].active&quot;&gt;
+  &lt;teds-content :model=&quot;mainitems[1]&quot;&gt;
     &lt;h3&gt;Content two&lt;/h3&gt;
     &lt;p&gt;Content is separate to controls&lt;/p&gt;
   &lt;/teds-content&gt;
-  &lt;teds-content :name=&quot;mainitems[2].name&quot; :active=&quot;mainitems[2].active&quot;&gt;
+  &lt;teds-content :model=&quot;mainitems[2]&quot;&gt;
     &lt;h3&gt;Content 3&lt;/h3&gt;
     &lt;p&gt;content three&lt;/p&gt;
   &lt;/teds-content&gt;
@@ -68,17 +68,17 @@
         <description>
 &lt;div id=&quot;postapp&quot; class=&quot;app&quot; v-cloak&gt;
   &lt;h2&gt;Tab Controls&lt;/h2&gt;
-  &lt;teds-buttonlist :items=&quot;items1&quot;&gt;&lt;/teds-buttonlist&gt;
+  &lt;teds-buttonlist :collection=&quot;items1&quot;&gt;&lt;/teds-buttonlist&gt;
   &lt;h2&gt;Tabs&lt;/h2&gt;
-  &lt;teds-content :name=&quot;items1[0].name&quot; :active=&quot;items1[0].active&quot;&gt;
+  &lt;teds-content :model=&quot;items1[0]&quot;&gt;
     &lt;h3&gt;Tab 1&lt;/h3&gt;
     &lt;p&gt;This is tab one&lt;/p&gt;
   &lt;/teds-content&gt;
-  &lt;teds-content :name=&quot;items1[1].name&quot; :active=&quot;items1[1].active&quot;&gt;
+  &lt;teds-content :model=&quot;items1[1]&quot;&gt;
     &lt;h3&gt;Tab two&lt;/h3&gt;
     &lt;p&gt;Tabs are separate to controls&lt;/p&gt;
   &lt;/teds-content&gt;
-  &lt;teds-content :name=&quot;items1[2].name&quot; :active=&quot;items1[2].active&quot;&gt;
+  &lt;teds-content :model=&quot;items1[2]&quot;&gt;
     &lt;h3&gt;Tab 3&lt;/h3&gt;
     &lt;p&gt;Tab three content&lt;/p&gt;
   &lt;/teds-content&gt;

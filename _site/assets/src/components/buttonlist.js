@@ -2,31 +2,23 @@ const ButtonListComponent = {
   name: "teds-buttonlist",
   template: "<div class='buttonlist'>"
     + "<ul>"
-    + "<li v-for='(item, index) in items' :key='index' "
+    + "<li v-for='(item, index) in collection' :key='index' "
     + " "
     + ">"
     + "<button class='buttonlist--button' "
     + ":class='{ \"buttonlist--active\": item.active }' "
-    + "@click='onClick(index)'>"
+    + "@click=\"bus.$emit('buttonlist:select', item, index, collection)\">"
     + "{{ item.name }}"
     + "</button>"
     + "</li></ul>"
     + "</div>",
+  mixins: [EventBusMixin],
   props: {
-    'items': {
+    'collection': {
       // the array of items to manage.
       // { name: String, active: Boolean}
       type: Array,
       required: true
-    }
-  },
-  mixins: [EventBusMixin],
-  methods: {
-    onClick: function (selectedIndex) {
-      let myself = this;
-      this.items.forEach(function (v, i) {
-        myself.bus.$emit('buttonlist:select', v, (i === selectedIndex));
-      })
     }
   }
 };

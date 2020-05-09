@@ -42,23 +42,19 @@ inlinescript: >
     },
     mixins: [EventBusMixin],
     mounted: function() {
-      this.bus.$on('panel:open', this.onPanelOpen);
-      this.bus.$on('panel:close', this.onPanelClose);
+      this.bus.$on('panel:activate', this.onPanelActivate);
     },
     methods: {
-      onPanelOpen: function(m) {
-        m.active = true;
+      onPanelActivate: function(m, val) {
+        if(m.active !== val) { m.active = val; };
       },
-      onPanelClose: function(m) {
-        m.active = false;
-      }
     }
   });
   </script>
 ---
 {% raw %}
 <div id="postapp" class="app panel-container" v-cloak>
-  <button @click="onPanelOpen(panel)">Menu</button>
+  <button @click="bus.$emit('panel:activate', panel, true)">Menu</button>
   <teds-panel :model="panel">
     <p>Panel Content</p>
   </teds-panel>
