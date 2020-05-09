@@ -6,9 +6,76 @@
 </description>
     <link>http://localhost:4000/</link>
     <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sat, 09 May 2020 08:09:22 +0100</pubDate>
-    <lastBuildDate>Sat, 09 May 2020 08:09:22 +0100</lastBuildDate>
+    <pubDate>Sat, 09 May 2020 20:38:42 +0100</pubDate>
+    <lastBuildDate>Sat, 09 May 2020 20:38:42 +0100</lastBuildDate>
     <generator>Jekyll v4.0.0</generator>
+    
+      <item>
+        <title>CSS grid with SVG elements</title>
+        <description>
+&lt;div id=&quot;postapp&quot; class=&quot;app&quot; v-cloak&gt;
+  &lt;div v-show=&quot;false&quot;&gt;
+    &lt;!-- cache, give elements ref=&quot;&quot; to reference in methods --&gt;
+    &lt;svg&gt;
+      &lt;defs&gt;
+        &lt;g id=&quot;corner&quot;&gt;
+          &lt;circle cx=&quot;16&quot; cy=&quot;16&quot; r=&quot;16&quot; style=&quot;fill: lightskyblue&quot;&gt;&lt;/circle&gt;
+          &lt;circle cx=&quot;16&quot; cy=&quot;16&quot; r=&quot;6&quot; style=&quot;fill: white&quot;&gt;&lt;/circle&gt;
+        &lt;/g&gt;
+        &lt;!--
+        &lt;line id=&quot;horizontal&quot; x1=&quot;0&quot; y1=&quot;14&quot; x2=&quot;100&quot; y2=&quot;14&quot; style=&quot;stroke-width: 4px; stroke: lightskyblue&quot;/&gt;
+        --&gt;
+        &lt;g id=&quot;horizontal-top&quot;&gt;
+          &lt;path d=&quot;M 0 14 l 50 -7 l 50 7&quot; style=&quot;stroke-width: 4px; stroke: lightskyblue; fill: none&quot; /&gt;
+        &lt;/g&gt;
+        &lt;g id=&quot;horizontal-bottom&quot;&gt;
+          &lt;path d=&quot;M 0 14 l 50 7 l 50 -7&quot; style=&quot;stroke-width: 4px; stroke: lightskyblue; fill: none&quot; /&gt;
+        &lt;/g&gt;
+        &lt;line id=&quot;vertical&quot; x1=&quot;15&quot; y1=&quot;0&quot; x2=&quot;15&quot; y2=&quot;100&quot; style=&quot;stroke-width: 4px; stroke: lightskyblue;&quot;/&gt;
+      &lt;/defs&gt;
+    &lt;/svg&gt;
+  &lt;/div&gt;
+  &lt;div class=&quot;grid9&quot;&gt;
+    &lt;svg&gt;
+      &lt;use xlink:href=&quot;#corner&quot; x=&quot;0&quot; y=&quot;0&quot; /&gt;
+    &lt;/svg&gt;
+    &lt;svg viewBox=&quot;0 0 100 32&quot; preserveAspectRatio=&quot;none&quot; style=&quot;width: 100%;&quot;&gt;
+      &lt;use xlink:href=&quot;#horizontal-top&quot; x=&quot;0&quot; y=&quot;0&quot; /&gt;
+    &lt;/svg&gt;
+    &lt;svg&gt;
+      &lt;use xlink:href=&quot;#corner&quot; x=&quot;0&quot; y=&quot;0&quot; /&gt;
+    &lt;/svg&gt;
+    &lt;svg viewBox=&quot;0 0 32 100&quot; preserveAspectRatio=&quot;none&quot; style=&quot;height: 100%;&quot;&gt;
+      &lt;use xlink:href=&quot;#vertical&quot; x=&quot;0&quot; y=&quot;0&quot; /&gt;
+    &lt;/svg&gt;
+    &lt;div style=&quot;min-height: 4rem; padding: 1rem;&quot;&gt;
+      &lt;h3 style=&quot;text-align: center&quot;&gt;Centre content&lt;/h3&gt;
+      &lt;p&gt;More content&lt;/p&gt;
+      &lt;p&gt;More content&lt;/p&gt;
+    &lt;/div&gt;
+    &lt;svg viewBox=&quot;0 0 32 100&quot; preserveAspectRatio=&quot;none&quot; style=&quot;height: 100%;&quot;&gt;
+      &lt;use xlink:href=&quot;#vertical&quot; x=&quot;0&quot; y=&quot;0&quot; /&gt;
+    &lt;/svg&gt;
+    &lt;svg&gt;
+      &lt;use xlink:href=&quot;#corner&quot; x=&quot;0&quot; y=&quot;0&quot; /&gt;
+    &lt;/svg&gt;
+    &lt;svg viewBox=&quot;0 0 100 32&quot; preserveAspectRatio=&quot;none&quot; style=&quot;width: 100%;&quot;&gt;
+      &lt;use xlink:href=&quot;#horizontal-bottom&quot; x=&quot;0&quot; y=&quot;0&quot; /&gt;
+    &lt;/svg&gt;
+    &lt;svg&gt;
+      &lt;use xlink:href=&quot;#corner&quot; x=&quot;0&quot; y=&quot;0&quot; /&gt;
+    &lt;/svg&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+</description>
+        <pubDate>Sat, 09 May 2020 00:00:00 +0100</pubDate>
+        <link>http://localhost:4000/features/2020/05/09/gridwithsvg.html</link>
+        <guid isPermaLink="true">http://localhost:4000/features/2020/05/09/gridwithsvg.html</guid>
+        
+        
+        <category>features</category>
+        
+      </item>
     
       <item>
         <title>Panels in Vue.js 1</title>
@@ -330,24 +397,6 @@
         <pubDate>Thu, 30 Apr 2020 00:00:00 +0100</pubDate>
         <link>http://localhost:4000/features/2020/04/30/verletintegration3.html</link>
         <guid isPermaLink="true">http://localhost:4000/features/2020/04/30/verletintegration3.html</guid>
-        
-        
-        <category>features</category>
-        
-      </item>
-    
-      <item>
-        <title>Verlet Integration 2</title>
-        <description>
-&lt;h1&gt;Verlet Integration 2&lt;/h1&gt;
-&lt;p&gt;Following along with a video from Youtube by &quot;Coding Math&quot;&lt;/p&gt;
-&lt;div class=&quot;app&quot;&gt;
-  &lt;canvas id=&quot;canvas&quot; width=&quot;320&quot; height=&quot;240&quot;&gt;&lt;/canvas&gt;
-&lt;/div&gt;
-</description>
-        <pubDate>Thu, 30 Apr 2020 00:00:00 +0100</pubDate>
-        <link>http://localhost:4000/features/2020/04/30/verletintegration2.html</link>
-        <guid isPermaLink="true">http://localhost:4000/features/2020/04/30/verletintegration2.html</guid>
         
         
         <category>features</category>

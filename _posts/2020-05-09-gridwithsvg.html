@@ -1,0 +1,99 @@
+---
+layout: post
+title:  "CSS grid with SVG elements"
+scripts: 
+  - url: "https://cdn.jsdelivr.net/npm/vue@2.6.0/dist/vue.min.js"
+    type: "absolute"
+  - url: "/assets/src/LocalStorage.js"
+    type: "relative"
+categories: [features]
+inlinestyle: >
+  <style>
+  .v-cloak {
+    display: none;
+  }
+  .app {
+    border: 1p solid black;
+  }
+  .grid9 {
+    display: grid;
+    grid-template-columns: 32px auto 32px;
+    grid-template-rows: 32px auto 32px;
+    justify-content: stretch;
+    justify-items: stretch;
+    align-items: stretch;
+    width: 100%;
+  }
+  </style>
+inlinescript: > 
+  <script>
+  const app = new Vue({
+    el: '#postapp',
+    data: {
+      
+    },
+    mounted: function() {
+      
+    },
+    methods: {
+      
+    }
+  });
+  </script>
+---
+{% raw %}
+<div id="postapp" class="app" v-cloak>
+  <div v-show="false">
+    <!-- cache, give elements ref="" to reference in methods -->
+    <svg>
+      <defs>
+        <g id="corner">
+          <circle cx="16" cy="16" r="16" style="fill: lightskyblue"></circle>
+          <circle cx="16" cy="16" r="6" style="fill: white"></circle>
+        </g>
+        <!--
+        <line id="horizontal" x1="0" y1="14" x2="100" y2="14" style="stroke-width: 4px; stroke: lightskyblue"/>
+        -->
+        <g id="horizontal-top">
+          <path d="M 0 14 l 50 -7 l 50 7" style="stroke-width: 4px; stroke: lightskyblue; fill: none" />
+        </g>
+        <g id="horizontal-bottom">
+          <path d="M 0 14 l 50 7 l 50 -7" style="stroke-width: 4px; stroke: lightskyblue; fill: none" />
+        </g>
+        <line id="vertical" x1="15" y1="0" x2="15" y2="100" style="stroke-width: 4px; stroke: lightskyblue;"/>
+      </defs>
+    </svg>
+  </div>
+  <div class="grid9">
+    <svg>
+      <use xlink:href="#corner" x="0" y="0" />
+    </svg>
+    <svg viewBox="0 0 100 32" preserveAspectRatio="none" style="width: 100%;">
+      <use xlink:href="#horizontal-top" x="0" y="0" />
+    </svg>
+    <svg>
+      <use xlink:href="#corner" x="0" y="0" />
+    </svg>
+    <svg viewBox="0 0 32 100" preserveAspectRatio="none" style="height: 100%;">
+      <use xlink:href="#vertical" x="0" y="0" />
+    </svg>
+    <div style="min-height: 4rem; padding: 1rem;">
+      <h3 style="text-align: center">Centre content</h3>
+      <p>More content</p>
+      <p>More content</p>
+    </div>
+    <svg viewBox="0 0 32 100" preserveAspectRatio="none" style="height: 100%;">
+      <use xlink:href="#vertical" x="0" y="0" />
+    </svg>
+    <svg>
+      <use xlink:href="#corner" x="0" y="0" />
+    </svg>
+    <svg viewBox="0 0 100 32" preserveAspectRatio="none" style="width: 100%;">
+      <use xlink:href="#horizontal-bottom" x="0" y="0" />
+    </svg>
+    <svg>
+      <use xlink:href="#corner" x="0" y="0" />
+    </svg>
+  </div>
+</div>
+{% endraw %}
