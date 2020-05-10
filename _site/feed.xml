@@ -6,9 +6,79 @@
 </description>
     <link>http://localhost:4000/</link>
     <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sun, 10 May 2020 07:29:41 +0100</pubDate>
-    <lastBuildDate>Sun, 10 May 2020 07:29:41 +0100</lastBuildDate>
+    <pubDate>Sun, 10 May 2020 21:12:16 +0100</pubDate>
+    <lastBuildDate>Sun, 10 May 2020 21:12:16 +0100</lastBuildDate>
     <generator>Jekyll v4.0.0</generator>
+    
+      <item>
+        <title>Geolocation UI 1</title>
+        <description>
+&lt;p&gt;
+  A single page application that provides continuous geolocation.
+  In addition to geolocation tracking, the SPA can report on saved points.
+  Also has ability to download a file of the saved points.
+  Separately, has an interface that allows clearing the data.
+&lt;/p&gt;
+&lt;div id=&quot;postapp&quot; class=&quot;app panel-container&quot; v-cloak&gt;
+  &lt;div v-show=&quot;false&quot;&gt;
+    &lt;!-- cache, give elements ref=&quot;&quot; to reference in methods --&gt;
+    &lt;a ref=&quot;fileWrite&quot;&gt;&lt;/a&gt;
+  &lt;/div&gt;
+  &lt;teds-panel :model=&quot;mainmenu&quot; classes=&quot;panel-topleft&quot; transition=&quot;slidedownright&quot;&gt;
+    &lt;h2 class=&quot;heading2&quot;&gt;Menu&lt;/h2&gt;
+    &lt;teds-buttonlist :collection=&quot;mainitems&quot;&gt;&lt;/teds-buttonlist&gt;
+  &lt;/teds-panel&gt;
+  &lt;button @click=&quot;bus.$emit('panel:activate', mainmenu, true)&quot;&gt;Menu&lt;/button&gt;
+  &lt;teds-content :model=&quot;mainitems[0]&quot;&gt;
+    &lt;h2&gt;Geolocation&lt;/h2&gt;
+    &lt;p class=&quot;right&quot;&gt;
+      &lt;button class=&quot;geolocation--button&quot; @click=&quot;onLocationStart()&quot;&gt;Start&lt;/button&gt;
+      &lt;button class=&quot;geolocation--button&quot; @click=&quot;onLocationStop()&quot;&gt;Stop&lt;/button&gt;
+    &lt;/p&gt;
+    &lt;h2&gt;Latitude, Longitude&lt;/h2&gt;
+    &lt;h3&gt;({{ lat }},{{ long }})&lt;/h3&gt;
+    &lt;h4&gt;{{ dateString }}&lt;/h4&gt;
+    &lt;p&gt;{{ msg ? msg : '&amp;nbsp;' }}&lt;/p&gt;
+    &lt;p class=&quot;right&quot;&gt;
+    &lt;button class=&quot;geolocation--button&quot; @click=&quot;onStoreAdd()&quot;&gt;Save&lt;/button&gt;
+    &lt;/p&gt;
+  &lt;/teds-content&gt;
+  &lt;teds-content :model=&quot;mainitems[1]&quot;&gt;
+    &lt;h2&gt;View Stored Data &lt;/h2&gt;
+    &lt;table class=&quot;center-block&quot;&gt;
+      &lt;thead&gt;
+        &lt;th&gt;date&lt;/th&gt;&lt;th&gt;latitude&lt;/th&gt;&lt;th&gt;longitude&lt;/th&gt;
+      &lt;/thead&gt;
+      &lt;tbody&gt;
+        &lt;tr v-for=&quot;storedValue in stored&quot;&gt;
+          &lt;td&gt;{{ storedValue.value.date }}&lt;/td&gt;
+          &lt;td&gt;{{ storedValue.value.latitude }}&lt;/td&gt;
+          &lt;td&gt;{{ storedValue.value.longitude }}&lt;/td&gt;
+        &lt;/tr&gt;
+      &lt;/tbody&gt;
+    &lt;/table&gt;
+  &lt;/teds-content&gt;
+  &lt;teds-content :model=&quot;mainitems[2]&quot;&gt;
+    &lt;h2&gt;Manage Data&lt;/h2&gt;
+    &lt;h3&gt;Clear Data&lt;/h3&gt;
+    &lt;p class=&quot;right&quot;&gt;
+    &lt;button @click=&quot;onStoreClear()&quot;&gt;Clear&lt;/button&gt;
+    &lt;/p&gt;
+    &lt;h3&gt;File Download&lt;/h3&gt;
+    &lt;p class=&quot;right&quot;&gt;
+    &lt;button @click=&quot;onStoreDownload()&quot;&gt;Download&lt;/button&gt;
+    &lt;/p&gt;
+  &lt;/teds-content&gt;  
+&lt;/div&gt;
+</description>
+        <pubDate>Sun, 10 May 2020 00:00:00 +0100</pubDate>
+        <link>http://localhost:4000/single%20page%20applications/2020/05/10/geolocationui1.html</link>
+        <guid isPermaLink="true">http://localhost:4000/single%20page%20applications/2020/05/10/geolocationui1.html</guid>
+        
+        
+        <category>single page applications</category>
+        
+      </item>
     
       <item>
         <title>CSS grid with SVG elements</title>
@@ -381,25 +451,6 @@
         <pubDate>Fri, 01 May 2020 00:00:00 +0100</pubDate>
         <link>http://localhost:4000/features/2020/05/01/svgcontrolcorners.html</link>
         <guid isPermaLink="true">http://localhost:4000/features/2020/05/01/svgcontrolcorners.html</guid>
-        
-        
-        <category>features</category>
-        
-      </item>
-    
-      <item>
-        <title>Verlet Integration 3</title>
-        <description>
-&lt;h1&gt;Verlet Integration 3&lt;/h1&gt;
-&lt;p&gt;Following along with a video from Youtube by &quot;Coding Math&quot;&lt;/p&gt;
-&lt;p&gt;Click mouse to position square&lt;/p&gt;
-&lt;div class=&quot;app&quot;&gt;
-  &lt;canvas id=&quot;canvas&quot; width=&quot;320&quot; height=&quot;240&quot;&gt;&lt;/canvas&gt;
-&lt;/div&gt;
-</description>
-        <pubDate>Thu, 30 Apr 2020 00:00:00 +0100</pubDate>
-        <link>http://localhost:4000/features/2020/04/30/verletintegration3.html</link>
-        <guid isPermaLink="true">http://localhost:4000/features/2020/04/30/verletintegration3.html</guid>
         
         
         <category>features</category>
