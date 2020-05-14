@@ -1,0 +1,163 @@
+---
+layout: post
+title:  "SVG bar 1"
+scripts: 
+  - url: "https://cdn.jsdelivr.net/npm/vue@2.6.0/dist/vue.js"
+    type: "absolute"
+categories: [svg, features]
+inlinestyle: >
+  <style>
+  .app {
+    width: 100%;
+    height: 90vh;
+    border: 1px solid black;
+    overflow: hidden;
+    background-color: lightgray;
+    padding: 1rem;
+  }
+  .v-cloak {
+    display: none;
+  }
+  .svg {
+    border: 1px solid black;
+    width: 320px;
+    height: 240px;
+  }
+  .bar {
+    stroke: black;
+    stroke-width: 1px;
+    fill: darkgray;
+  }
+  .point {
+    stroke: none;
+    fill: white;
+  }
+  </style>
+inlinescript: > 
+  <script>
+  const app = new Vue({
+    el: '#postapp',
+    data: {
+      collection: {
+        items: [
+        { x: 20, y: 80, width: 50 },
+        { x: 200, y: 120, width: 50 },
+        { x: 100, y: 200, width: 10 },
+        { x: 50, y: 150, width: 15},
+        { x: 180, y: 30, width: 30 }
+        ]
+      },
+      bard: ""
+    },
+    mounted: function() {
+      console.log(this.radiansToDegrees(this.angleBetween(
+        { x: 100, y: 0 }, { x: 100, y: 100 }
+      )));
+    },
+    methods: {
+      calcd: function(col) {
+        let a, i, mitre, m1, m2, p1, p2, vec1, vec2, u, un, p1acp, p1cp, p2acp, p2cp, d = "";
+        for(i = 0; i < (col.items.length - 1); i++) {
+          col.items[i].dir = this.vectorAB(col.items[i], col.items[i+1]);
+          col.items[i].un = this.unit(this.cross(col.items[i].dir));
+        }
+        for(i = 0; i < (col.items.length - 2); i++) {
+          a = this.angleBetween(col.items[i].dir, col.items[i+1].dir);
+          col.items[i].mitre = this.add(
+            this.scale(this.unit(col.items[i].dir), (col.items[i+1].width / (2 * Math.sin(a)))),
+            this.scale(this.unit(col.items[i+1].dir), -(col.items[i].width / (2 * Math.sin(a))))
+          )
+        }
+        for(i = 0; i < (col.items.length - 1); i++) {
+          if (i === 0) {
+            m1 = this.round(this.scale(col.items[i].un, -col.items[i].width / 2));
+            m2 = col.items[i].mitre;         
+          } else if (i === (col.items.length - 2)) {
+            m1 = this.scale(col.items[i-1].mitre, -1);
+            m2 = this.round(this.scale(col.items[i].un, col.items[i+1].width / 2));             
+          } else {
+            m1 = this.scale(col.items[i-1].mitre, -1);
+            m2 = col.items[i].mitre;
+          }
+          p1 = col.items[i];
+          p2 = col.items[i+1];
+          d += ["M", p1.x + m1.x, p1.y + m1.y].join(" ");
+            // to the point at the end of p2 + p2acp + mitre
+            d += " " + ["L", p2.x - m2.x, p2.y - m2.y].join(" ");
+            // to the point at the end of p2 + inverse(p2acp)
+            d += " " + ["L", p2.x + m2.x, p2.y + m2.y].join(" ");
+            // to the point at the end of p1 + inverse(p1acp)
+            d += " " + ["L", p1.x - m1.x, p1.y - m1.y].join(" ");
+            // and close
+            d += " Z ";
+        }
+        return d;
+      },
+      vectorAB: function(p1, p2) {
+        // return the 2d vector from p1 to p2
+        return { x: p2.x - p1.x, y: p2.y - p1.y };
+      },
+      angleBetween(vec1, vec2) {
+        let dotproduct = this.dotproduct(vec1, vec2),
+          vec1length = this.length(vec1),
+          vec2length = this.length(vec2);
+        return Math.acos(dotproduct / (vec1length * vec2length));
+      },
+      add: function(vec1, vec2) {
+        return { x: vec1.x + vec2.x, y: vec1.y + vec2.y };
+      },
+      cross: function(vec) {
+        // return the counter-clockwise perpendicular 2d vector
+        return { x: vec.y, y: -vec.x };
+      },
+      dotproduct: function(vec1, vec2) {
+        return (vec1.x * vec2.x) + (vec1.y * vec2.y);
+      },
+      inverse: function(vec) {
+        // return the 2d vector in the opposite direction
+        return { x: -vec.x, y: -vec.y };
+      },
+      radiansToDegrees: function(rad) {
+        return rad * (180/Math.PI);
+      },
+      round: function(vec) {
+        return { x: Math.round(vec.x), y: Math.round(vec.y) };
+      },
+      scale: function(vec, scale) {
+        // scale a 2d vector
+        return { x: vec.x * scale, y: vec.y * scale };
+      },
+      length: function(vec) {
+        // length of a 2d vector
+        return Math.sqrt(vec.x * vec.x + vec.y * vec.y);
+      },
+      unit: function(vec) {
+        /* a unit vector in the direction of a 2d vector is
+          find length of vector then
+          scale vector by inverse of length
+        */
+        let scale, len;
+        len = Math.sqrt(vec.x * vec.x + vec.y * vec.y);
+        scale = (len === 0) ? 0 : (1 / len);
+        return { x: vec.x * scale, y: vec.y * scale }
+      }
+    }
+  });
+  </script>
+---
+{% raw %}
+<p>Given any two points draw a bar from one point to the next
+</p>
+<div id="postapp" class="app" v-cloak>
+  <div v-show="false">
+    <!-- cache, give elements ref="" to reference in methods -->
+  </div>
+  <svg class="svg">
+    <defs></defs>
+    <circle v-for="(item,index) in collection.items" :cx="item.x" :cy="item.y" r="5" class="point" />
+    <g id="bar">
+      <path :d="calcd(collection)" class="bar"/>
+    </g>
+  </svg>
+</div>
+{% endraw %}
