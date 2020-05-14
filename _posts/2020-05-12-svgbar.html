@@ -40,23 +40,18 @@ inlinescript: >
     data: {
       collection: {
         items: [
-        { x: 20, y: 80, width: 50 },
-        { x: 200, y: 120, width: 50 },
-        { x: 100, y: 200, width: 10 },
-        { x: 50, y: 150, width: 15},
-        { x: 180, y: 30, width: 30 }
+        { x: 20, y: 80, width: 40 },
+        { x: 200, y: 120, width: 30 },
+        { x: 100, y: 200, width: 20 } /*,
+        { x: 50, y: 150, width: 10},
+        { x: 180, y: 30, width: 1 } */
         ]
       },
       bard: ""
     },
-    mounted: function() {
-      console.log(this.radiansToDegrees(this.angleBetween(
-        { x: 100, y: 0 }, { x: 100, y: 100 }
-      )));
-    },
     methods: {
       calcd: function(col) {
-        let a, i, mitre, m1, m2, p1, p2, vec1, vec2, u, un, p1acp, p1cp, p2acp, p2cp, d = "";
+        let a, i, mitre, m1, m2, pre, curr, next, d = [], dtop = [], dbottom = [];
         for(i = 0; i < (col.items.length - 1); i++) {
           col.items[i].dir = this.vectorAB(col.items[i], col.items[i+1]);
           col.items[i].un = this.unit(this.cross(col.items[i].dir));
@@ -69,29 +64,45 @@ inlinescript: >
           )
         }
         for(i = 0; i < (col.items.length - 1); i++) {
+          pre = col.items[i-1];
+          curr = col.items[i];
+          next = col.items[i+1];
           if (i === 0) {
-            m1 = this.round(this.scale(col.items[i].un, -col.items[i].width / 2));
-            m2 = col.items[i].mitre;         
+            // first point
+            m1 = this.round(this.scale(curr.un, -curr.width / 2));
+            m2 = this.round(curr.mitre);
+            dtop.push("M", curr.x + m1.x, curr.y + m1.y);
+            dtop.push("L", next.x - m2.x, next.y - m2.y); // line to topright
+            dbottom.unshift("L",curr.x - m1.x, curr.y - m1.y); // line to bottomleft
           } else if (i === (col.items.length - 2)) {
-            m1 = this.scale(col.items[i-1].mitre, -1);
-            m2 = this.round(this.scale(col.items[i].un, col.items[i+1].width / 2));             
+            // next to last point
+            m1 = this.round(this.scale(pre.mitre, -1));
+            m2 = this.round(this.scale(curr.un, next.width / 2));
+            dtop.push("L", next.x - m2.x, next.y - m2.y); // line to topright
+            dbottom.unshift("L",curr.x - m1.x, curr.y - m1.y); // line to bottomleft
+            dbottom.unshift("L", next.x + m2.x, next.y + m2.y); // line to bottomright
+            dbottom.push("Z");
           } else {
-            m1 = this.scale(col.items[i-1].mitre, -1);
-            m2 = col.items[i].mitre;
+            // middle points
+            m1 = this.round(this.scale(pre.mitre, -1));
+            m2 = this.round(curr.mitre);
+            dtop.push("L", next.x - m2.x, next.y - m2.y); // line to topright
+            dbottom.unshift("L",curr.x - m1.x, curr.y - m1.y); // line to bottomleft
           }
-          p1 = col.items[i];
-          p2 = col.items[i+1];
-          d += ["M", p1.x + m1.x, p1.y + m1.y].join(" ");
-            // to the point at the end of p2 + p2acp + mitre
-            d += " " + ["L", p2.x - m2.x, p2.y - m2.y].join(" ");
-            // to the point at the end of p2 + inverse(p2acp)
-            d += " " + ["L", p2.x + m2.x, p2.y + m2.y].join(" ");
-            // to the point at the end of p1 + inverse(p1acp)
-            d += " " + ["L", p1.x - m1.x, p1.y - m1.y].join(" ");
-            // and close
-            d += " Z ";
+          /*
+          d.splice(d.length, 0, 
+            "M", curr.x + m1.x, curr.y + m1.y, // move to start at topleft
+            "L", next.x - m2.x, next.y - m2.y, // line to topright
+            "L", next.x + m2.x, next.y + m2.y, // line to bottomright
+            "L", curr.x - m1.x, curr.y - m1.y, // line to bottomleft
+            "Z" // close path
+          );
+          */
         }
-        return d;
+        console.log(d.join(" "));
+        console.log(dtop.join(" "));
+        console.log(dbottom.join(" "));
+        return /*d.join(" ")*/ dtop.join(" ") + " " + dbottom.join(" ");
       },
       vectorAB: function(p1, p2) {
         // return the 2d vector from p1 to p2
@@ -146,17 +157,28 @@ inlinescript: >
   </script>
 ---
 {% raw %}
-<p>Given any two points draw a bar from one point to the next
+<p>Given any three or more points draw a bar from one point to the next
 </p>
 <div id="postapp" class="app" v-cloak>
   <div v-show="false">
     <!-- cache, give elements ref="" to reference in methods -->
   </div>
   <svg class="svg">
-    <defs></defs>
+    <defs>
+      <filter id="dropShadow" x="-15" y="-15" width="300" height="150">
+        <feOffset result="downright" in="SourceAlpha" dx="5" dy="5" />
+        <feGaussianBlur result="blurred" in="downright" stdDeviation="5" />
+        <!--<feMorphology result="fattened" in="SourceAlpha" operator="dilate" radius="3"/>-->
+        <feMerge>
+          <feMergeNode in="blurred" />
+          <!--<feMergeNode in="fattened" />-->
+          <feMergeNode in="SourceGraphic" />
+        </feMerge>
+      </filter>
+    </defs>
     <circle v-for="(item,index) in collection.items" :cx="item.x" :cy="item.y" r="5" class="point" />
     <g id="bar">
-      <path :d="calcd(collection)" class="bar"/>
+      <path :d="calcd(collection)" class="bar" filter="url(#dropShadow)" />
     </g>
   </svg>
 </div>
