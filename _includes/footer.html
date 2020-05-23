@@ -6,9 +6,9 @@
 {% for item in page.scripts %}
   {% case item.type %}
   {% when "absolute" %}
-  <script src="{{ item.url }}"></script>
+  <script src="{{ item.url }}" {% if item.module %}type="module"{% endif %}></script>
   {% when "relative" %}
-  <script src="{{ item.url | relative_url }}"></script>
+  <script src="{{ item.url | relative_url }}" {% if item.module %}type="module"{% endif %}></script>
   {% when "inline" %}
   {{ item.src }}
   {% endcase %}

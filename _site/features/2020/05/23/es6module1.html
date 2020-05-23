@@ -6,27 +6,22 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>Tabs in Vue.js</title>
-  <meta name="description" content="                  Tab 1    Tab 2    Tab 3      ">
+  <title>ES6 module in Jekyll</title>
+  <meta name="description" content="Module is loaded with a script type="module" before inline script by jekyll templateOr can just make inline script have type="module" attribute to import mod...">
 
   <link rel="stylesheet" href="/css/main.css">
-  <link rel="canonical" href="http://localhost:4000/features/2020/05/03/vuetabs.html">
+  <link rel="canonical" href="http://localhost:4000/features/2020/05/23/es6module1.html">
   <link rel="alternate" type="application/rss+xml" title="Ted Spectrum" href="http://localhost:4000/feed.xml">
   
   
   <style> .app {
-  font-size: 1.5rem;
-} .tabgroup ul {
-  margin: 0;
-  padding-bottom: 1em;
-  list-style-type: none;
-} .tabgroup li {
-  border: 1px black solid;
-  padding: 1em;
-  display: inline;
-} .tabgroup-isactive, .tabgroup li:hover {
-  background-color: lightskyblue;
-  color: white;
+  width: 100%;
+  border: 1px solid black;
+  overflow: hidden;
+  background-color: lightgray;
+  padding: 1rem;
+} .v-cloak {
+  display: none;
 } </style>
 
   
@@ -44,23 +39,19 @@
         <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
 
   <header class="post-header">
-    <h1 class="post-title" itemprop="name headline">Tabs in Vue.js</h1>
-    <p class="post-meta"><time datetime="2020-05-03T00:00:00+01:00" itemprop="datePublished">May 3, 2020</time></p>
+    <h1 class="post-title" itemprop="name headline">ES6 module in Jekyll</h1>
+    <p class="post-meta"><time datetime="2020-05-23T00:00:00+01:00" itemprop="datePublished">May 23, 2020</time></p>
   </header>
 
   <div class="post-content" itemprop="articleBody">
     
-<div id="postapp" class="app">
+<p>Module is loaded with a script type="module" before inline script by jekyll template</p>
+<p>Or can just make inline script have type="module" attribute to import modules</p>
+<div id="postapp" class="app" v-cloak>
   <div v-show="false">
     <!-- cache, give elements ref="" to reference in methods -->
   </div>
-  <div>
-    <Tab-Group>
-    <Tab tab-name="One"><p>Tab 1</p></Tab>
-    <Tab tab-name="Two" selected="true"><p>Tab 2</p></Tab>
-    <Tab tab-name="Three"><p>Tab 3</p></Tab>
-    </Tab-Group>
-  </div>
+  <p>{{ msg }}</p>
 </div>
 
   </div>
@@ -77,23 +68,18 @@
 </footer>
 
   
-  <script src="https://cdn.jsdelivr.net/npm/vue@2.6.0/dist/vue.js" ></script>
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.6.0/dist/vue.min.js" ></script>
   
 
   
-  <script src="/assets/src/TabGroup.js" ></script>
-  
-
-  
-  <script src="/assets/src/Tab.js" ></script>
+  <script src="/assets/src/modules/moduleimports.js" type="module"></script>
   
 
 
-<script> const app = new Vue({
+<script type="module"> import { greeting } from '/assets/src/modules/moduleexports.js'; const app = new Vue({
   el: '#postapp',
-  name: 'postapp',
   data: {
-    
+    msg: greeting
   },
   mounted: function() {
     

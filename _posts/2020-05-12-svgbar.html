@@ -8,8 +8,8 @@ categories: [svg, features]
 inlinestyle: >
   <style>
   .app {
-    width: 100%;
-    height: 90vh;
+    width: 90%;
+    /*height: 90vh;*/
     border: 1px solid black;
     overflow: hidden;
     background-color: lightgray;
@@ -42,64 +42,84 @@ inlinescript: >
         items: [
         { x: 20, y: 80, width: 40 },
         { x: 200, y: 120, width: 30 },
-        { x: 100, y: 200, width: 20 } /*,
+        { x: 100, y: 200, width: 20 },
         { x: 50, y: 150, width: 10},
-        { x: 180, y: 30, width: 1 } */
+        { x: 180, y: 30, width: 1 }
         ]
       },
       bard: ""
     },
     methods: {
       calcd: function(col) {
-        let a, i, mitre, m1, m2, pre, curr, next, d = [], dtop = [], dbottom = [];
+        let a, capstart, capend, i, mitre, m1, m2, pre, curr, next, dtop = [], dbottom = [];
         for(i = 0; i < (col.items.length - 1); i++) {
           col.items[i].dir = this.vectorAB(col.items[i], col.items[i+1]);
           col.items[i].un = this.unit(this.cross(col.items[i].dir));
         }
-        for(i = 0; i < (col.items.length - 2); i++) {
-          a = this.angleBetween(col.items[i].dir, col.items[i+1].dir);
-          col.items[i].mitre = this.add(
-            this.scale(this.unit(col.items[i].dir), (col.items[i+1].width / (2 * Math.sin(a)))),
-            this.scale(this.unit(col.items[i+1].dir), -(col.items[i].width / (2 * Math.sin(a))))
-          )
-        }
-        for(i = 0; i < (col.items.length - 1); i++) {
-          pre = col.items[i-1];
-          curr = col.items[i];
-          next = col.items[i+1];
-          if (i === 0) {
-            // first point
-            m1 = this.round(this.scale(curr.un, -curr.width / 2));
-            m2 = this.round(curr.mitre);
-            dtop.push("M", curr.x + m1.x, curr.y + m1.y);
-            dtop.push("L", next.x - m2.x, next.y - m2.y); // line to topright
-            dbottom.unshift("L",curr.x - m1.x, curr.y - m1.y); // line to bottomleft
-          } else if (i === (col.items.length - 2)) {
-            // next to last point
-            m1 = this.round(this.scale(pre.mitre, -1));
-            m2 = this.round(this.scale(curr.un, next.width / 2));
-            dtop.push("L", next.x - m2.x, next.y - m2.y); // line to topright
-            dbottom.unshift("L",curr.x - m1.x, curr.y - m1.y); // line to bottomleft
-            dbottom.unshift("L", next.x + m2.x, next.y + m2.y); // line to bottomright
-            dbottom.push("Z");
-          } else {
-            // middle points
-            m1 = this.round(this.scale(pre.mitre, -1));
-            m2 = this.round(curr.mitre);
-            dtop.push("L", next.x - m2.x, next.y - m2.y); // line to topright
-            dbottom.unshift("L",curr.x - m1.x, curr.y - m1.y); // line to bottomleft
-          }
-          /*
-          d.splice(d.length, 0, 
-            "M", curr.x + m1.x, curr.y + m1.y, // move to start at topleft
-            "L", next.x - m2.x, next.y - m2.y, // line to topright
-            "L", next.x + m2.x, next.y + m2.y, // line to bottomright
-            "L", curr.x - m1.x, curr.y - m1.y, // line to bottomleft
+        if (col.items.length === 2) {
+          // if only two points
+          curr = col.items[0];
+          next = col.items[1];
+          capstart = this.round(this.scale(curr.un, -curr.width / 2));
+          capend = this.round(this.scale(curr.un, next.width / 2));
+          dtop.push( 
+            "M", curr.x + capstart.x, curr.y + capstart.y, // move to start at topleft
+            "L", next.x - capend.x, next.y - capend.y, // line to topright
+            "L", next.x + capend.x, next.y + capend.y, // line to bottomright
+            "L", curr.x - capstart.x, curr.y - capstart.y, // line to bottomleft
             "Z" // close path
           );
-          */
+        } else if (col.items.length > 2) {
+          // calculate mitre points
+          for(i = 0; i < (col.items.length - 2); i++) {
+            a = this.angleBetween(col.items[i].dir, col.items[i+1].dir);
+            col.items[i].mitre = this.add(
+              this.scale(this.unit(col.items[i].dir), (col.items[i+1].width / (2 * Math.sin(a)))),
+              this.scale(this.unit(col.items[i+1].dir), -(col.items[i].width / (2 * Math.sin(a))))
+            )
+          }
+          // prepare drawing
+          for(i = 0; i < col.items.length; i++) {
+            console.log(col.items.length);
+            if (i === 0) {
+              // first point
+              curr = col.items[i];
+              next = col.items[i+1];
+              capstart = this.round(this.scale(curr.un, -curr.width / 2));
+              m2 = this.round(curr.mitre);
+              dtop.push("M", curr.x, curr.y);
+              dtop.push("L", curr.x - capstart.x, curr.y - capstart.y);
+              dtop.push("L", next.x + m2.x, next.y + m2.y); // line to topright
+              dbottom.unshift("Z");
+              dbottom.unshift("L",curr.x, curr.y);
+              dbottom.unshift("L",curr.x + capstart.x, curr.y + capstart.y); // line to bottomleft
+            } else if (i === (col.items.length - 2)) {
+              // next to last point
+              pre = col.items[i-1];
+              curr = col.items[i];
+              next = col.items[i+1];
+              m1 = this.round(this.scale(pre.mitre, -1));
+              capend = this.round(this.scale(curr.un, next.width / 2));
+              dtop.push("L", next.x + capend.x, next.y + capend.y); // line to topright
+              dbottom.unshift("L", curr.x + m1.x, curr.y + m1.y); // line to bottomleft
+              dbottom.unshift("L", next.x - capend.x, next.y - capend.y); // line to bottomright
+            } else if (i === (col.items.length - 1)) {
+              curr = col.items[i];
+              dtop.push("L", curr.x, curr.y);
+              dbottom.unshift("L", curr.x, curr.y);            
+            } else {
+              pre = col.items[i-1];
+              curr = col.items[i];
+              next = col.items[i+1];
+              // middle points
+              m1 = this.round(this.scale(pre.mitre, -1));
+              m2 = this.round(curr.mitre);
+              dtop.push("L", next.x + m2.x, next.y + m2.y); // line to topright
+              dbottom.unshift("L",curr.x + m1.x, curr.y + m1.y); // line to bottomleft
+            }
+          }
         }
-        console.log(d.join(" "));
+        // console.log(d.join(" "));
         console.log(dtop.join(" "));
         console.log(dbottom.join(" "));
         return /*d.join(" ")*/ dtop.join(" ") + " " + dbottom.join(" ");
