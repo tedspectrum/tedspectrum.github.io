@@ -1,4 +1,5 @@
-Vue.component('panel', {
+/*global Vue*/
+Vue.component("panel", {
   template: `
 <div data-id='panel-template'>
   <transition name='overlay'>
@@ -11,5 +12,5 @@ Vue.component('panel', {
   </transition>
 </div>
 `,
-  props: ["classes", "transition", "active", "overlay"]
+  props: ["classes", "transition", "active", "overlay"],
 });

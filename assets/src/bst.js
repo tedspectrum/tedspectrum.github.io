@@ -4,11 +4,11 @@ function BST() {
 const BSTproto = BST.prototype;
 BSTproto.createNode = function (val) {
   return {
-    'data': val,
-    'left': null,
-    'right': null
-  }
-}
+    data: val,
+    left: null,
+    right: null,
+  };
+};
 BSTproto.add = function (data) {
   let current = this.root,
     added = false;
@@ -36,21 +36,21 @@ BSTproto.add = function (data) {
     }
   }
   return added;
-}
+};
 BSTproto.findMin = function () {
   let current = this.root;
   while (current.left !== null) {
     current = current.left;
   }
   return current.data;
-}
+};
 BSTproto.findMax = function () {
   let current = this.root;
   while (current.right !== null) {
     current = current.right;
   }
   return current.data;
-}
+};
 BSTproto.find = function (data) {
   let current = this.root;
   let retVal = null;
@@ -64,10 +64,10 @@ BSTproto.find = function (data) {
     }
   }
   return retVal;
-}
+};
 BSTproto.has = function (data) {
-  return (this.find(data) !== null);
-}
+  return this.find(data) !== null;
+};
 BSTproto.remove = function (data) {
   const removeNode = function (node, data) {
     if (node === null) {
@@ -101,30 +101,30 @@ BSTproto.remove = function (data) {
       node.right = removeNode(node.right, data);
       return node;
     }
-  }
+  };
   this.root = removeNode(this.root, data);
-}
+};
 BSTproto.isBalanced = function () {
-  return (this.findMinHeight(this.root) >= this.findMaxHeight(this.root) - 1)
-}
+  return this.findMinHeight(this.root) >= this.findMaxHeight(this.root) - 1;
+};
 BSTproto.findMinHeight = function (node) {
   let retVal = -1;
   if (node !== null) {
     let left = this.findMinHeight(node.left);
     let right = this.findMinHeight(node.right);
-    retVal = (left < right) ? left + 1 : right + 1;
+    retVal = left < right ? left + 1 : right + 1;
   }
   return retVal;
-}
+};
 BSTproto.findMaxHeight = function (node) {
   let retVal = -1;
   if (node !== null) {
     let left = this.findMaxHeight(node.left);
     let right = this.findMaxHeight(node.right);
-    retVal = (left > right) ? left + 1 : right + 1;
+    retVal = left > right ? left + 1 : right + 1;
   }
   return retVal;
-}
+};
 BSTproto.traverseInOrder = function (prevVals, node) {
   if (node !== null) {
     if (node.left) {
@@ -135,40 +135,42 @@ BSTproto.traverseInOrder = function (prevVals, node) {
       this.traverseInOrder(prevVals, node.right);
     }
   }
-}
+};
 BSTproto.inOrder = function () {
   let vals = [];
   this.traverseInOrder(vals, this.root);
   return vals;
-}
+};
 BSTproto.preOrder = function () {
   if (this.root === null) {
     return null;
   } else {
     var result = [];
+    /*eslint no-inner-declarations: "off"*/
     function traversePreOrder(node) {
       result.push(node.data);
       node.left && traversePreOrder(node.left);
       node.right && traversePreOrder(node.right);
-    };
+    }
     traversePreOrder(this.root);
     return result;
-  };
-}
+  }
+};
 BSTproto.postOrder = function () {
   if (this.root === null) {
     return null;
   } else {
     var result = [];
+    /*eslint no-inner-declarations: "off"*/
     function traversePostOrder(node) {
       node.left && traversePostOrder(node.left);
       node.right && traversePostOrder(node.right);
       result.push(node.data);
-    };
+    }
     traversePostOrder(this.root);
     return result;
   }
-}
+};
 BSTproto.levelOrder = function () {
   let result = [];
   let Q = [];
@@ -179,13 +181,13 @@ BSTproto.levelOrder = function () {
       result.push(node.data);
       if (node.left != null) {
         Q.push(node.left);
-      };
+      }
       if (node.right != null) {
         Q.push(node.right);
-      };
-    };
+      }
+    }
     return result;
   } else {
     return null;
-  };
-}
+  }
+};

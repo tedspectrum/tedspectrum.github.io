@@ -1,3 +1,4 @@
+/*eslint no-unused-vars: "off"*/
 function KeyHandler(eventSrc, config) {
   /*
     
@@ -21,28 +22,28 @@ function KeyHandler(eventSrc, config) {
   }
   this.start = function () {
     action = {};
-    eventSrc.addEventListener('keydown', onKeyDown);
-    eventSrc.addEventListener('keyup', onKeyUp);
-  }
+    eventSrc.addEventListener("keydown", onKeyDown);
+    eventSrc.addEventListener("keyup", onKeyUp);
+  };
   this.stop = function () {
-    eventSrc.removeEventListener('keydown', onKeyDown);
-    eventSrc.removeEventListener('keyup', onKeyUp);
-  }
+    eventSrc.removeEventListener("keydown", onKeyDown);
+    eventSrc.removeEventListener("keyup", onKeyUp);
+  };
   this.setKeys = function (newKeys) {
     keyAction = {};
     key = {};
     for (var prop in newKeys) {
-      if (newKeys.hasOwnProperty(prop)) {
+      if (Object.prototype.hasOwnProperty.call(newKeys, prop)) {
         key[newKeys[prop]] = true;
         keyAction[newKeys[prop]] = prop;
       }
     }
-  }
-  Object.defineProperty(this, 'key', {
-    'enumerable': true,
-    'get': function () {
+  };
+  Object.defineProperty(this, "key", {
+    enumerable: true,
+    get: function () {
       return action;
-    }
+    },
   });
   this.setKeys(config);
 }

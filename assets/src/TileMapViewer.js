@@ -1,3 +1,4 @@
+/*eslint no-unused-vars: "off"*/
 function TileMapViewer(config) {
   /* 
     config {
@@ -17,7 +18,7 @@ function TileMapViewer(config) {
     spriteSheetCols,
     view;
   config.outputEl.forEach(function (v) {
-    displayContexts.push(v.getContext('2d'));
+    displayContexts.push(v.getContext("2d"));
   });
   //displayContext = config.outputEl.getContext('2d', { alpha: false });
   layers = config.map.layers;
@@ -28,12 +29,18 @@ function TileMapViewer(config) {
   spriteSheetCols = Math.floor(config.spriteSheet.width / mapTileWidth);
   view = config.view;
   this.update = function () {
-    let ctx, layer,
-      col, row,
-      drawX, drawY,
-      drawStartX, drawStartY,
-      mapColStart, mapColMax,
-      mapRowStart, mapRowMax,
+    let ctx,
+      layer,
+      col,
+      row,
+      drawX,
+      drawY,
+      drawStartX,
+      drawStartY,
+      mapColStart,
+      mapColMax,
+      mapRowStart,
+      mapRowMax,
       layerItem,
       tileRowStart,
       tileId;
@@ -44,17 +51,30 @@ function TileMapViewer(config) {
       ctx.clearRect(0, 0, view.width, view.height);
       ctx.globalAlpha = layers.opacity;
       if (layer.visible) {
-        if (layer.type === 'tilelayer'
+        if (
+          layer.type === "tilelayer" &&
           // and layer intersects view
-          && layer.x < (view.x + view.width)
-          && (layer.x + layer.width * mapTileWidth) > view.x
-          && layer.y < (view.y + view.height)
-          && (layer.y + layer.height * mapTileHeight) > view.y
+          layer.x < view.x + view.width &&
+          layer.x + layer.width * mapTileWidth > view.x &&
+          layer.y < view.y + view.height &&
+          layer.y + layer.height * mapTileHeight > view.y
         ) {
-          mapColStart = Math.max(0, -Math.ceil((layer.x - view.x) / mapTileWidth));
-          mapRowStart = Math.max(0, -Math.ceil((layer.y - view.y) / mapTileHeight));
-          mapColMax = Math.min(layer.width, Math.ceil((view.x + view.width) / mapTileWidth));
-          mapRowMax = Math.min(layer.height, Math.ceil((view.y + view.height) / mapTileHeight));
+          mapColStart = Math.max(
+            0,
+            -Math.ceil((layer.x - view.x) / mapTileWidth)
+          );
+          mapRowStart = Math.max(
+            0,
+            -Math.ceil((layer.y - view.y) / mapTileHeight)
+          );
+          mapColMax = Math.min(
+            layer.width,
+            Math.ceil((view.x + view.width) / mapTileWidth)
+          );
+          mapRowMax = Math.min(
+            layer.height,
+            Math.ceil((view.y + view.height) / mapTileHeight)
+          );
           drawStartX = layer.x - view.x + mapColStart * mapTileWidth;
           drawStartY = layer.y - view.y + mapRowStart * mapTileHeight;
           // this is for finding tiles in the tilemap layer data
@@ -70,7 +90,8 @@ function TileMapViewer(config) {
               // if tileId is undefined, tileId !== 0 returns true
               if (tileId !== 0) {
                 tileId = tileId - 1;
-                ctx.drawImage(spriteSheet,
+                ctx.drawImage(
+                  spriteSheet,
                   (tileId % spriteSheetCols) * mapTileWidth,
                   Math.floor(tileId / spriteSheetCols) * mapTileHeight,
                   mapTileWidth,
@@ -78,24 +99,28 @@ function TileMapViewer(config) {
                   drawX,
                   drawY,
                   mapTileWidth,
-                  mapTileHeight);
+                  mapTileHeight
+                );
               }
               col++;
               drawX = drawX + mapTileWidth;
             }
-            tileRowStart = tileRowStart + layer.width;  // because drawing each row that is mapCols wide
+            tileRowStart = tileRowStart + layer.width; // because drawing each row that is mapCols wide
             row++;
             drawY = drawY + mapTileHeight;
           }
-        } else if (layer.type === 'objectlayer') {
+        } else if (layer.type === "objectlayer") {
           for (let o = 0; o < layer.data.length; o++) {
             layerItem = layer.data[o];
-            if (layerItem.x < (view.x + view.width)
-              && (layerItem.x + layerItem.width * mapTileWidth) > view.x
-              && layerItem.y < (view.y + view.height)
-              && (layerItem.y + layerItem.height * mapTileHeight) > view.y) {
+            if (
+              layerItem.x < view.x + view.width &&
+              layerItem.x + layerItem.width * mapTileWidth > view.x &&
+              layerItem.y < view.y + view.height &&
+              layerItem.y + layerItem.height * mapTileHeight > view.y
+            ) {
               tileId = layerItem.id - 1;
-              ctx.drawImage(spriteSheet,
+              ctx.drawImage(
+                spriteSheet,
                 (tileId % spriteSheetCols) * mapTileWidth,
                 Math.floor(tileId / spriteSheetCols) * mapTileHeight,
                 layerItem.width * mapTileWidth,
@@ -103,11 +128,12 @@ function TileMapViewer(config) {
                 layerItem.x - view.x,
                 layerItem.y - view.y,
                 layerItem.width * mapTileWidth,
-                layerItem.height * mapTileHeight);
+                layerItem.height * mapTileHeight
+              );
             }
           }
         }
       }
     }
   };
-} 
+}

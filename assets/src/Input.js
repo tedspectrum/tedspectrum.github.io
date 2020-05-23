@@ -1,3 +1,4 @@
+/*eslint no-unused-vars: "off"*/
 function Input() {
   /*
     
@@ -23,19 +24,19 @@ function Input() {
   }
   this.start = function () {
     action = {};
-    if (keyEventsActive = false) {
-      keyEventSrc.addEventListener('keydown', onKeyDown);
-      keyEventSrc.addEventListener('keyup', onKeyUp);
+    if (keyEventsActive === false) {
+      keyEventSrc.addEventListener("keydown", onKeyDown);
+      keyEventSrc.addEventListener("keyup", onKeyUp);
       keyEventsActive = true;
     }
-  }
+  };
   this.stop = function () {
-    if (keyEventsActive = true) {
-      keyEventSrc.removeEventListener('keydown', onKeyDown);
-      keyEventSrc.removeEventListener('keyup', onKeyUp);
+    if (keyEventsActive === true) {
+      keyEventSrc.removeEventListener("keydown", onKeyDown);
+      keyEventSrc.removeEventListener("keyup", onKeyUp);
       keyEventsActive = false;
     }
-  }
+  };
   this.setKeys = function (eventSrc, newKeys) {
     if (keyEventsActive) {
       this.stop();
@@ -45,17 +46,16 @@ function Input() {
     keyAction = {};
     key = {};
     for (let prop in newKeys) {
-      if (newKeys.hasOwnProperty(prop)) {
+      if (Object.prototype.hasOwnProperty.call(newKeys, prop)) {
         key[newKeys[prop]] = true;
         keyAction[newKeys[prop]] = prop;
       }
     }
-
-  }
-  Object.defineProperty(this, 'key', {
-    'enumerable': true,
-    'get': function () {
+  };
+  Object.defineProperty(this, "key", {
+    enumerable: true,
+    get: function () {
       return action;
-    }
+    },
   });
 }
