@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>SVG bar 1</title>
+  <meta name="description" content="Given any three or more points draw a bar from one point to the next                                                                                         ...">
+
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="canonical" href="http://localhost:4000/svg/features/2020/05/12/svgbar.html">
+  <link rel="alternate" type="application/rss+xml" title="Ted Spectrum" href="http://localhost:4000/feed.xml">
+  
+  
+  <style> .app {
+  width: 90%;
+  /*height: 90vh;*/
+  border: 1px solid black;
+  overflow: hidden;
+  background-color: lightgray;
+  padding: 1rem;
+} .v-cloak {
+  display: none;
+} .svg {
+  border: 1px solid black;
+  width: 320px;
+  height: 240px;
+} .bar {
+  stroke: black;
+  stroke-width: 1px;
+  fill: darkgray;
+} .point {
+  stroke: none;
+  fill: white;
+} </style>
+
+  
+</head>
+
+
+  <body>
+    <header class="site-header">
+    <div class="wrapper">
+      <h1><a href="/" id="top">Ted Spectrum</a></h1>
+    </div>
+    </header>
+    <div class="page-content">
+      <div class="wrapper">
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">SVG bar 1</h1>
+    <p class="post-meta"><time datetime="2020-05-12T00:00:00+01:00" itemprop="datePublished">May 12, 2020</time></p>
+  </header>
+
+  <div class="post-content" itemprop="articleBody">
+    
+<p>Given any three or more points draw a bar from one point to the next
+</p>
+<div id="postapp" class="app" v-cloak>
+  <div v-show="false">
+    <!-- cache, give elements ref="" to reference in methods -->
+  </div>
+  <svg class="svg">
+    <defs>
+      <filter id="dropShadow" x="-15" y="-15" width="300" height="150">
+        <feOffset result="downright" in="SourceAlpha" dx="5" dy="5" />
+        <feGaussianBlur result="blurred" in="downright" stdDeviation="5" />
+        <!--<feMorphology result="fattened" in="SourceAlpha" operator="dilate" radius="3"/>-->
+        <feMerge>
+          <feMergeNode in="blurred" />
+          <!--<feMergeNode in="fattened" />-->
+          <feMergeNode in="SourceGraphic" />
+        </feMerge>
+      </filter>
+    </defs>
+    <circle v-for="(item,index) in collection.items" :cx="item.x" :cy="item.y" r="5" class="point" />
+    <g id="bar">
+      <path :d="calcd(collection)" class="bar" filter="url(#dropShadow)" />
+    </g>
+  </svg>
+</div>
+
+  </div>
+
+</article>
+
+      </div>
+    </div>
+
+    <footer class="site-footer">
+  <div class="wrapper">
+    <p><a href="#top">Top</a></p>
+  </div>
+</footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.6.0/dist/vue.js" ></script>
+  
+
+
+<script> const app = new Vue({
+  el: '#postapp',
+  data: {
+    collection: {
+      items: [
+      { x: 20, y: 80, width: 40 },
+      { x: 200, y: 120, width: 30 },
+      { x: 100, y: 200, width: 20 },
+      { x: 50, y: 150, width: 10},
+      { x: 180, y: 30, width: 1 }
+      ]
+    },
+    bard: ""
+  },
+  methods: {
+    calcd: function(col) {
+      let a, capstart, capend, i, mitre, m1, m2, pre, curr, next, dtop = [], dbottom = [];
+      for(i = 0; i < (col.items.length - 1); i++) {
+        col.items[i].dir = this.vectorAB(col.items[i], col.items[i+1]);
+        col.items[i].un = this.unit(this.cross(col.items[i].dir));
+      }
+      if (col.items.length === 2) {
+        // if only two points
+        curr = col.items[0];
+        next = col.items[1];
+        capstart = this.round(this.scale(curr.un, -curr.width / 2));
+        capend = this.round(this.scale(curr.un, next.width / 2));
+        dtop.push( 
+          "M", curr.x + capstart.x, curr.y + capstart.y, // move to start at topleft
+          "L", next.x - capend.x, next.y - capend.y, // line to topright
+          "L", next.x + capend.x, next.y + capend.y, // line to bottomright
+          "L", curr.x - capstart.x, curr.y - capstart.y, // line to bottomleft
+          "Z" // close path
+        );
+      } else if (col.items.length > 2) {
+        // calculate mitre points
+        for(i = 0; i < (col.items.length - 2); i++) {
+          a = this.angleBetween(col.items[i].dir, col.items[i+1].dir);
+          col.items[i].mitre = this.add(
+            this.scale(this.unit(col.items[i].dir), (col.items[i+1].width / (2 * Math.sin(a)))),
+            this.scale(this.unit(col.items[i+1].dir), -(col.items[i].width / (2 * Math.sin(a))))
+          )
+        }
+        // prepare drawing
+        for(i = 0; i < col.items.length; i++) {
+          console.log(col.items.length);
+          if (i === 0) {
+            // first point
+            curr = col.items[i];
+            next = col.items[i+1];
+            capstart = this.round(this.scale(curr.un, -curr.width / 2));
+            m2 = this.round(curr.mitre);
+            dtop.push("M", curr.x, curr.y);
+            dtop.push("L", curr.x - capstart.x, curr.y - capstart.y);
+            dtop.push("L", next.x + m2.x, next.y + m2.y); // line to topright
+            dbottom.unshift("Z");
+            dbottom.unshift("L",curr.x, curr.y);
+            dbottom.unshift("L",curr.x + capstart.x, curr.y + capstart.y); // line to bottomleft
+          } else if (i === (col.items.length - 2)) {
+            // next to last point
+            pre = col.items[i-1];
+            curr = col.items[i];
+            next = col.items[i+1];
+            m1 = this.round(this.scale(pre.mitre, -1));
+            capend = this.round(this.scale(curr.un, next.width / 2));
+            dtop.push("L", next.x + capend.x, next.y + capend.y); // line to topright
+            dbottom.unshift("L", curr.x + m1.x, curr.y + m1.y); // line to bottomleft
+            dbottom.unshift("L", next.x - capend.x, next.y - capend.y); // line to bottomright
+          } else if (i === (col.items.length - 1)) {
+            curr = col.items[i];
+            dtop.push("L", curr.x, curr.y);
+            dbottom.unshift("L", curr.x, curr.y);            
+          } else {
+            pre = col.items[i-1];
+            curr = col.items[i];
+            next = col.items[i+1];
+            // middle points
+            m1 = this.round(this.scale(pre.mitre, -1));
+            m2 = this.round(curr.mitre);
+            dtop.push("L", next.x + m2.x, next.y + m2.y); // line to topright
+            dbottom.unshift("L",curr.x + m1.x, curr.y + m1.y); // line to bottomleft
+          }
+        }
+      }
+      // console.log(d.join(" "));
+      console.log(dtop.join(" "));
+      console.log(dbottom.join(" "));
+      return /*d.join(" ")*/ dtop.join(" ") + " " + dbottom.join(" ");
+    },
+    vectorAB: function(p1, p2) {
+      // return the 2d vector from p1 to p2
+      return { x: p2.x - p1.x, y: p2.y - p1.y };
+    },
+    angleBetween(vec1, vec2) {
+      let dotproduct = this.dotproduct(vec1, vec2),
+        vec1length = this.length(vec1),
+        vec2length = this.length(vec2);
+      return Math.acos(dotproduct / (vec1length * vec2length));
+    },
+    add: function(vec1, vec2) {
+      return { x: vec1.x + vec2.x, y: vec1.y + vec2.y };
+    },
+    cross: function(vec) {
+      // return the counter-clockwise perpendicular 2d vector
+      return { x: vec.y, y: -vec.x };
+    },
+    dotproduct: function(vec1, vec2) {
+      return (vec1.x * vec2.x) + (vec1.y * vec2.y);
+    },
+    inverse: function(vec) {
+      // return the 2d vector in the opposite direction
+      return { x: -vec.x, y: -vec.y };
+    },
+    radiansToDegrees: function(rad) {
+      return rad * (180/Math.PI);
+    },
+    round: function(vec) {
+      return { x: Math.round(vec.x), y: Math.round(vec.y) };
+    },
+    scale: function(vec, scale) {
+      // scale a 2d vector
+      return { x: vec.x * scale, y: vec.y * scale };
+    },
+    length: function(vec) {
+      // length of a 2d vector
+      return Math.sqrt(vec.x * vec.x + vec.y * vec.y);
+    },
+    unit: function(vec) {
+      /* a unit vector in the direction of a 2d vector is
+        find length of vector then
+        scale vector by inverse of length
+      */
+      let scale, len;
+      len = Math.sqrt(vec.x * vec.x + vec.y * vec.y);
+      scale = (len === 0) ? 0 : (1 / len);
+      return { x: vec.x * scale, y: vec.y * scale }
+    }
+  }
+}); </script>
+
+
+
+  </body>
+
+</html>

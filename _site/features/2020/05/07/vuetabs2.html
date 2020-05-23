@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Tabs in Vue.js 2</title>
+  <meta name="description" content="  Tab Controls    Tabs      Tab 1    This is tab one        Tab two    Tabs are separate to controls        Tab 3    Tab three content  ">
+
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="canonical" href="http://localhost:4000/features/2020/05/07/vuetabs2.html">
+  <link rel="alternate" type="application/rss+xml" title="Ted Spectrum" href="http://localhost:4000/feed.xml">
+  
+  
+  <style> .v-cloak {
+  display: none;
+} .buttonlist ul {
+  margin: 0;
+  padding-bottom: 0.5em;
+  list-style-type: none;
+} .buttonlist li {
+  display: inline;
+} .buttonlist--button {
+  padding: 0.5em 1em 0.5em 1em;
+} .buttonlist--active, .buttonlist--button:hover {
+  background-color: lightskyblue;
+  color: white;
+} </style>
+
+  
+</head>
+
+
+  <body>
+    <header class="site-header">
+    <div class="wrapper">
+      <h1><a href="/" id="top">Ted Spectrum</a></h1>
+    </div>
+    </header>
+    <div class="page-content">
+      <div class="wrapper">
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">Tabs in Vue.js 2</h1>
+    <p class="post-meta"><time datetime="2020-05-07T00:00:00+01:00" itemprop="datePublished">May 7, 2020</time></p>
+  </header>
+
+  <div class="post-content" itemprop="articleBody">
+    
+<div id="postapp" class="app" v-cloak>
+  <h2>Tab Controls</h2>
+  <teds-buttonlist :collection="items1"></teds-buttonlist>
+  <h2>Tabs</h2>
+  <teds-content :model="items1[0]">
+    <h3>Tab 1</h3>
+    <p>This is tab one</p>
+  </teds-content>
+  <teds-content :model="items1[1]">
+    <h3>Tab two</h3>
+    <p>Tabs are separate to controls</p>
+  </teds-content>
+  <teds-content :model="items1[2]">
+    <h3>Tab 3</h3>
+    <p>Tab three content</p>
+  </teds-content>
+</div>
+
+  </div>
+
+</article>
+
+      </div>
+    </div>
+
+    <footer class="site-footer">
+  <div class="wrapper">
+    <p><a href="#top">Top</a></p>
+  </div>
+</footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.6.0/dist/vue.js" ></script>
+  
+
+  
+  <script src="/assets/src/mixins/eventbus.js" ></script>
+  
+
+  
+  <script src="/assets/src/components/buttonlist.js" ></script>
+  
+
+  
+  <script src="/assets/src/components/content.js" ></script>
+  
+
+
+<script> const app = new Vue({
+  el: '#postapp',
+  name: 'postapp',
+  components: {
+    'teds-buttonlist': ButtonListComponent,
+    'teds-content': ContentComponent
+  },
+  mixins: [EventBusMixin],
+  data: {
+    items1: [
+      { 'name': 'One', 'active': false },
+      { 'name': 'Two', 'active': true },
+      { 'name': 'Three', 'active': false }
+    ]
+  },
+  mounted: function() {
+    // wire up items to item-controls
+    this.bus.$on('buttonlist:select', this.onSelect)
+  },
+  methods: {
+    onSelect: function(m, val, col) {
+      col.forEach(function (v, i) {
+        v.active = (i === val);
+      })
+    }
+  }
+}); </script>
+
+
+
+  </body>
+
+</html>

@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>File upload/download</title>
+  <meta name="description" content="    Open...  Download      {{ msg }}  ">
+
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="canonical" href="http://localhost:4000/features/2019/11/08/filemanipulation.html">
+  <link rel="alternate" type="application/rss+xml" title="Ted Spectrum" href="http://localhost:4000/feed.xml">
+  
+  
+</head>
+
+
+  <body>
+    <header class="site-header">
+    <div class="wrapper">
+      <h1><a href="/" id="top">Ted Spectrum</a></h1>
+    </div>
+    </header>
+    <div class="page-content">
+      <div class="wrapper">
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">File upload/download</h1>
+    <p class="post-meta"><time datetime="2019-11-08T00:00:00+00:00" itemprop="datePublished">Nov 8, 2019</time></p>
+  </header>
+
+  <div class="post-content" itemprop="articleBody">
+    
+<div id="app" class="app">
+  <input type="text" name="txtFilename" v-model="filename"></input>
+  <button type="button" id="btnOpen" @click="onOpenClick">Open...</button>
+  <button type="button" id="btnDownload" @click="onDownloadClick">Download</button>
+  <p>
+    {{ msg }}
+  </p>
+</div>
+
+  </div>
+
+</article>
+
+      </div>
+    </div>
+
+    <footer class="site-footer">
+  <div class="wrapper">
+    <p><a href="#top">Top</a></p>
+  </div>
+</footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.6.0/dist/vue.min.js" ></script>
+  
+
+  
+  <script src="/assets/src/core.js" ></script>
+  
+
+
+<script> const app = new Vue({
+  el: '#app',
+  data: function() {
+    return {
+      'core': new Core(),
+      'filename': 'untitled.txt',
+      'msg': 'The quick brown fox'
+    }
+  },
+  methods: {
+    onDownloadClick: function () {
+      this.core.fileWriteText(this.filename, this.msg);
+    },
+    onOpenClick: function () {
+      this.core.fileReadText(this.onFileReadLoad.bind(this));
+    },
+    onFileReadLoad: function (ev, v, i, a) {
+      this.filename = v.name;
+      this.msg = ev.target.result + ' ' + Date.now();
+    }
+  }
+}); </script>
+
+
+
+  </body>
+
+</html>

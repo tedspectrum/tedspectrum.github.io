@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Geolocation UI 1</title>
+  <meta name="description" content="  A single page application that provides continuous geolocation.  In addition to geolocation tracking, the SPA can report on saved points.  Also has ability...">
+
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="canonical" href="http://localhost:4000/single%20page%20applications/2020/05/10/geolocationui1.html">
+  <link rel="alternate" type="application/rss+xml" title="Ted Spectrum" href="http://localhost:4000/feed.xml">
+  
+  
+  <link rel="stylesheet" href="/assets/styles/transitions.css">
+  
+  
+  
+  <link rel="stylesheet" href="/assets/styles/components/panel.css">
+  
+  
+  
+  <style> .app {
+  width: 100%;
+  min-height: 90vh;
+  border: 1px solid black;
+  overflow: hidden;
+  background-color: lightgray;
+  padding: 1rem;
+} .v-cloak {
+  display: none;
+} .buttonlist ul {
+  margin: 0;
+  list-style-type: none;
+} .buttonlist--button {
+  width: 100%;
+} button {
+  padding: 0.5rem 1rem 0.5rem 1rem;
+  text-align: left;
+} .heading2 {
+  background-color: white;
+  padding-left: 1rem;
+} .right {
+  text-align: right;
+} .center-block {
+  margin: auto;
+} </style>
+
+  
+</head>
+
+
+  <body>
+    <header class="site-header">
+    <div class="wrapper">
+      <h1><a href="/" id="top">Ted Spectrum</a></h1>
+    </div>
+    </header>
+    <div class="page-content">
+      <div class="wrapper">
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">Geolocation UI 1</h1>
+    <p class="post-meta"><time datetime="2020-05-10T00:00:00+01:00" itemprop="datePublished">May 10, 2020</time></p>
+  </header>
+
+  <div class="post-content" itemprop="articleBody">
+    
+<p>
+  A single page application that provides continuous geolocation.
+  In addition to geolocation tracking, the SPA can report on saved points.
+  Also has ability to download a file of the saved points.
+  Separately, has an interface that allows clearing the data.
+</p>
+<div id="postapp" class="app panel-container" v-cloak>
+  <div v-show="false">
+    <!-- cache, give elements ref="" to reference in methods -->
+    <a ref="fileWrite"></a>
+  </div>
+  <teds-panel :model="mainmenu" classes="panel-topleft" transition="slidedownright">
+    <h2 class="heading2">Menu</h2>
+    <teds-buttonlist :collection="mainitems"></teds-buttonlist>
+  </teds-panel>
+  <button @click="bus.$emit('panel:activate', mainmenu, true)">Menu</button>
+  <teds-content :model="mainitems[0]">
+    <h2>Geolocation</h2>
+    <p class="right">
+      <button class="geolocation--button" @click="onLocationStart()">Start</button>
+      <button class="geolocation--button" @click="onLocationStop()">Stop</button>
+    </p>
+    <h2>Latitude, Longitude</h2>
+    <h3>({{ lat }},{{ long }})</h3>
+    <h4>{{ dateString }}</h4>
+    <p>{{ msg ? msg : '&nbsp;' }}</p>
+    <p class="right">
+    <button class="geolocation--button" @click="onStoreAdd()">Save</button>
+    </p>
+  </teds-content>
+  <teds-content :model="mainitems[1]">
+    <h2>View Stored Data </h2>
+    <table class="center-block">
+      <thead>
+        <th>date</th><th>latitude</th><th>longitude</th>
+      </thead>
+      <tbody>
+        <tr v-for="storedValue in stored">
+          <td>{{ storedValue.value.date }}</td>
+          <td>{{ storedValue.value.latitude }}</td>
+          <td>{{ storedValue.value.longitude }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </teds-content>
+  <teds-content :model="mainitems[2]">
+    <h2>Manage Data</h2>
+    <h3>Clear Data</h3>
+    <p class="right">
+    <button @click="onStoreClear()">Clear</button>
+    </p>
+    <h3>File Download</h3>
+    <p class="right">
+    <button @click="onStoreDownload()">Download</button>
+    </p>
+  </teds-content>  
+</div>
+
+  </div>
+
+</article>
+
+      </div>
+    </div>
+
+    <footer class="site-footer">
+  <div class="wrapper">
+    <p><a href="#top">Top</a></p>
+  </div>
+</footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.6.0/dist/vue.js" ></script>
+  
+
+  
+  <script src="/assets/src/LocalStorage.js" ></script>
+  
+
+  
+  <script src="/assets/src/mixins/eventbus.js" ></script>
+  
+
+  
+  <script src="/assets/src/components/panel.js" ></script>
+  
+
+  
+  <script src="/assets/src/components/buttonlist.js" ></script>
+  
+
+  
+  <script src="/assets/src/components/content.js" ></script>
+  
+
+
+<script> const app = new Vue({
+  el: '#postapp',
+  components: {
+    'teds-panel': PanelComponent,
+    'teds-buttonlist': ButtonListComponent,
+    'teds-content': ContentComponent
+  },
+  data: {
+    dateString: '',
+    geoLocationOptions: {
+      enableHighAccuracy: true,
+      timeout: 30000,
+      maximumAge: 1000
+    },
+    lat: Number.parseFloat(0).toFixed(7),
+    long: Number.parseFloat(0).toFixed(7),
+    msg: '',
+    mainmenu: {
+      name: 'main',
+      active: false
+    },
+    mainitems: [
+      { 'name': 'Geolocation', 'active': true },
+      { 'name': 'View Data', 'active': false },
+      { 'name': 'Manage Data', 'active': false },
+      { 'name': 'Toggle Fullscreen', 'active': false }
+    ],
+    store: new LocalStorage(),
+    storeAvailable: false,
+    stored: [],
+    str: {
+      idle: '',
+      progress: 'working...',
+      nolocation: 'geolocation unavailable'
+    },
+    timestamp: 0,
+    watchId: 0
+  },
+  mixins: [EventBusMixin],
+  mounted: function() {
+    this.bus.$on('panel:activate', this.onSetActive);
+    this.bus.$on('buttonlist:select', this.onSelect);
+    this.storeAvailable = LocalStorage.isAvailable();
+    if(this.storeAvailable) {
+      this.storeList();
+    }
+    this.$el.focus();
+
+  },
+  methods: {
+    // helpers
+    fileWriteText: function (fileName, fileContents) {
+      let fwEl, 
+        txtBlob,
+        w = window;
+      if (w && w.Blob && w.URL && w.URL.createObjectURL && fileName && fileContents) {
+        txtBlob = new Blob([fileContents], { type: 'text/plain' });
+        if (navigator && navigator.msSaveOrOpenBlob) {
+          navigator.msSaveOrOpenBlob(txtBlob, fileName);
+        } else {
+          fwEl = this.$refs.fileWrite;
+          fwEl.download = fileName;
+          fwEl.href = window.URL.createObjectURL(txtBlob);
+          fwEl.click();
+        }
+      }
+    },
+    geolocateStart: function (onSuccess, onErr, opts) {
+      let id = 0;
+      if (navigator.geolocation) {
+        id = navigator.geolocation.watchPosition(onSuccess, onErr, opts);
+      } else {
+        onErr({ message: this.str.nolocation });
+      }
+      return id;
+    },
+    geolocateStop: function (id, onErr) {
+      if (navigator.geolocation) {
+        navigator.geolocation.clearWatch(id);
+      } else {
+        onErr({ message: this.str.nolocation });
+      }
+    },
+    toggleFullScreen: function(el) {
+      if (document.fullscreenEnabled) {
+        if (document.fullscreenElement === null) {
+          el && el.requestFullscreen();
+        } else {
+          document.exitFullscreen();
+        }
+      }
+    },
+    storeList: function() {
+      this.$set(this, 'stored', []);
+      for(let entry of this.store) {
+        this.stored.push(entry);
+      }
+      this.stored.sort(function(a,b) { return b.key - a.key; });
+    },
+
+    // event handlers
+    onLocateError: function (e) {
+      this.msg = e.message;
+    },
+    onLocateSuccess: function (pos) {
+      this.lat = pos.coords.latitude.toFixed(7);
+      this.long = pos.coords.longitude.toFixed(7);
+      this.timestamp = pos.timestamp;
+      this.dateString = new Date(this.timestamp).toLocaleString();
+      this.msg = this.str.idle;
+    },
+    onLocationStart: function () {
+      // button press handler
+      this.watchId = this.geolocateStart(
+        this.onLocateSuccess,
+        this.onLocateError,
+        this.geoLocationOptions
+      );
+    },
+    onLocationStop: function () {
+      this.geolocateStop(this.watchId, this.onLocateError);
+    },
+    onSetActive: function(m, val) {
+      if(m.active !== val) { m.active = val; };
+    },
+    onSelect: function(m, val, col) {
+      if(m.name === 'Toggle Fullscreen') {
+        this.toggleFullScreen(this.$el);
+      } else {
+        // make collection item identified by val to be active, others not.
+        col.forEach(function (v, i) {
+          v.active = (i === val);
+        })
+      }
+      // close menu
+      if(this.mainmenu.active === true) { this.mainmenu.active = false; };
+    },
+    onStoreAdd: function() {
+      if(this.storeAvailable) {
+        this.store.add(this.timestamp, {
+          date: this.dateString,
+          latitude: this.lat,
+          longitude: this.long
+        });
+        this.storeList();
+      }
+    },
+    onStoreClear: function() {
+      if (this.storeAvailable) {
+        this.store.clear();
+        this.storeList();
+      }
+    },
+    onStoreDownload: function() {
+      let contents = "";
+      for(let entry of this.stored) {
+        contents = [entry.key, entry.value.date, entry.value.latitude, entry.value.longitude].join(",") + "\n" + contents;
+      }
+      contents = "timestamp, date, latitude, longitude" + "\n" + contents;
+      this.fileWriteText("save.txt", contents);
+    },
+  }
+}); </script>
+
+
+
+  </body>
+
+</html>
