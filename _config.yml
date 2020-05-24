@@ -23,3 +23,9 @@ plugins_dir: [jekyll-paginate]
 plugins: [jekyll-paginate]
 gems: [jekyll-paginate]
 paginate: 6
+
+# custom bits
+theme: minima
+header_pages:
+  - assets/pages/about.html
+exclude: [package.json, package-lock.json]
