@@ -71,7 +71,7 @@ const app = new Vue({
       ],
       player: {},
       tileMap: {},
-      tileMapURL: '/assets/pages/gameone/gamemap0.json',
+      tileMapURL: '/assets/projects/gameone/gamemap0.json',
       tileMapViewer: {},
       showMain: false,
       showMenuPanel: false,

@@ -3,7 +3,7 @@ const app = new Vue({
   el: '#app',
   data: function () {
     return {
-      url: '/assets/buttontree/btns.json',
+      url: '/assets/projects/buttontree/btns.json',
       domain: {},
       content: '',
       path: ''

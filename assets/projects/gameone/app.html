@@ -1,7 +1,7 @@
 {% raw %}
 <div id="app" class="app panel-container unselectable" v-cloak @mouseup="onMouseUp('')">
   <div class="hidden">
-    <image ref="tiles" width="640" height="640" src="/assets/pages/gameone/tiles.png"></image>
+    <image ref="tiles" width="640" height="640" src="/assets/projects/gameone/tiles.png"></image>
   </div>
   <panel :active="showMenuPanel" classes="panel-fulllengthleft" overlay="true" transition="slideright"
     @close="showMenuPanel = false">
@@ -33,7 +33,7 @@
           @touchend.prevent="onTouchEnd('up')" @touchcancel.prevent="onTouchCancel('up')">
           <svg width="50px" height="50px" version="1.1" xmlns="http://www.w3.org/2000/svg"
             xmlns:xlink="http://www.w3.org/1999/xlink">
-            <image href="/assets/pages/gameone/controller-button.png" x="0" y="0" height="50px" width="50px" />
+            <image href="/assets/projects/gameone/controller-button.png" x="0" y="0" height="50px" width="50px" />
           </svg>
         </div>
         <div class="grid--button-left grid--button-controller" @mousedown.prevent="onMouseDown('left')"
@@ -41,7 +41,7 @@
           @touchend.prevent="onTouchEnd('left')" @touchcancel.prevent="onTouchCancel('left')">
           <svg width="50px" height="50px" version="1.1" xmlns="http://www.w3.org/2000/svg"
             xmlns:xlink="http://www.w3.org/1999/xlink">
-            <image href="/assets/pages/gameone/controller-button.png" x="0" y="0" height="50px" width="50px"
+            <image href="/assets/projects/gameone/controller-button.png" x="0" y="0" height="50px" width="50px"
               transform="rotate(-90, 25, 25)" />
           </svg>
         </div>
@@ -50,7 +50,7 @@
           @touchend.prevent="onTouchEnd('right')" @touchcancel.prevent="onTouchCancel(right)">
           <svg width="50px" height="50px" version="1.1" xmlns="http://www.w3.org/2000/svg"
             xmlns:xlink="http://www.w3.org/1999/xlink">
-            <image href="/assets/pages/gameone/controller-button.png" x="0" y="0" height="50px" width="50px"
+            <image href="/assets/projects/gameone/controller-button.png" x="0" y="0" height="50px" width="50px"
               transform="rotate(90, 25, 25)" />
           </svg>
         </div>
@@ -58,7 +58,7 @@
           @mouseup.prevent="onMouseUp('down')" @touchstart.prevent="onTouchStart('down')"
           @touchend.prevent="onTouchEnd('down')" @touchcancel.prevent="onTouchCancel('down')"><svg width="50px"
             height="50px" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-            <image href="/assets/pages/gameone/controller-button.png" x="0" y="0" height="50px" width="50px"
+            <image href="/assets/projects/gameone/controller-button.png" x="0" y="0" height="50px" width="50px"
               transform="rotate(180, 25, 25)" />
           </svg>
         </div>
