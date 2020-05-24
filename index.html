@@ -3,30 +3,7 @@ layout: default
 ---
 
 <div class="home">
-  <h1 class="page-heading">Site Pages</h1>
-  <p>
-    {% assign titledpages = site.pages | where_exp: "pg", "pg.title" %}
-    {% assign categorypages = titledpages | where_exp: "pg", "pg.page_type == 'site'" %}
-    {% for my_page in categorypages %}
-      {% if my_page.title %}
-        <a class="page-link" href="{{ my_page.url | prepend: site.baseurl }}">{{ my_page.title }}</a>
-        {%- if forloop.last == false %},{% endif %}
-      {% endif %}
-    {% endfor %}
-  </p>
-
-  <h1 class="page-heading">Project Pages</h1>
-  <p>
-    {% assign titledpages = site.pages | where_exp: "pg", "pg.title" %}
-    {% assign categorypages = titledpages | where_exp: "pg", "pg.page_type == 'project'" %}
-    {% for my_page in categorypages %}
-      {% if my_page.title %}
-        <a class="page-link" href="{{ my_page.url | prepend: site.baseurl }}">{{ my_page.title }}</a>
-        {%- if forloop.last == false %},{% endif %}
-      {% endif %}
-    {% endfor %}
-  </p>
-
+  
   <h1 class="page-heading">Posts</h1>
 
   <ul class="post-list">

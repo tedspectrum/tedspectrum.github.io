@@ -27,5 +27,5 @@ paginate: 6
 # custom bits
 theme: minima
 header_pages:
-  - assets/pages/about.html
+  - assets/pages/sitemap.html
 exclude: [package.json, package-lock.json]
