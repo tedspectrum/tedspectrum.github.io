@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "SVG logo"
-categories: [features]
+categories: [svg]
 scripts: 
   - url: "https://cdn.jsdelivr.net/npm/vue@2.6.0/dist/vue.min.js"
     type: "absolute"
@@ -10,10 +10,10 @@ inlinescript: >
   const app = new Vue({
     el: '#app',
     data: {
-      'radius': 20,
-      'smallradius': 5,
-      'padding': 7.5,
-      'spacing': 20,
+      'radius': 14,
+      'smallradius': 3,
+      'padding': 8.5,
+      'spacing': 7,
       'circles': [],
       'colours': [
         '#000000',
@@ -66,7 +66,7 @@ inlinescript: >
 {% raw %}
 <div id="app" class="app">
 	<svg xml:space="preserve" 
-		:width="(20 * radius) + (9 * spacing) + (2 * padding)" 
+		:width="(20 * radius) + (9 * spacing) + padding" 
 		:height="(2 * radius) + (2 * padding)" zoomAndPan="disable">
 		<title>Tedspectrum logo</title>
 		<desc>10 circles in each of the colors of the rainbow</desc>
