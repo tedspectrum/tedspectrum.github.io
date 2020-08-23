@@ -1,0 +1,11 @@
+.app {
+  width: 100%;
+  height: 90vh;
+  border: 1px solid black;
+  overflow: hidden;
+  background-color: lightgray;
+  padding: 1rem;
+}
+.v-cloak {
+  display: none;
+}

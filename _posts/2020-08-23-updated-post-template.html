@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  "Title goes here"
+title:  "Updated Post Template"
 scripts: 
   - url: "https://cdn.jsdelivr.net/npm/vue@2.6.0/dist/vue.min.js"
     type: "absolute"
@@ -21,16 +21,16 @@ inlinescript: >
     /*
     components: {
       'component-name': 'object-name'
-    }
+    },
     */
     data: {
-      title: 'Post app'
+      title: 'Post app',
+      description: 'Now using script type="module", code tidy in reusable post template'
     },
     /*
     mixins: [],
     */
     mounted: function() {
-      
     },
     methods: {
       
@@ -43,6 +43,7 @@ inlinescript: >
       <!-- cache, give elements ref="" to reference in methods -->
       </div>
       <h1>{{ title }}</h1>
+      <p>{{ description }}</p>
     </div>
     `
   });
