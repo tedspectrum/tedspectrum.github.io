@@ -6,13 +6,23 @@ const appTemplate = /*html*/`
   <div v-show="false">
   <!-- cache, give elements ref="" to reference in methods -->
   </div>
-  <div class="app pancake-stack">
+  <div class="app layout-rows">
     <div class="app-header">
-      <h1>{{ title }}</h1>
+      <h1>
+      <svg viewBox="0 0 20 20" fill="currentColor" class="menu--svg"><path fill-rule="evenodd" d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clip-rule="evenodd"></path></svg>
+      {{ title }}</h1>
     </div>
-    <div class="app-body centered">
-      <div class="app-body-content">
-        <p>{{ description }}</p>
+    <div class="layout-columns">
+      <div class="column-width bordered">
+        <div>left - the quick brown fox jumps over the lazy dog</div>
+      </div>
+      <div class="app-body centered">
+        <div class="app-body-content bordered">
+          <p>{{ description }}</p>
+        </div>
+      </div>
+      <div class="column-width bordered">
+        <span>right</span>
       </div>
     </div>
     <div class="app-footer">

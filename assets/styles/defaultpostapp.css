@@ -1,6 +1,5 @@
 .app {
   width: 100%;
-  border: 1px solid black;
   overflow: hidden;
   background-color: lightgray;
 }
@@ -12,15 +11,31 @@
   color: white;
   padding-left: 0.5rem;
 }
+.bordered {
+  border: 1px solid black;
+}
 .centered {
   display: grid;
   place-items: center;
 }
-.pancake-stack {
+.layout-rows {
   display: grid;
   grid-template-rows: auto 1fr auto;
 }
+.layout-columns {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+}
+.column-width {
+  width: 12rem;
+}
 .app-body-content {
   width: 50%;
+  height: 50%;
+  overflow: hidden;
+}
+.menu--svg {
+  width: 16px;
+  height: 16px;
 }
 
