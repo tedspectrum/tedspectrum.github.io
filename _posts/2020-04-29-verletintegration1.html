@@ -1,10 +1,12 @@
 ---
 layout: post
-title:  "Verlet Integration 1"
-scripts: 
+title: "Verlet Integration 1"
+scripts:
 categories: [physics simulation]
-inlinestyle: >
-  <style>
+excerpt_separator: <!--more-->
+---
+{% raw %}
+<style>
   .app {
     font-size: 1.5rem;
   }
@@ -14,29 +16,35 @@ inlinestyle: >
     left: 0px;
     border: 1px solid black;
   }
-  </style>
-inlinescript: > 
-  <script>
-  window.onload = function() {
-      var canvas = document.getElementById("canvas"),
-        context = canvas.getContext("2d"),
-        width = canvas.width,
-        height = canvas.height,
-        points = [],
-        bounce = 0.75,
-        gravity = 0.5,
-        friction = 0.995;
-      points.push({
-        x: 100,
-        y: 100,
-        oldx: 95,
-        oldy: 95
-      },
+</style>
+<h1>Verlet Integration 1</h1>
+<p>Following along with a video from Youtube by "Coding Math"</p>
+<p>Added add ball at mouse click</p>
+<!--more-->
+<div class="app">
+  <canvas id="canvas" width="320" height="240"></canvas>
+</div>
+<script>
+  window.onload = function () {
+    var canvas = document.getElementById("canvas"),
+      context = canvas.getContext("2d"),
+      width = canvas.width,
+      height = canvas.height,
+      points = [],
+      bounce = 0.75,
+      gravity = 0.5,
+      friction = 0.995;
+    points.push({
+      x: 100,
+      y: 100,
+      oldx: 95,
+      oldy: 95
+    },
       {
         x: 50,
         y: 50,
         oldx: 49,
-        oldy: 49 
+        oldy: 49
       });
     canvas.addEventListener('click', onClick);
     update();
@@ -49,8 +57,8 @@ inlinescript: >
         oldy: e.offsetY - 2
       })
       //console.log(e.offsetX, e.offsetY);
-      if(points.length > 8) {
-        points.splice(0,1);
+      if (points.length > 8) {
+        points.splice(0, 1);
       }
     }
 
@@ -62,8 +70,8 @@ inlinescript: >
 
     function updatePoints() {
       var p, vx, vy;
-      for(var i = 0; i < points.length; i++) {
-          p = points[i],
+      for (var i = 0; i < points.length; i++) {
+        p = points[i],
           vx = (p.x - p.oldx) * friction,
           vy = (p.y - p.oldy) * friction;
         // integration
@@ -72,19 +80,19 @@ inlinescript: >
         p.x = p.x + vx;
         p.y = p.y + vy + gravity;
         // collision detection
-        if(p.x > width) {
+        if (p.x > width) {
           p.x = width;
           p.oldx = p.x + vx * bounce;
         }
-        else if(p.x < 0) {
+        else if (p.x < 0) {
           p.x = 0;
           p.oldx = p.x + vx * bounce;
         }
-        if(p.y > height) {
+        if (p.y > height) {
           p.y = height;
           p.oldy = p.y + vy * bounce;
         }
-        else if(p.y < 0) {
+        else if (p.y < 0) {
           p.y = 0;
           p.oldy = p.y + vy * bounce;
         }
@@ -96,7 +104,7 @@ inlinescript: >
       // clear all
       context.clearRect(0, 0, width, height);
       // draw all
-      for(i = 0; i < points.length; i++) {
+      for (i = 0; i < points.length; i++) {
         p = points[i];
         context.beginPath();
         context.arc(Math.round(p.x), Math.round(p.y), 5, 0, Math.PI * 2);
@@ -104,13 +112,5 @@ inlinescript: >
       }
     }
   };
-  </script>
----
-{% raw %}
-<h1>Verlet Integration 1</h1>
-<p>Following along with a video from Youtube by "Coding Math"</p>
-<p>Added add ball at mouse click</p>
-<div class="app">
-  <canvas id="canvas" width="320" height="240"></canvas>
-</div>
+</script>
 {% endraw %}
