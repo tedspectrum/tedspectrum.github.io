@@ -1,0 +1,14 @@
+---
+layout: post
+title:  "Single file app"
+scripts:
+  - url: "https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"
+    type: "absolute"
+categories: [features]
+excerpt_separator: <!--more-->
+---
+<div id="postapp"></div>
+<script type="module">
+import { App } from '/assets/src/ts_modules/2020-09-18-app.js'
+new App().$mount('#postapp');
+</script>
