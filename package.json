@@ -6,8 +6,9 @@
   "scripts": {
     "build": "jekyll build",
     "clean": "jekyll clean",
+    "lint": "npx eslint \"./assets/src/**.js\" --fix",
     "serve": "jekyll serve",
-    "lint": "npx eslint \"./assets/src/**.js\" --fix"
+    "typescript-watch": "tsc -w"
   },
   "repository": {
     "type": "git",

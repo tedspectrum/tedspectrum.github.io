@@ -1,4 +1,3 @@
-declare var Vue: any;
 const appTemplate = /*html*/`
 <div id="postapp" class="app-container" v-cloak>
   <div v-show="false">
@@ -12,6 +11,9 @@ const appTemplate = /*html*/`
     </div>
     <div>
       <p>{{ description }}</p>
+      <button v-on:click="onThemeToggle">
+        {{ themeState ? "Theme Off" : "Theme On" }}
+      </button>
     </div>
     <div class="app-footer">
       <span>By TedSpectrum</span>
@@ -37,60 +39,77 @@ function removeStyle(id: string) {
 }
 export const App = Vue.extend({
   created() {
-    addStyle('theme', appTheme);
-  },
-  destroyed() {
-    removeStyle('theme');
+    addStyle('theme', getAppTheme());
   },
   data() {
     return {
       title: 'Post app',
-      description: 'playing about'
+      description: 'playing about',
+      themeState: false,
+      themeUserOptions: {
+        color: 'blue'
+      }
     };
   },
   methods: {
+    onThemeToggle: function (): void {
+      if (this.themeState) {
+        removeStyle('userTheme');
+        this.themeState = false;
+      } else {
+        addStyle('userTheme', getUserTheme(this.themeUserOptions));
+        this.themeState = true;
+      }
+    }
   },
   template: appTemplate
 });
-const appTheme = /*css*/`
-.app {
-  width: 100%;
-  overflow: hidden;
-  background-color: lightgray;
+function getUserTheme(options: { [key: string]: any; }): string {
+  return /*css*/`
+  .app {
+    color: ${options.color}
+  }`
 }
-.v-cloak {
-  display: none;
+function getAppTheme(): string {
+  return/*css*/`
+  .app {
+    width: 100%;
+    overflow: hidden;
+    background-color: lightgray;
+  }
+  .v-cloak {
+    display: none;
+  }
+  .app-header, .app-footer {
+    background-color: gray;
+    color: white;
+    padding-left: 0.5rem;
+  }
+  .bordered {
+    border: 1px solid black;
+  }
+  .centered {
+    display: grid;
+    place-items: center;
+  }
+  .layout-rows {
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+  }
+  .layout-columns {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+  }
+  .column-width {
+    width: 12rem;
+  }
+  .app-body-content {
+    width: 50%;
+    height: 50%;
+    overflow: hidden;
+  }
+  .menu--svg {
+    width: 16px;
+    height: 16px;
+  }`
 }
-.app-header, .app-footer {
-  background-color: gray;
-  color: white;
-  padding-left: 0.5rem;
-}
-.bordered {
-  border: 1px solid black;
-}
-.centered {
-  display: grid;
-  place-items: center;
-}
-.layout-rows {
-  display: grid;
-  grid-template-rows: auto 1fr auto;
-}
-.layout-columns {
-  display: grid;
-  grid-template-columns: auto 1fr auto;
-}
-.column-width {
-  width: 12rem;
-}
-.app-body-content {
-  width: 50%;
-  height: 50%;
-  overflow: hidden;
-}
-.menu--svg {
-  width: 16px;
-  height: 16px;
-}
-`
