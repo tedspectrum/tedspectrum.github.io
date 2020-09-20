@@ -1,4 +1,4 @@
-import { Core } from './core.js'
+import { Core, StateMachine } from './core.js'
 const PanelComponent = {
   name: 'teds-panel',
   template: /*html*/`
@@ -43,72 +43,105 @@ export const App = Vue.extend({
     Core.addStyle('theme', AppTheme());
   },
   data: function () {
+    const DisplayMachine = new StateMachine();
+    DisplayMachine.addStates([
+      {
+        id: 'page',
+        onEnter(ctx: { [key: string]: any; }) {
+          ctx.onWindowResize();
+        }
+      },
+      {
+        id: 'fullscreen',
+        onEnter(ctx: { [key: string]: any; }) {
+          Core.addFullScreen((ctx.$el as HTMLElement).id);
+          if (ctx.eruda.currentId === 'on') {
+            ctx.eruda.changeTo('off');
+          }
+          ctx.onWindowResize();
+        },
+        onLeave() {
+          Core.removeFullScreen();
+        }
+      },
+      {
+        id: 'fullwindow',
+        onEnter(ctx: { [key: string]: any; }) {
+          Core.addFullWindow((ctx.$el as HTMLElement).id);
+          ctx.onWindowResize();
+        },
+        onLeave(ctx: { [key: string]: any; }) {
+          Core.removeFullWindow((ctx.$el as HTMLElement).id);
+        }
+      }
+    ]);
+    DisplayMachine.setContext(this);
+    DisplayMachine.setState('page');
+    const ErudaMachine = new StateMachine();
+    ErudaMachine.addStates([
+      {
+        id: 'on',
+        onEnter() {
+          Core.addEruda();
+        }
+      },
+      {
+        id: 'off',
+        onEnter() {
+          Core.removeEruda();
+        }
+      }
+    ]);
+    ErudaMachine.setState('off');
     return {
-      app: {
-        class: {
-          fullscreen: false
-        },
-        content: {
-          author: 'By TedSpectrum',
-          description: 'playing about',
-          title: 'Post app'
-        },
-        style: {
-          height: '10em'
-        }
+      content: {
+        app_author: 'By TedSpectrum',
+        app_description: 'Playing about',
+        app_title: 'Post app',
+        eruda_add: 'Start Developer tools',
+        eruda_remove: 'Remove Developer tools',
+        fullscreen_add: 'Enter Full Screen',
+        fullscreen_remove: 'Leave Full Screen',
+        fullwindow_add: 'Enter Full Window',
+        fullwindow_remove: 'Leave Full Window',
+        mainmenu_title: 'Menu',
+        theme_add: 'Theme On',
+        theme_remove: 'Theme Off'
       },
-      eruda: {
-        active: false,
-        content: {
-          add: 'Start Developer tools',
-          remove: 'Remove Developer tools'
-        }
-      },
-      fullscreen: {
-        active: false,
-        content: {
-          add: 'Enter Full Screen',
-          remove: 'Leave Full Screen'
-        }
-      },
+      display: DisplayMachine,
+      eruda: ErudaMachine,
       mainmenu: {
         active: false,
-        content: {
-          title: 'Menu'
-        }
+      },
+      style: {
+        height: ''
       },
       theme: {
         active: false,
         id: 'user',
         content: {
-          color: 'blue',
-          add: 'Theme On',
-          remove: 'Theme Off'
+          color: 'blue'
         }
       },
     };
   },
   methods: {
-    onErudaToggle: function (m: { active: boolean, id: string }): void {
-      if (m.active) {
-        Core.removeEruda();
-        m.active = false;
-      } else {
-        Core.addEruda();
-        m.active = true;
+    onErudaToggle: function (): void {
+      switch(this.eruda.currentId) {
+        case 'on': this.eruda.changeTo('off'); break;
+        case 'off': this.eruda.changeTo('on'); break;
       }
     },
-    onFullScreenToggle: function (m: { active: boolean }): void {
-      if (m.active) {
-        Core.removeFullScreen();
-        this.app.class.fullscreen = false;
-        this.onWindowResize();
-        m.active = false;
-      } else {
-        Core.addFullScreen((this.$el as HTMLElement).id);
-        this.app.class.fullscreen = true;
-        this.onWindowResize();
-        m.active = true;
+    onFullScreenToggle: function (): void {
+      switch(this.display.currentId) {
+        case 'fullscreen': this.display.changeTo('page'); break;
+        case 'page': this.display.changeTo('fullscreen'); break;
+      }
+    },
+    onFullWindowToggle: function (): void {
+      switch(this.display.currentId) {
+        case 'fullwindow': this.display.changeTo('page'); break;
+        case 'page': this.display.changeTo('fullwindow'); break;
       }
     },
     onPanelSet: function (m: { active: boolean }, val: boolean): void {
@@ -124,24 +157,23 @@ export const App = Vue.extend({
       }
     },
     onWindowResize: function () {
-      if (!this.app.class.fullscreen) {
-        this.app.style.height = Math.round(0.75 * (this.$el as HTMLElement).scrollWidth) + 'px';
+      if (this.display.currentId === 'page') {
+        this.style.height = Math.round(0.75 * (this.$el as HTMLElement).scrollWidth) + 'px';
       } else {
-        this.app.style.height = '';
+        this.style.height = window.innerHeight + 'px';
       }
     }
   },
   mounted: function () {
-    (this.$el as HTMLElement).scrollIntoView(true);
-    this.onWindowResize();
     window.addEventListener('resize', this.onWindowResize.bind(this));
+    this.onWindowResize();
   },
   template: AppTemplate()
 });
 function AppTemplate(): string {
   return /*html*/`
-<div id="postapp" class="panel-container" 
-  :class="app.class.fullscreen" 
+<div id="postapp" class="app-container panel-container" 
+  :style="style"
   v-cloak>
   <div v-show="false">
   <!-- cache, give elements ref="" to reference in methods -->
@@ -150,33 +182,40 @@ function AppTemplate(): string {
     :model="mainmenu" 
     @panel-activate="onPanelSet">
     <div class="app-header">
-      <h1>{{ mainmenu.content.title }}</h1>
+      <h1>{{ content.mainmenu_title }}</h1>
     </div>
     <button @click="onThemeToggle(theme)">
-      {{ theme.active ? theme.content.remove : theme.content.add }}
+      {{ theme.active ? content.theme_remove : content.theme_add }}
     </button>
-    <button @click="onFullScreenToggle(fullscreen)">
-    {{ fullscreen.active ? fullscreen.content.remove : fullscreen.content.add }}
+    <button 
+      :disabled="(display.currentId === 'fullscreen')"
+      @click="onFullWindowToggle()" >
+    {{ (display.currentId === 'fullwindow') ? content.fullwindow_remove : content.fullwindow_add }}
+    </button>
+    <button 
+      :disabled="(display.currentId === 'fullwindow')"
+      @click="onFullScreenToggle()">
+    {{ (display.currentId === 'fullscreen') ? content.fullscreen_remove : content.fullscreen_add }}
     </button>
     <button
-      :disabled="fullscreen.active" 
-      @click="onErudaToggle(eruda)">
-      {{ eruda.active ? eruda.content.remove : eruda.content.add }}
+      :disabled="(display.currentId === 'fullscreen')" 
+      @click="onErudaToggle()">
+      {{ (eruda.currentId === 'on') ? content.eruda_remove : content.eruda_add }}
     </button>
   </teds-panel>
-  <div class="app-content layout-rows" :style="app.style">
+  <div class="app-content layout-rows">
     <div class="app-header">
       <button
         @click="onPanelSet(mainmenu, true)">
         <svg viewBox="0 0 20 20" fill="currentColor" class="menu--svg"><path fill-rule="evenodd" d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clip-rule="evenodd"></path></svg>
       </button>
-      <h1 class="inline">{{ app.content.title }}</h1>
+      <h1 class="inline">{{ content.app_title }}</h1>
     </div>
     <div class="app-body-content">
-      <p>{{ app.content.description }}</p>
+      <p>{{ content.app_description }}</p>
     </div>
     <div class="app-footer">
-      <span>{{ app.content.author }}</span>
+      <span>{{ content.app_author }}</span>
     </div>
   </div>
 </div>
@@ -184,16 +223,17 @@ function AppTemplate(): string {
 }
 function AppTheme(): string {
   return/*css*/`
+  .app-container {
+    color: black;
+    background-color: lightgray;
+  }
   .app-content {
     width: 100%;
     height: 100%;
     overflow: hidden;
     background-color: lightgray;
   }
-  .fullscreen {
-    height: 100vh;
-  }
-  .v-cloak {
+  .v-cloak, .body-cloak header, .body-cloak main, .body-cloak footer {
     display: none;
   }
   .app-header, .app-footer {
