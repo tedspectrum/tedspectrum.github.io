@@ -1,3 +1,4 @@
+import { Core } from './core.js'
 const PanelComponent = {
   name: 'teds-panel',
   template: /*html*/`
@@ -34,104 +35,40 @@ const PanelComponent = {
     }
   }
 };
-const AppTemplate = /*html*/`
-<div id="postapp" class="app-container panel-container" v-cloak>
-  <div v-show="false">
-  <!-- cache, give elements ref="" to reference in methods -->
-  </div>
-  <div class="app layout-rows">
-    <div class="app-header">
-      <button
-        @click="onPanelSet(mainmenu, true)">
-        <svg viewBox="0 0 20 20" fill="currentColor" class="menu--svg"><path fill-rule="evenodd" d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clip-rule="evenodd"></path></svg>
-      </button>
-      <h1 class="inline">{{ app.content.title }}</h1>
-    </div>
-    <teds-panel 
-      :model="mainmenu" 
-      @panel-activate="onPanelSet">
-      <div class="app-header">
-        <h1>{{ mainmenu.content.title }}</h1>
-      </div>
-      <button @click="onThemeToggle(theme)">
-        {{ theme.active ? theme.content.remove : theme.content.add }}
-      </button>
-      <button @click="onErudaToggle(eruda)">
-        {{ eruda.active ? eruda.content.remove : eruda.content.add }}
-      </button>
-    </teds-panel>
-    <div>
-      <p>{{ app.content.description }}</p>
-    </div>
-    <div class="app-footer">
-      <span>{{ app.content.author }}</span>
-    </div>
-  </div>
-</div>
-`;
-// Class Core
-declare let eruda: any;
-class Core {
-  static addStyle(id: string, content: string): void {
-    if (document.getElementById(id) === null) {
-      let el = document.createElement('style');
-      if (el !== null && document.head) {
-        el.id = id;
-        el.innerHTML = content;
-        document.head.appendChild(el);
-      }
-    }
-  }
-  static addEruda(): void {
-    if (document.getElementById('eruda-script') === null) {
-      let el = document.createElement('script');
-      if (el !== null && document.body) {
-        el.id = 'eruda-script';
-        el.src = '//cdn.jsdelivr.net/npm/eruda';
-        el.onload = function () {
-          eruda.init();
-        };
-        document.body.appendChild(el);
-      }
-    } else {
-      eruda.init();
-    }
-  }
-  static removeElementById(id: string): void {
-    let el = document.getElementById(id);
-    if (el !== null && el.parentNode !== null) {
-      el.parentNode.removeChild(el);
-    }
-  }
-  static removeEruda(): void {
-    Core.removeElementById('eruda-script');
-    if(eruda) { eruda.destroy(); }
-  }
-  static removeStyle(id: string): void {
-    Core.removeElementById(id);
-  }
-}
 export const App = Vue.extend({
   components: {
     'teds-panel': PanelComponent
   },
   created: function () {
-    Core.addStyle('theme', getAppTheme());
+    Core.addStyle('theme', AppTheme());
   },
   data: function () {
     return {
       app: {
+        class: {
+          fullscreen: false
+        },
         content: {
           author: 'By TedSpectrum',
           description: 'playing about',
           title: 'Post app'
+        },
+        style: {
+          height: '10em'
         }
       },
       eruda: {
         active: false,
         content: {
-          add: 'Start Eruda',
-          remove: 'Remove Eruda'
+          add: 'Start Developer tools',
+          remove: 'Remove Developer tools'
+        }
+      },
+      fullscreen: {
+        active: false,
+        content: {
+          add: 'Enter Full Screen',
+          remove: 'Leave Full Screen'
         }
       },
       mainmenu: {
@@ -161,6 +98,19 @@ export const App = Vue.extend({
         m.active = true;
       }
     },
+    onFullScreenToggle: function (m: { active: boolean }): void {
+      if (m.active) {
+        Core.removeFullScreen();
+        this.app.class.fullscreen = false;
+        this.onWindowResize();
+        m.active = false;
+      } else {
+        Core.addFullScreen((this.$el as HTMLElement).id);
+        this.app.class.fullscreen = true;
+        this.onWindowResize();
+        m.active = true;
+      }
+    },
     onPanelSet: function (m: { active: boolean }, val: boolean): void {
       if (m.active !== val) { m.active = val; };
     },
@@ -169,28 +119,79 @@ export const App = Vue.extend({
         Core.removeStyle(m.id);
         m.active = false;
       } else {
-        Core.addStyle(m.id, getUserTheme(m.content));
+        Core.addStyle(m.id, UserTheme(m.content));
         m.active = true;
+      }
+    },
+    onWindowResize: function () {
+      if (!this.app.class.fullscreen) {
+        this.app.style.height = Math.round(0.75 * (this.$el as HTMLElement).scrollWidth) + 'px';
+      } else {
+        this.app.style.height = '';
       }
     }
   },
   mounted: function () {
-    (this.$el as HTMLElement).focus();
+    (this.$el as HTMLElement).scrollIntoView(true);
+    this.onWindowResize();
+    window.addEventListener('resize', this.onWindowResize.bind(this));
   },
-  template: AppTemplate
+  template: AppTemplate()
 });
-function getUserTheme(content: { [key: string]: any; }): string {
-  return /*css*/`
-  .app {
-    color: ${content.color}
-  }`;
-};
-function getAppTheme(): string {
+function AppTemplate(): string {
+  return /*html*/`
+<div id="postapp" class="panel-container" 
+  :class="app.class.fullscreen" 
+  v-cloak>
+  <div v-show="false">
+  <!-- cache, give elements ref="" to reference in methods -->
+  </div>
+  <teds-panel 
+    :model="mainmenu" 
+    @panel-activate="onPanelSet">
+    <div class="app-header">
+      <h1>{{ mainmenu.content.title }}</h1>
+    </div>
+    <button @click="onThemeToggle(theme)">
+      {{ theme.active ? theme.content.remove : theme.content.add }}
+    </button>
+    <button @click="onFullScreenToggle(fullscreen)">
+    {{ fullscreen.active ? fullscreen.content.remove : fullscreen.content.add }}
+    </button>
+    <button
+      :disabled="fullscreen.active" 
+      @click="onErudaToggle(eruda)">
+      {{ eruda.active ? eruda.content.remove : eruda.content.add }}
+    </button>
+  </teds-panel>
+  <div class="app-content layout-rows" :style="app.style">
+    <div class="app-header">
+      <button
+        @click="onPanelSet(mainmenu, true)">
+        <svg viewBox="0 0 20 20" fill="currentColor" class="menu--svg"><path fill-rule="evenodd" d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clip-rule="evenodd"></path></svg>
+      </button>
+      <h1 class="inline">{{ app.content.title }}</h1>
+    </div>
+    <div class="app-body-content">
+      <p>{{ app.content.description }}</p>
+    </div>
+    <div class="app-footer">
+      <span>{{ app.content.author }}</span>
+    </div>
+  </div>
+</div>
+`;
+}
+function AppTheme(): string {
   return/*css*/`
-  .app {
+  .app-content {
     width: 100%;
+    height: 100%;
     overflow: hidden;
     background-color: lightgray;
+  }
+  .fullscreen {
+    height: 100vh;
   }
   .v-cloak {
     display: none;
@@ -222,8 +223,6 @@ function getAppTheme(): string {
     width: 12rem;
   }
   .app-body-content {
-    width: 50%;
-    height: 50%;
     overflow: hidden;
   }
   .menu--svg {
@@ -231,4 +230,10 @@ function getAppTheme(): string {
     height: 16px;
     display: block;
   }`
+};
+function UserTheme(content: { [key: string]: any; }): string {
+  return /*css*/`
+  .app-content {
+    color: ${content.color}
+  }`;
 };
