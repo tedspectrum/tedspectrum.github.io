@@ -1,88 +1,161 @@
 import { Core, StateMachine } from './core.js';
-var PanelComponent = {
+const PanelComponent = {
     name: 'teds-panel',
-    template: "\n    <div>\n      <transition :name=\"overlay_transition\">\n        <div v-show=\"model.active && overlay\" class=\"overlay\"\n          @click=\"$emit('panel-activate', model, false)\"></div>\n      </transition>\n      <transition :name=\"transition\">\n        <div v-show=\"model.active\" class=\"panel\" :class=\"classes\">\n          <slot></slot>\n        </div>\n      </transition>\n    </div>",
+    template: `
+    <div>
+      <transition :name="overlay_transition">
+        <div v-show="showPanel && showOverlay" 
+          class="overlay"
+          :class="overlay_classes"
+          @click="$emit('panel-activate', model, false)"></div>
+      </transition>
+      <transition :name="panel_transition">
+        <div v-show="showPanel" 
+          class="panel" 
+          :class="panel_classes">
+          <slot></slot>
+        </div>
+      </transition>
+    </div>`,
     props: {
-        classes: {
-            type: String,
-            default: "panel-fullheightleft"
-        },
         model: {
             type: Object,
             required: true
         },
-        overlay: {
-            default: true
+        overlay_classes: {
+            type: String,
+            default: ""
         },
         overlay_transition: {
             type: String,
             default: "fadeinout"
         },
-        transition: {
+        panel_classes: {
+            type: String,
+            default: "panel-fullheightleft"
+        },
+        panel_transition: {
             type: String,
             default: "slideright"
+        },
+        showPanel: {
+            type: Boolean,
+            required: true
+        },
+        showOverlay: {
+            type: Boolean,
+            default: true
         }
     }
 };
-export var App = Vue.extend({
+const DisplayMachine = new StateMachine(2, null, [
+    {
+        id: 2,
+        onEnter(ctx) {
+            ctx.style.height = Math.round(0.75 * ctx.$el.scrollWidth) + 'px';
+        },
+        transitions: [
+            { id: 3, to: 3 },
+            { id: 4, to: 4 },
+            { id: 2, to: 2 }
+        ]
+    },
+    {
+        id: 3,
+        onEnter(ctx) {
+            Core.addFullScreen(ctx.$el.id);
+            ctx.eruda.transition(6);
+            ctx.style.height = window.innerHeight + 'px';
+        },
+        onLeave() {
+            Core.removeFullScreen();
+        },
+        transitions: [
+            { id: 0, to: 2 },
+            { id: 5, to: 2 },
+            { id: 4, to: 4 }
+        ]
+    },
+    {
+        id: 4,
+        onEnter(ctx) {
+            Core.addFullWindow(ctx.$el.id);
+            ctx.style.height = window.innerHeight + 'px';
+        },
+        onLeave(ctx) {
+            Core.removeFullWindow(ctx.$el.id);
+        },
+        transitions: [
+            { id: 1, to: 2 },
+            { id: 5, to: 2 },
+            { id: 3, to: 3 }
+        ]
+    }
+]);
+const ErudaMachine = new StateMachine(0, null, [
+    {
+        id: 1,
+        onEnter() {
+            Core.addEruda();
+        },
+        transitions: [
+            { id: 8, to: 0 },
+            { id: 6, to: 0 }
+        ]
+    },
+    {
+        id: 0,
+        onEnter() {
+            Core.removeEruda();
+        },
+        transitions: [
+            { id: 8, to: 1 },
+            { id: 7, to: 1 }
+        ]
+    }
+]);
+const MainMenuMachine = new StateMachine(0, null, [
+    {
+        id: 1,
+        transitions: [
+            { id: 6, to: 0 }
+        ]
+    },
+    {
+        id: 0,
+        transitions: [
+            { id: 7, to: 1 }
+        ]
+    }
+]);
+const ThemeMachine = new StateMachine(0, null, [
+    {
+        id: 1,
+        onEnter(ctx) {
+            Core.addStyle(ctx.theme_context.id, ctx.theme_context.source(ctx.theme_context.content));
+        },
+        transitions: [
+            { id: 8, to: 0 },
+            { id: 6, to: 0 }
+        ]
+    },
+    {
+        id: 0,
+        onEnter(ctx) {
+            Core.removeStyle(ctx.theme_context.id);
+        },
+        transitions: [
+            { id: 8, to: 1 },
+            { id: 7, to: 1 }
+        ]
+    }
+]);
+export const App = Vue.extend({
     components: {
         'teds-panel': PanelComponent
     },
-    created: function () {
-        Core.addStyle('theme', AppTheme());
-    },
     data: function () {
-        var DisplayMachine = new StateMachine();
-        DisplayMachine.addStates([
-            {
-                id: 'page',
-                onEnter: function (ctx) {
-                    ctx.onWindowResize();
-                }
-            },
-            {
-                id: 'fullscreen',
-                onEnter: function (ctx) {
-                    Core.addFullScreen(ctx.$el.id);
-                    if (ctx.eruda.currentId === 'on') {
-                        ctx.eruda.changeTo('off');
-                    }
-                    ctx.onWindowResize();
-                },
-                onLeave: function () {
-                    Core.removeFullScreen();
-                }
-            },
-            {
-                id: 'fullwindow',
-                onEnter: function (ctx) {
-                    Core.addFullWindow(ctx.$el.id);
-                    ctx.onWindowResize();
-                },
-                onLeave: function (ctx) {
-                    Core.removeFullWindow(ctx.$el.id);
-                }
-            }
-        ]);
-        DisplayMachine.setContext(this);
-        DisplayMachine.setState('page');
-        var ErudaMachine = new StateMachine();
-        ErudaMachine.addStates([
-            {
-                id: 'on',
-                onEnter: function () {
-                    Core.addEruda();
-                }
-            },
-            {
-                id: 'off',
-                onEnter: function () {
-                    Core.removeEruda();
-                }
-            }
-        ]);
-        ErudaMachine.setState('off');
-        return {
+        const domain = {
             content: {
                 app_author: 'By TedSpectrum',
                 app_description: 'Playing about',
@@ -94,96 +167,148 @@ export var App = Vue.extend({
                 fullwindow_add: 'Enter Full Window',
                 fullwindow_remove: 'Leave Full Window',
                 mainmenu_title: 'Menu',
+                page_add: 'View in page',
                 theme_add: 'Theme On',
                 theme_remove: 'Theme Off'
             },
             display: DisplayMachine,
             eruda: ErudaMachine,
-            mainmenu: {
-                active: false,
-            },
+            mainmenu: MainMenuMachine,
             style: {
                 height: ''
             },
-            theme: {
-                active: false,
+            theme: ThemeMachine,
+            theme_context: {
                 id: 'user',
                 content: {
+                    backgroundColor: 'white',
                     color: 'blue'
-                }
-            },
+                },
+                source: UserTheme
+            }
         };
+        DisplayMachine.setContext(this);
+        ErudaMachine.setContext(this);
+        MainMenuMachine.setContext(this);
+        ThemeMachine.setContext(this);
+        return domain;
     },
-    methods: {
-        onErudaToggle: function () {
-            switch (this.eruda.currentId) {
-                case 'on':
-                    this.eruda.changeTo('off');
-                    break;
-                case 'off':
-                    this.eruda.changeTo('on');
-                    break;
-            }
-        },
-        onFullScreenToggle: function () {
-            switch (this.display.currentId) {
-                case 'fullscreen':
-                    this.display.changeTo('page');
-                    break;
-                case 'page':
-                    this.display.changeTo('fullscreen');
-                    break;
-            }
-        },
-        onFullWindowToggle: function () {
-            switch (this.display.currentId) {
-                case 'fullwindow':
-                    this.display.changeTo('page');
-                    break;
-                case 'page':
-                    this.display.changeTo('fullwindow');
-                    break;
-            }
-        },
-        onPanelSet: function (m, val) {
-            if (m.active !== val) {
-                m.active = val;
-            }
-            ;
-        },
-        onThemeToggle: function (m) {
-            if (m.active) {
-                Core.removeStyle(m.id);
-                m.active = false;
-            }
-            else {
-                Core.addStyle(m.id, UserTheme(m.content));
-                m.active = true;
-            }
-        },
-        onWindowResize: function () {
-            if (this.display.currentId === 'page') {
-                this.style.height = Math.round(0.75 * this.$el.scrollWidth) + 'px';
-            }
-            else {
-                this.style.height = window.innerHeight + 'px';
-            }
-        }
-    },
+    methods: {},
     mounted: function () {
-        window.addEventListener('resize', this.onWindowResize.bind(this));
-        this.onWindowResize();
+        window.addEventListener('resize', this.display.transition.bind(this, 2));
+        Core.addStyle('theme', AppTheme());
+        this.display.transition(2);
     },
     template: AppTemplate()
 });
 function AppTemplate() {
-    return "\n<div id=\"postapp\" class=\"app-container panel-container\" \n  :style=\"style\"\n  v-cloak>\n  <div v-show=\"false\">\n  <!-- cache, give elements ref=\"\" to reference in methods -->\n  </div>\n  <teds-panel \n    :model=\"mainmenu\" \n    @panel-activate=\"onPanelSet\">\n    <div class=\"app-header\">\n      <h1>{{ content.mainmenu_title }}</h1>\n    </div>\n    <button @click=\"onThemeToggle(theme)\">\n      {{ theme.active ? content.theme_remove : content.theme_add }}\n    </button>\n    <button \n      :disabled=\"(display.currentId === 'fullscreen')\"\n      @click=\"onFullWindowToggle()\" >\n    {{ (display.currentId === 'fullwindow') ? content.fullwindow_remove : content.fullwindow_add }}\n    </button>\n    <button \n      :disabled=\"(display.currentId === 'fullwindow')\"\n      @click=\"onFullScreenToggle()\">\n    {{ (display.currentId === 'fullscreen') ? content.fullscreen_remove : content.fullscreen_add }}\n    </button>\n    <button\n      :disabled=\"(display.currentId === 'fullscreen')\" \n      @click=\"onErudaToggle()\">\n      {{ (eruda.currentId === 'on') ? content.eruda_remove : content.eruda_add }}\n    </button>\n  </teds-panel>\n  <div class=\"app-content layout-rows\">\n    <div class=\"app-header\">\n      <button\n        @click=\"onPanelSet(mainmenu, true)\">\n        <svg viewBox=\"0 0 20 20\" fill=\"currentColor\" class=\"menu--svg\"><path fill-rule=\"evenodd\" d=\"M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z\" clip-rule=\"evenodd\"></path></svg>\n      </button>\n      <h1 class=\"inline\">{{ content.app_title }}</h1>\n    </div>\n    <div class=\"app-body-content\">\n      <p>{{ content.app_description }}</p>\n    </div>\n    <div class=\"app-footer\">\n      <span>{{ content.app_author }}</span>\n    </div>\n  </div>\n</div>\n";
+    return `
+<div id="postapp" class="app-container panel-container" 
+  :style="style">
+  <div v-show="false">
+  <!-- cache, give elements ref="" to reference in methods -->
+  </div>
+  <teds-panel 
+    :model="mainmenu"
+    :showPanel="(mainmenu.current === ${1})"
+    @panel-activate="mainmenu.transition(${6})">
+    <div class="app-header">
+      <h1>{{ content.mainmenu_title }}</h1>
+    </div>
+    <button @click="theme.transition(${8})">
+      {{ (theme.current === ${1}) ? content.theme_remove : content.theme_add }}
+    </button>
+    <button
+      :disabled="(display.current === ${3})" 
+      @click="eruda.transition(${8})">
+      {{ (eruda.current === ${1}) ? content.eruda_remove : content.eruda_add }}
+    </button>
+  </teds-panel>
+  <div class="app-content layout-rows">
+    <div class="app-header">
+      <button
+        @click="mainmenu.transition(${7})">
+        <svg viewBox="0 0 20 20" fill="currentColor" class="block" height="16px" width="16px"><path fill-rule="evenodd" d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clip-rule="evenodd"></path></svg>
+      </button>
+      <h1 class="inline">{{ content.app_title }}</h1>
+    </div>
+    <div class="app-body">
+      <p>{{ content.app_description }}</p>
+      <h2>Display control</h2>
+      <button 
+        :disabled="(display.current === ${2})"
+        @click="display.transition(${5})">
+      {{ content.page_add }}
+      </button>
+      <button 
+        :disabled="(display.current === ${4})"
+        @click="display.transition(${4})">
+      {{ content.fullwindow_add }}
+      </button>
+      <button 
+        :disabled="(display.current === ${3})"
+        @click="display.transition(${3})">
+      {{ content.fullscreen_add }}
+      </button>
+    </div>
+    <div class="app-footer">
+      <span>{{ content.app_author }}</span>
+    </div>
+  </div>
+</div>
+`;
 }
 function AppTheme() {
-    return "\n  .app-container {\n    color: black;\n    background-color: lightgray;\n  }\n  .app-content {\n    width: 100%;\n    height: 100%;\n    overflow: hidden;\n    background-color: lightgray;\n  }\n  .v-cloak, .body-cloak header, .body-cloak main, .body-cloak footer {\n    display: none;\n  }\n  .app-header, .app-footer {\n    background-color: gray;\n    color: white;\n    padding-left: 0.5rem;\n  }\n  .bordered {\n    border: 1px solid black;\n  }\n  .centered {\n    display: grid;\n    place-items: center;\n  }\n  .inline {\n    display: inline;\n  }\n  .layout-rows {\n    display: grid;\n    grid-template-rows: auto 1fr auto;\n  }\n  .layout-columns {\n    display: grid;\n    grid-template-columns: auto 1fr auto;\n  }\n  .column-width {\n    width: 12rem;\n  }\n  .app-body-content {\n    overflow: hidden;\n  }\n  .menu--svg {\n    width: 16px;\n    height: 16px;\n    display: block;\n  }";
+    return `
+  .app-container {
+    background-color: lightgray;
+    color: black;
+  }
+  .app-content {
+    background-color: lightgray;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+  }
+  .app-body {
+    overflow: hidden;
+  }
+  .app-header, .app-footer {
+    background-color: gray;
+    color: white;
+    padding-left: 0.5rem;
+  }
+  .body-cloak header, .body-cloak main, .body-cloak footer {
+    display: none;
+  }
+  .block {
+    display: block;
+  }
+  .bordered {
+    border: 1px solid black;
+  }
+  .centered {
+    display: grid;
+    place-items: center;
+  }
+  .inline {
+    display: inline;
+  }
+  .layout-rows {
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+  }
+  .layout-columns {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+  }`;
 }
 ;
 function UserTheme(content) {
-    return "\n  .app-content {\n    color: " + content.color + "\n  }";
+    return `
+  .app-content {
+    color: ${content.color};
+    background-color: ${content.backgroundColor};
+  }`;
 }
 ;

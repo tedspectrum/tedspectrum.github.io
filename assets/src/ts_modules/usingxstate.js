@@ -1,6 +1,6 @@
 "use strict";
-var Machine = XState.Machine, assign = XState.assign, actions = XState.actions, interpret = XState.interpret;
-var toggleMachine = Machine({
+const { Machine, assign, actions, interpret } = XState;
+const toggleMachine = Machine({
     id: 'toggle',
     context: {
         message: 'initial message'
@@ -12,7 +12,7 @@ var toggleMachine = Machine({
                 TOGGLE: {
                     target: 'active',
                     actions: [
-                        assign({ 'message': function (context) { return (context.message = 'leaving inactive'); } })
+                        assign({ 'message': (context) => { return (context.message = 'leaving inactive'); } })
                     ]
                 }
             }
@@ -28,37 +28,58 @@ var toggleMachine = Machine({
     }
 }, {
     actions: {
-        onActive: function (context, event) {
+        onActive: (context, event) => {
             context.message = 'peekaboo!';
         },
-        onInActive: function (context, event) {
+        onInActive: (context, event) => {
             context.message = 'hush!';
         }
     }
 });
-var appTemplate = "\n<div id=\"postapp\" class=\"app-container\" v-cloak>\n  <div v-show=\"false\">\n  <!-- cache, give elements ref=\"\" to reference in methods -->\n  </div>\n  <div class=\"app layout-rows\">\n    <div class=\"app-header\">\n      <h1>\n      <svg viewBox=\"0 0 20 20\" fill=\"currentColor\" class=\"menu--svg\"><path fill-rule=\"evenodd\" d=\"M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z\" clip-rule=\"evenodd\"></path></svg>\n      {{ title }}</h1>\n    </div>\n    <div>\n      <p>{{ context.message }}</p>\n      <button v-on:click=\"send('TOGGLE')\">\n        {{ current.matches(\"inactive\") ? \"Off\" : \"On\" }}\n      </button>\n    </div>\n    <div class=\"app-footer\">\n      <span>By TedSpectrum</span>\n    </div>\n  </div>\n</div>\n";
-var App = Vue.extend({
+const appTemplate = `
+<div id="postapp" class="app-container" v-cloak>
+  <div v-show="false">
+  <!-- cache, give elements ref="" to reference in methods -->
+  </div>
+  <div class="app layout-rows">
+    <div class="app-header">
+      <h1>
+      <svg viewBox="0 0 20 20" fill="currentColor" class="menu--svg"><path fill-rule="evenodd" d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clip-rule="evenodd"></path></svg>
+      {{ title }}</h1>
+    </div>
+    <div>
+      <p>{{ context.message }}</p>
+      <button v-on:click="send('TOGGLE')">
+        {{ current.matches("inactive") ? "Off" : "On" }}
+      </button>
+    </div>
+    <div class="app-footer">
+      <span>By TedSpectrum</span>
+    </div>
+  </div>
+</div>
+`;
+const App = Vue.extend({
     template: appTemplate,
-    created: function () {
-        var _this = this;
+    created() {
         this.toggleService
-            .onTransition(function (state) {
-            _this.current = state;
-            _this.context = state.context;
+            .onTransition((state) => {
+            this.current = state;
+            this.context = state.context;
         })
             .start();
     },
-    data: function () {
+    data() {
         return {
             title: 'Post app',
-            description: "Using xstate",
+            description: `Using xstate`,
             toggleService: interpret(toggleMachine),
             current: toggleMachine.initialState,
             context: toggleMachine.context,
         };
     },
     methods: {
-        send: function (event) {
+        send(event) {
             this.toggleService.send(event);
             this.toggleService.send('update');
         }
