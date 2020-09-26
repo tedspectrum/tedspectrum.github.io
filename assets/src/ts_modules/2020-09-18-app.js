@@ -48,69 +48,86 @@ const PanelComponent = {
         }
     }
 };
-const DisplayMachine = new StateMachine(2, null, [
+const AppViewMachine = new StateMachine(2, null, [
     {
         id: 2,
-        onEnter(ctx) {
-            ctx.style.height = Math.round(0.75 * ctx.$el.scrollWidth) + 'px';
-        },
         transitions: [
-            { id: 3, to: 3 },
-            { id: 4, to: 4 },
-            { id: 2, to: 2 }
+            { id: 2, to: 3 }
         ]
     },
     {
         id: 3,
-        onEnter(ctx) {
-            Core.addFullScreen(ctx.$el.id);
-            ctx.eruda.transition(6);
-            ctx.style.height = window.innerHeight + 'px';
+        onEnter(ctx, d) {
+            window.addEventListener('resize', ctx.display.transition.bind(ctx, 3));
+            ctx.core.addStyle(d.id, d.source(ctx.appview.content));
+            ctx.display.transition(3);
         },
-        onLeave() {
-            Core.removeFullScreen();
+        transitions: []
+    },
+]);
+const DisplayMachine = new StateMachine(4, null, [
+    {
+        id: 4,
+        onEnter(ctx, d) {
+            d.style.height = Math.round(0.75 * ctx.$el.scrollWidth) + 'px';
         },
         transitions: [
-            { id: 0, to: 2 },
-            { id: 5, to: 2 },
-            { id: 4, to: 4 }
+            { id: 4, to: 5 },
+            { id: 5, to: 6 },
+            { id: 3, to: 4 }
         ]
     },
     {
-        id: 4,
-        onEnter(ctx) {
-            Core.addFullWindow(ctx.$el.id);
-            ctx.style.height = window.innerHeight + 'px';
+        id: 5,
+        onEnter(ctx, d) {
+            ctx.core.addFullScreen(ctx.$el.id);
+            ctx.eruda.transition(7);
+            d.style.height = window.innerHeight + 'px';
         },
         onLeave(ctx) {
-            Core.removeFullWindow(ctx.$el.id);
+            ctx.core.removeFullScreen();
         },
         transitions: [
-            { id: 1, to: 2 },
-            { id: 5, to: 2 },
-            { id: 3, to: 3 }
+            { id: 0, to: 4 },
+            { id: 6, to: 4 },
+            { id: 5, to: 6 }
+        ]
+    },
+    {
+        id: 6,
+        onEnter(ctx, d) {
+            ctx.core.addFullWindow(ctx.$el.id);
+            d.style.height = window.innerHeight + 'px';
+        },
+        onLeave(ctx) {
+            ctx.core.removeFullWindow(ctx.$el.id);
+        },
+        transitions: [
+            { id: 1, to: 4 },
+            { id: 6, to: 4 },
+            { id: 4, to: 5 }
         ]
     }
 ]);
 const ErudaMachine = new StateMachine(0, null, [
     {
         id: 1,
-        onEnter() {
-            Core.addEruda();
+        onEnter(ctx) {
+            ctx.core.addEruda();
         },
         transitions: [
-            { id: 8, to: 0 },
-            { id: 6, to: 0 }
+            { id: 9, to: 0 },
+            { id: 7, to: 0 }
         ]
     },
     {
         id: 0,
-        onEnter() {
-            Core.removeEruda();
+        onEnter(ctx) {
+            ctx.core.removeEruda();
         },
         transitions: [
-            { id: 8, to: 1 },
-            { id: 7, to: 1 }
+            { id: 9, to: 1 },
+            { id: 8, to: 1 }
         ]
     }
 ]);
@@ -118,44 +135,44 @@ const MainMenuMachine = new StateMachine(0, null, [
     {
         id: 1,
         transitions: [
-            { id: 6, to: 0 }
+            { id: 7, to: 0 }
         ]
     },
     {
         id: 0,
         transitions: [
-            { id: 7, to: 1 }
+            { id: 8, to: 1 }
         ]
     }
 ]);
 const ThemeMachine = new StateMachine(0, null, [
     {
         id: 1,
-        onEnter(ctx) {
-            Core.addStyle(ctx.theme_context.id, ctx.theme_context.source(ctx.theme_context.content));
+        onEnter(ctx, d) {
+            ctx.core.addStyle(d.id, d.source(d.content));
         },
         transitions: [
-            { id: 8, to: 0 },
-            { id: 6, to: 0 }
+            { id: 9, to: 0 },
+            { id: 7, to: 0 }
         ]
     },
     {
         id: 0,
-        onEnter(ctx) {
-            Core.removeStyle(ctx.theme_context.id);
+        onEnter(ctx, d) {
+            ctx.core.removeStyle(d.id);
         },
         transitions: [
-            { id: 8, to: 1 },
-            { id: 7, to: 1 }
+            { id: 9, to: 1 },
+            { id: 8, to: 1 }
         ]
     }
 ]);
-export const App = Vue.extend({
+export const AppVue = Vue.extend({
     components: {
         'teds-panel': PanelComponent
     },
     data: function () {
-        const domain = {
+        return {
             content: {
                 app_author: 'By TedSpectrum',
                 app_description: 'Playing about',
@@ -171,15 +188,27 @@ export const App = Vue.extend({
                 theme_add: 'Theme On',
                 theme_remove: 'Theme Off'
             },
+            appview: AppViewMachine,
+            appview_data: {
+                id: 'apptheme',
+                content: {
+                    backgroundColor: 'white',
+                    color: 'blue'
+                },
+                source: AppTheme
+            },
+            core: Core,
             display: DisplayMachine,
+            display_data: {
+                style: {
+                    height: ''
+                }
+            },
             eruda: ErudaMachine,
             mainmenu: MainMenuMachine,
-            style: {
-                height: ''
-            },
             theme: ThemeMachine,
-            theme_context: {
-                id: 'user',
+            theme_data: {
+                id: 'usertheme',
                 content: {
                     backgroundColor: 'white',
                     color: 'blue'
@@ -187,47 +216,52 @@ export const App = Vue.extend({
                 source: UserTheme
             }
         };
-        DisplayMachine.setContext(this);
-        ErudaMachine.setContext(this);
-        MainMenuMachine.setContext(this);
-        ThemeMachine.setContext(this);
-        return domain;
     },
-    methods: {},
+    methods: {
+        onPanelActivate: function (m, val) {
+            val ? m.transition(8) : m.transition(7);
+        }
+    },
     mounted: function () {
-        window.addEventListener('resize', this.display.transition.bind(this, 2));
-        Core.addStyle('theme', AppTheme());
-        this.display.transition(2);
+        this.appview.setContext(this);
+        this.appview.setData(this.appview_data);
+        this.display.setContext(this);
+        this.display.setData(this.display_data);
+        this.eruda.setContext(this);
+        this.mainmenu.setContext(this);
+        this.theme.setContext(this);
+        this.theme.setData(this.theme_data);
+        this.appview.transition(2);
     },
     template: AppTemplate()
 });
 function AppTemplate() {
     return `
 <div id="postapp" class="app-container panel-container" 
-  :style="style">
+  :style="display_data.style">
   <div v-show="false">
   <!-- cache, give elements ref="" to reference in methods -->
   </div>
   <teds-panel 
     :model="mainmenu"
-    :showPanel="(mainmenu.current === ${1})"
-    @panel-activate="mainmenu.transition(${6})">
+    :showPanel="mainmenu.isInState(${1})"
+    @panel-activate="onPanelActivate">
     <div class="app-header">
       <h1>{{ content.mainmenu_title }}</h1>
     </div>
-    <button @click="theme.transition(${8})">
-      {{ (theme.current === ${1}) ? content.theme_remove : content.theme_add }}
+    <button @click="theme.transition(${9})">
+      {{ (theme.isInState(${1})) ? content.theme_remove : content.theme_add }}
     </button>
     <button
-      :disabled="(display.current === ${3})" 
-      @click="eruda.transition(${8})">
-      {{ (eruda.current === ${1}) ? content.eruda_remove : content.eruda_add }}
+      :disabled="display.isInState(${5})" 
+      @click="eruda.transition(${9})">
+      {{ (eruda.isInState(${1})) ? content.eruda_remove : content.eruda_add }}
     </button>
   </teds-panel>
   <div class="app-content layout-rows">
     <div class="app-header">
       <button
-        @click="mainmenu.transition(${7})">
+        @click="mainmenu.transition(${8})">
         <svg viewBox="0 0 20 20" fill="currentColor" class="block" height="16px" width="16px"><path fill-rule="evenodd" d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clip-rule="evenodd"></path></svg>
       </button>
       <h1 class="inline">{{ content.app_title }}</h1>
@@ -236,18 +270,18 @@ function AppTemplate() {
       <p>{{ content.app_description }}</p>
       <h2>Display control</h2>
       <button 
-        :disabled="(display.current === ${2})"
-        @click="display.transition(${5})">
+        :disabled="display.isInState(${4})"
+        @click="display.transition(${6})">
       {{ content.page_add }}
       </button>
       <button 
-        :disabled="(display.current === ${4})"
-        @click="display.transition(${4})">
+        :disabled="display.isInState(${6})"
+        @click="display.transition(${5})">
       {{ content.fullwindow_add }}
       </button>
       <button 
-        :disabled="(display.current === ${3})"
-        @click="display.transition(${3})">
+        :disabled="display.isInState(${5})"
+        @click="display.transition(${4})">
       {{ content.fullscreen_add }}
       </button>
     </div>
@@ -258,7 +292,7 @@ function AppTemplate() {
 </div>
 `;
 }
-function AppTheme() {
+function AppTheme(content) {
     return `
   .app-container {
     background-color: lightgray;

@@ -48,9 +48,12 @@ const PanelComponent = {
     }
   }
 };
+// state machines
 const enum States {
   off,
   on,
+  new,
+  mounted,
   page,
   fullscreen,
   fullwindow
@@ -58,6 +61,7 @@ const enum States {
 const enum Transitions {
   leaveFullscreen,
   leaveFullwindow,
+  mount,
   resize,
   showFullscreen,
   showFullwindow,
@@ -66,11 +70,28 @@ const enum Transitions {
   switchOn,
   toggle
 }
+const AppViewMachine = new StateMachine(States.new, null, [
+  {
+    id: States.new,
+    transitions: [
+      { id: Transitions.mount, to: States.mounted }
+    ]
+  },
+  {
+    id: States.mounted,
+    onEnter(ctx: { [key: string]: any; }, d: { [key: string]: any }) {
+      window.addEventListener('resize', ctx.display.transition.bind(ctx, Transitions.resize));
+      ctx.core.addStyle(d.id, d.source(ctx.appview.content));
+      ctx.display.transition(Transitions.resize);
+    },
+    transitions: []
+  },
+]);
 const DisplayMachine = new StateMachine(States.page, null, [
   {
     id: States.page,
-    onEnter(ctx: { [key: string]: any; }) {
-      ctx.style.height = Math.round(0.75 * (ctx.$el as HTMLElement).scrollWidth) + 'px';
+    onEnter(ctx: { [key: string]: any; }, d: { [key: string]: any }) {
+      d.style.height = Math.round(0.75 * (ctx.$el as HTMLElement).scrollWidth) + 'px';
     },
     transitions: [
       { id: Transitions.showFullscreen, to: States.fullscreen },
@@ -80,13 +101,13 @@ const DisplayMachine = new StateMachine(States.page, null, [
   },
   {
     id: States.fullscreen,
-    onEnter(ctx: { [key: string]: any; }) {
-      Core.addFullScreen((ctx.$el as HTMLElement).id);
+    onEnter(ctx: { [key: string]: any; }, d: { [key: string]: any }) {
+      ctx.core.addFullScreen((ctx.$el as HTMLElement).id);
       ctx.eruda.transition(Transitions.switchOff);
-      ctx.style.height = window.innerHeight + 'px';
+      d.style.height = window.innerHeight + 'px';
     },
-    onLeave() {
-      Core.removeFullScreen();
+    onLeave(ctx: { [key: string]: any; }) {
+      ctx.core.removeFullScreen();
     },
     transitions: [
       { id: Transitions.leaveFullscreen, to: States.page },
@@ -96,12 +117,12 @@ const DisplayMachine = new StateMachine(States.page, null, [
   },
   {
     id: States.fullwindow,
-    onEnter(ctx: { [key: string]: any; }) {
-      Core.addFullWindow((ctx.$el as HTMLElement).id);
-      ctx.style.height = window.innerHeight + 'px';
+    onEnter(ctx: { [key: string]: any; }, d: { [key: string]: any }) {
+      ctx.core.addFullWindow((ctx.$el as HTMLElement).id);
+      d.style.height = window.innerHeight + 'px';
     },
     onLeave(ctx: { [key: string]: any; }) {
-      Core.removeFullWindow((ctx.$el as HTMLElement).id);
+      ctx.core.removeFullWindow((ctx.$el as HTMLElement).id);
     },
     transitions: [
       { id: Transitions.leaveFullwindow, to: States.page },
@@ -113,8 +134,8 @@ const DisplayMachine = new StateMachine(States.page, null, [
 const ErudaMachine = new StateMachine(States.off, null, [
   {
     id: States.on,
-    onEnter() {
-      Core.addEruda();
+    onEnter(ctx: { [key: string]: any; }) {
+      ctx.core.addEruda();
     },
     transitions: [
       { id: Transitions.toggle, to: States.off },
@@ -123,8 +144,8 @@ const ErudaMachine = new StateMachine(States.off, null, [
   },
   {
     id: States.off,
-    onEnter() {
-      Core.removeEruda();
+    onEnter(ctx: { [key: string]: any; }) {
+      ctx.core.removeEruda();
     },
     transitions: [
       { id: Transitions.toggle, to: States.on },
@@ -149,8 +170,8 @@ const MainMenuMachine = new StateMachine(States.off, null, [
 const ThemeMachine = new StateMachine(States.off, null, [
   {
     id: States.on,
-    onEnter(ctx: { [key: string]: any; }) {
-      Core.addStyle(ctx.theme_context.id, ctx.theme_context.source(ctx.theme_context.content));
+    onEnter(ctx: { [key: string]: any; }, d: { [key: string]: any }) {
+      ctx.core.addStyle(d.id, d.source(d.content));
     },
     transitions: [
       { id: Transitions.toggle, to: States.off },
@@ -159,8 +180,8 @@ const ThemeMachine = new StateMachine(States.off, null, [
   },
   {
     id: States.off,
-    onEnter(ctx: { [key: string]: any; }) {
-      Core.removeStyle(ctx.theme_context.id);
+    onEnter(ctx: { [key: string]: any; }, d: { [key: string]: any }) {
+      ctx.core.removeStyle(d.id);
     },
     transitions: [
       { id: Transitions.toggle, to: States.on },
@@ -168,12 +189,13 @@ const ThemeMachine = new StateMachine(States.off, null, [
     ]
   }
 ]);
-export const App = Vue.extend({
+// vue
+export const AppVue = Vue.extend({
   components: {
     'teds-panel': PanelComponent
   },
   data: function () {
-    const domain = {
+    return {
       content: {
         app_author: 'By TedSpectrum',
         app_description: 'Playing about',
@@ -189,58 +211,76 @@ export const App = Vue.extend({
         theme_add: 'Theme On',
         theme_remove: 'Theme Off'
       },
+      appview: AppViewMachine,
+      appview_data: {
+        id: 'apptheme',
+        content: {
+          backgroundColor: 'white',
+          color: 'blue'
+        },
+        source: AppTheme
+      },
+      core: Core,
       display: DisplayMachine,
+      display_data: {
+        style: {
+          height: ''
+        }
+      },
       eruda: ErudaMachine,
       mainmenu: MainMenuMachine,
-      style: {
-        height: ''
-      },
       theme: ThemeMachine,
-      theme_context: {
-        id: 'user',
+      theme_data: {
+        id: 'usertheme',
         content: {
           backgroundColor: 'white',
           color: 'blue'
         },
         source: UserTheme
       }
-    }
-    // connect state machines to the view
-    DisplayMachine.setContext(this);
-    ErudaMachine.setContext(this);
-    MainMenuMachine.setContext(this);
-    ThemeMachine.setContext(this);
-    return domain;
+    };
   },
-  methods: {},
+  methods: {
+    onPanelActivate: function(m: StateMachine, val: boolean) {
+      val ? m.transition(Transitions.switchOn) : m.transition(Transitions.switchOff);
+    }
+  },
   mounted: function () {
-    window.addEventListener('resize', this.display.transition.bind(this, Transitions.resize));
-    Core.addStyle('theme', AppTheme());
-    this.display.transition(Transitions.resize);
+    // connect state machines to the domain
+    this.appview.setContext(this);
+    this.appview.setData(this.appview_data);
+    this.display.setContext(this);
+    this.display.setData(this.display_data);
+    this.eruda.setContext(this);
+    this.mainmenu.setContext(this);
+    this.theme.setContext(this);
+    this.theme.setData(this.theme_data);
+    // transition state machine to mounted
+    this.appview.transition(Transitions.mount);
   },
   template: AppTemplate()
 });
 function AppTemplate(): string {
   return /*html*/`
 <div id="postapp" class="app-container panel-container" 
-  :style="style">
+  :style="display_data.style">
   <div v-show="false">
   <!-- cache, give elements ref="" to reference in methods -->
   </div>
   <teds-panel 
     :model="mainmenu"
-    :showPanel="(mainmenu.current === ${States.on})"
-    @panel-activate="mainmenu.transition(${Transitions.switchOff})">
+    :showPanel="mainmenu.isInState(${States.on})"
+    @panel-activate="onPanelActivate">
     <div class="app-header">
       <h1>{{ content.mainmenu_title }}</h1>
     </div>
     <button @click="theme.transition(${Transitions.toggle})">
-      {{ (theme.current === ${States.on}) ? content.theme_remove : content.theme_add }}
+      {{ (theme.isInState(${States.on})) ? content.theme_remove : content.theme_add }}
     </button>
     <button
-      :disabled="(display.current === ${States.fullscreen})" 
+      :disabled="display.isInState(${States.fullscreen})" 
       @click="eruda.transition(${Transitions.toggle})">
-      {{ (eruda.current === ${States.on}) ? content.eruda_remove : content.eruda_add }}
+      {{ (eruda.isInState(${States.on})) ? content.eruda_remove : content.eruda_add }}
     </button>
   </teds-panel>
   <div class="app-content layout-rows">
@@ -255,17 +295,17 @@ function AppTemplate(): string {
       <p>{{ content.app_description }}</p>
       <h2>Display control</h2>
       <button 
-        :disabled="(display.current === ${States.page})"
+        :disabled="display.isInState(${States.page})"
         @click="display.transition(${Transitions.showPage})">
       {{ content.page_add }}
       </button>
       <button 
-        :disabled="(display.current === ${States.fullwindow})"
+        :disabled="display.isInState(${States.fullwindow})"
         @click="display.transition(${Transitions.showFullwindow})">
       {{ content.fullwindow_add }}
       </button>
       <button 
-        :disabled="(display.current === ${States.fullscreen})"
+        :disabled="display.isInState(${States.fullscreen})"
         @click="display.transition(${Transitions.showFullscreen})">
       {{ content.fullscreen_add }}
       </button>
@@ -277,7 +317,7 @@ function AppTemplate(): string {
 </div>
 `;
 }
-function AppTheme(): string {
+function AppTheme(content: { [key: string]: any; }): string {
   return/*css*/`
   .app-container {
     background-color: lightgray;

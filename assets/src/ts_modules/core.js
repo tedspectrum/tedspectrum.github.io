@@ -1,6 +1,7 @@
 export class StateMachine {
     constructor(initialState, initialContext, initialStates) {
         this.context = {};
+        this.data = {};
         this.emptyState = { id: -1, transitions: [] };
         this.states = [];
         this.transitions = [];
@@ -9,6 +10,15 @@ export class StateMachine {
         let newState = this.states[initialState];
         this.currentState = (newState) ? newState : this.emptyState;
         this.current = this.currentState.id;
+    }
+    isInState(testState) {
+        return (this.current === testState);
+    }
+    setContext(newContext) {
+        this.context = (newContext !== null) ? newContext : {};
+    }
+    setData(newData) {
+        this.data = (newData !== null) ? newData : {};
     }
     setState(newState) {
         this.transitions[newState.id] = [];
@@ -20,18 +30,15 @@ export class StateMachine {
     setStates(newStates) {
         newStates.forEach(v => { this.setState(v); });
     }
-    setContext(newContext) {
-        this.context = (newContext !== null) ? newContext : {};
-    }
     transition(transitionId) {
         if (this.transitions !== undefined &&
             this.transitions[this.current] !== undefined &&
             this.transitions[this.current][transitionId] !== undefined &&
             this.states[this.transitions[this.current][transitionId]] !== undefined) {
-            this.currentState.onLeave && this.currentState.onLeave(this.context);
+            this.currentState.onLeave && this.currentState.onLeave(this.context, this.data);
             this.currentState = this.states[this.transitions[this.current][transitionId]];
             this.current = this.currentState.id;
-            this.currentState.onEnter && this.currentState.onEnter(this.context);
+            this.currentState.onEnter && this.currentState.onEnter(this.context, this.data);
         }
     }
 }

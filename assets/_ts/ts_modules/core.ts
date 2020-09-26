@@ -1,13 +1,14 @@
 export interface State {
   id: number,
-  onEnter?(context: { [key: string]: any }): void,
-  onLeave?(context: { [key: string]: any }): void,
+  onEnter?(context: { [key: string]: any }, data: { [key: string]: any }): void,
+  onLeave?(context: { [key: string]: any }, data: { [key: string]: any }): void,
   transitions: { id: number, to: number }[]
 }
 export class StateMachine {
-  context: { [key: string]: any } = {};
-  current: number;
-  currentState: State;
+  private context: { [key: string]: any } = {};
+  private data: { [key: string]: any } = {};
+  private current: number;
+  private currentState: State;
   private emptyState: State = { id: -1, transitions: [] };
   private states: State[] = [];
   private transitions: number[][] = [];
@@ -17,6 +18,15 @@ export class StateMachine {
     let newState = this.states[initialState];
     this.currentState = (newState) ? newState : this.emptyState;
     this.current = this.currentState.id;
+  }
+  isInState(testState: number) {
+    return (this.current === testState);
+  }
+  setContext(newContext: { [key: string]: any; } | null) {
+    this.context = (newContext !== null) ? newContext : {};
+  }
+  setData(newData: { [key: string]: any; } | null) {
+    this.data = (newData !== null) ? newData : {};
   }
   setState(newState: State) {
     // using sparse arrays
@@ -29,18 +39,15 @@ export class StateMachine {
   setStates(newStates: State[]) {
     newStates.forEach(v => { this.setState(v); });
   }
-  setContext(newContext: { [key: string]: any; } | null) {
-    this.context = (newContext !== null) ? newContext : {};
-  }
   transition(transitionId: number) {
     if (this.transitions !== undefined &&
       this.transitions[this.current] !== undefined &&
       this.transitions[this.current][transitionId] !== undefined &&
       this.states[this.transitions[this.current][transitionId]] !== undefined) {
-      this.currentState.onLeave && this.currentState.onLeave(this.context);
+      this.currentState.onLeave && this.currentState.onLeave(this.context, this.data);
       this.currentState = this.states[this.transitions[this.current][transitionId]];
       this.current = this.currentState.id;
-      this.currentState.onEnter && this.currentState.onEnter(this.context);
+      this.currentState.onEnter && this.currentState.onEnter(this.context, this.data);
     }
   }
 }
