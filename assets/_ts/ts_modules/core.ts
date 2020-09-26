@@ -2,20 +2,28 @@ export interface State {
   id: number,
   onEnter?(context: { [key: string]: any }, data: { [key: string]: any }): void,
   onLeave?(context: { [key: string]: any }, data: { [key: string]: any }): void,
-  transitions: { id: number, to: number }[]
+  transitions: { id: number, to: number }[],
+  [propName: string]: any
 }
 export class StateMachine {
-  private context: { [key: string]: any } = {};
-  private data: { [key: string]: any } = {};
-  private current: number;
-  private currentState: State;
+  context: { [key: string]: any } = {};
+  data: { [key: string]: any } = {};
+  current: number;
+  currentState: State;
   private emptyState: State = { id: -1, transitions: [] };
   private states: State[] = [];
   private transitions: number[][] = [];
-  constructor(initialState: number, initialContext: { [key: string]: any } | null, initialStates: State[]) {
+  constructor(
+    initialContext: { [key: string]: any } | null,
+    configObject: {
+      initialState: number,
+      data: { [key: string]: any } | null,
+      states: State[]
+    }) {
     this.setContext(initialContext);
-    this.setStates(initialStates);
-    let newState = this.states[initialState];
+    this.setData(configObject.data);
+    this.setStates(configObject.states);
+    let newState = this.states[configObject.initialState];
     this.currentState = (newState) ? newState : this.emptyState;
     this.current = this.currentState.id;
   }
@@ -136,3 +144,53 @@ export class Core {
     }
   }
 }
+// Basic vue components
+export const PanelComponent = {
+  name: 'teds-panel',
+  template: /*html*/`
+    <div>
+      <transition :name="overlay_transition">
+        <div v-show="showPanel && showOverlay" 
+          class="overlay"
+          :class="overlay_classes"
+          @click="$emit('panel-activate', model, false)"></div>
+      </transition>
+      <transition :name="panel_transition">
+        <div v-show="showPanel" 
+          class="panel" 
+          :class="panel_classes">
+          <slot></slot>
+        </div>
+      </transition>
+    </div>`,
+  props: {
+    model: {
+      type: Object,
+      required: true
+    },
+    overlay_classes: {
+      type: String,
+      default: ""
+    },
+    overlay_transition: {
+      type: String,
+      default: "fadeinout"
+    },
+    panel_classes: {
+      type: String,
+      default: "panel-fullheightleft"
+    },
+    panel_transition: {
+      type: String,
+      default: "slideright"
+    },
+    showPanel: {
+      type: Boolean,
+      required: true
+    },
+    showOverlay: {
+      type: Boolean,
+      default: true
+    }
+  }
+};

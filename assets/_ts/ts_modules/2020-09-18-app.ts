@@ -1,194 +1,6 @@
-import { Core, StateMachine } from './core.js'
-const PanelComponent = {
-  name: 'teds-panel',
-  template: /*html*/`
-    <div>
-      <transition :name="overlay_transition">
-        <div v-show="showPanel && showOverlay" 
-          class="overlay"
-          :class="overlay_classes"
-          @click="$emit('panel-activate', model, false)"></div>
-      </transition>
-      <transition :name="panel_transition">
-        <div v-show="showPanel" 
-          class="panel" 
-          :class="panel_classes">
-          <slot></slot>
-        </div>
-      </transition>
-    </div>`,
-  props: {
-    model: {
-      type: Object,
-      required: true
-    },
-    overlay_classes: {
-      type: String,
-      default: ""
-    },
-    overlay_transition: {
-      type: String,
-      default: "fadeinout"
-    },
-    panel_classes: {
-      type: String,
-      default: "panel-fullheightleft"
-    },
-    panel_transition: {
-      type: String,
-      default: "slideright"
-    },
-    showPanel: {
-      type: Boolean,
-      required: true
-    },
-    showOverlay: {
-      type: Boolean,
-      default: true
-    }
-  }
-};
-// state machines
-const enum States {
-  off,
-  on,
-  new,
-  mounted,
-  page,
-  fullscreen,
-  fullwindow
-}
-const enum Transitions {
-  leaveFullscreen,
-  leaveFullwindow,
-  mount,
-  resize,
-  showFullscreen,
-  showFullwindow,
-  showPage,
-  switchOff,
-  switchOn,
-  toggle
-}
-const AppViewMachine = new StateMachine(States.new, null, [
-  {
-    id: States.new,
-    transitions: [
-      { id: Transitions.mount, to: States.mounted }
-    ]
-  },
-  {
-    id: States.mounted,
-    onEnter(ctx: { [key: string]: any; }, d: { [key: string]: any }) {
-      window.addEventListener('resize', ctx.display.transition.bind(ctx, Transitions.resize));
-      ctx.core.addStyle(d.id, d.source(ctx.appview.content));
-      ctx.display.transition(Transitions.resize);
-    },
-    transitions: []
-  },
-]);
-const DisplayMachine = new StateMachine(States.page, null, [
-  {
-    id: States.page,
-    onEnter(ctx: { [key: string]: any; }, d: { [key: string]: any }) {
-      d.style.height = Math.round(0.75 * (ctx.$el as HTMLElement).scrollWidth) + 'px';
-    },
-    transitions: [
-      { id: Transitions.showFullscreen, to: States.fullscreen },
-      { id: Transitions.showFullwindow, to: States.fullwindow },
-      { id: Transitions.resize, to: States.page }
-    ]
-  },
-  {
-    id: States.fullscreen,
-    onEnter(ctx: { [key: string]: any; }, d: { [key: string]: any }) {
-      ctx.core.addFullScreen((ctx.$el as HTMLElement).id);
-      ctx.eruda.transition(Transitions.switchOff);
-      d.style.height = window.innerHeight + 'px';
-    },
-    onLeave(ctx: { [key: string]: any; }) {
-      ctx.core.removeFullScreen();
-    },
-    transitions: [
-      { id: Transitions.leaveFullscreen, to: States.page },
-      { id: Transitions.showPage, to: States.page },
-      { id: Transitions.showFullwindow, to: States.fullwindow }
-    ]
-  },
-  {
-    id: States.fullwindow,
-    onEnter(ctx: { [key: string]: any; }, d: { [key: string]: any }) {
-      ctx.core.addFullWindow((ctx.$el as HTMLElement).id);
-      d.style.height = window.innerHeight + 'px';
-    },
-    onLeave(ctx: { [key: string]: any; }) {
-      ctx.core.removeFullWindow((ctx.$el as HTMLElement).id);
-    },
-    transitions: [
-      { id: Transitions.leaveFullwindow, to: States.page },
-      { id: Transitions.showPage, to: States.page },
-      { id: Transitions.showFullscreen, to: States.fullscreen }
-    ]
-  }
-]);
-const ErudaMachine = new StateMachine(States.off, null, [
-  {
-    id: States.on,
-    onEnter(ctx: { [key: string]: any; }) {
-      ctx.core.addEruda();
-    },
-    transitions: [
-      { id: Transitions.toggle, to: States.off },
-      { id: Transitions.switchOff, to: States.off }
-    ]
-  },
-  {
-    id: States.off,
-    onEnter(ctx: { [key: string]: any; }) {
-      ctx.core.removeEruda();
-    },
-    transitions: [
-      { id: Transitions.toggle, to: States.on },
-      { id: Transitions.switchOn, to: States.on }
-    ]
-  }
-]);
-const MainMenuMachine = new StateMachine(States.off, null, [
-  {
-    id: States.on,
-    transitions: [
-      { id: Transitions.switchOff, to: States.off }
-    ]
-  },
-  {
-    id: States.off,
-    transitions: [
-      { id: Transitions.switchOn, to: States.on }
-    ]
-  }
-]);
-const ThemeMachine = new StateMachine(States.off, null, [
-  {
-    id: States.on,
-    onEnter(ctx: { [key: string]: any; }, d: { [key: string]: any }) {
-      ctx.core.addStyle(d.id, d.source(d.content));
-    },
-    transitions: [
-      { id: Transitions.toggle, to: States.off },
-      { id: Transitions.switchOff, to: States.off }
-    ]
-  },
-  {
-    id: States.off,
-    onEnter(ctx: { [key: string]: any; }, d: { [key: string]: any }) {
-      ctx.core.removeStyle(d.id);
-    },
-    transitions: [
-      { id: Transitions.toggle, to: States.on },
-      { id: Transitions.switchOn, to: States.on }
-    ]
-  }
-]);
+import { Core, PanelComponent, StateMachine } from './core.js'
+import { States, Transitions, AppViewDefinition, DisplayDefinition, ErudaDefinition, MainMenuDefinition, ThemeDefinition }
+  from './2020-09-18-states.js'
 // vue
 export const AppVue = Vue.extend({
   components: {
@@ -211,59 +23,32 @@ export const AppVue = Vue.extend({
         theme_add: 'Theme On',
         theme_remove: 'Theme Off'
       },
-      appview: AppViewMachine,
-      appview_data: {
-        id: 'apptheme',
-        content: {
-          backgroundColor: 'white',
-          color: 'blue'
-        },
-        source: AppTheme
-      },
+      appview: new StateMachine(this, AppViewDefinition),
       core: Core,
-      display: DisplayMachine,
-      display_data: {
-        style: {
-          height: ''
-        }
-      },
-      eruda: ErudaMachine,
-      mainmenu: MainMenuMachine,
-      theme: ThemeMachine,
-      theme_data: {
-        id: 'usertheme',
-        content: {
-          backgroundColor: 'white',
-          color: 'blue'
-        },
-        source: UserTheme
-      }
+      display: new StateMachine(this, DisplayDefinition),
+      eruda: new StateMachine(this, ErudaDefinition),
+      mainmenu: new StateMachine(this, MainMenuDefinition),
+      theme: new StateMachine(this, ThemeDefinition),
     };
   },
   methods: {
-    onPanelActivate: function(m: StateMachine, val: boolean) {
+    getAppTheme: function(content: { [key: string]: any; }): string {
+      return AppTheme(content);
+    },
+    getUserTheme: function(content: { [key: string]: any; }): string {
+      return UserTheme(content);
+    },
+    onPanelActivate: function (m: StateMachine, val: boolean) {
       val ? m.transition(Transitions.switchOn) : m.transition(Transitions.switchOff);
     }
   },
   mounted: function () {
-    // connect state machines to the domain
-    this.appview.setContext(this);
-    this.appview.setData(this.appview_data);
-    this.display.setContext(this);
-    this.display.setData(this.display_data);
-    this.eruda.setContext(this);
-    this.mainmenu.setContext(this);
-    this.theme.setContext(this);
-    this.theme.setData(this.theme_data);
     // transition state machine to mounted
     this.appview.transition(Transitions.mount);
   },
-  template: AppTemplate()
-});
-function AppTemplate(): string {
-  return /*html*/`
+  template: /*html*/`
 <div id="postapp" class="app-container panel-container" 
-  :style="display_data.style">
+  :style="display.data.style">
   <div v-show="false">
   <!-- cache, give elements ref="" to reference in methods -->
   </div>
@@ -314,9 +99,8 @@ function AppTemplate(): string {
       <span>{{ content.app_author }}</span>
     </div>
   </div>
-</div>
-`;
-}
+</div>`
+});
 function AppTheme(content: { [key: string]: any; }): string {
   return/*css*/`
   .app-container {

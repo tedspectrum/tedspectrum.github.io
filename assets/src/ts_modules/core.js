@@ -1,13 +1,14 @@
 export class StateMachine {
-    constructor(initialState, initialContext, initialStates) {
+    constructor(initialContext, configObject) {
         this.context = {};
         this.data = {};
         this.emptyState = { id: -1, transitions: [] };
         this.states = [];
         this.transitions = [];
         this.setContext(initialContext);
-        this.setStates(initialStates);
-        let newState = this.states[initialState];
+        this.setData(configObject.data);
+        this.setStates(configObject.states);
+        let newState = this.states[configObject.initialState];
         this.currentState = (newState) ? newState : this.emptyState;
         this.current = this.currentState.id;
     }
@@ -115,5 +116,54 @@ Core.removeStyle = function (id) {
 Core.removeFullScreen = function () {
     if (document.fullscreenEnabled && document.fullscreenElement) {
         document.exitFullscreen();
+    }
+};
+export const PanelComponent = {
+    name: 'teds-panel',
+    template: `
+    <div>
+      <transition :name="overlay_transition">
+        <div v-show="showPanel && showOverlay" 
+          class="overlay"
+          :class="overlay_classes"
+          @click="$emit('panel-activate', model, false)"></div>
+      </transition>
+      <transition :name="panel_transition">
+        <div v-show="showPanel" 
+          class="panel" 
+          :class="panel_classes">
+          <slot></slot>
+        </div>
+      </transition>
+    </div>`,
+    props: {
+        model: {
+            type: Object,
+            required: true
+        },
+        overlay_classes: {
+            type: String,
+            default: ""
+        },
+        overlay_transition: {
+            type: String,
+            default: "fadeinout"
+        },
+        panel_classes: {
+            type: String,
+            default: "panel-fullheightleft"
+        },
+        panel_transition: {
+            type: String,
+            default: "slideright"
+        },
+        showPanel: {
+            type: Boolean,
+            required: true
+        },
+        showOverlay: {
+            type: Boolean,
+            default: true
+        }
     }
 };
