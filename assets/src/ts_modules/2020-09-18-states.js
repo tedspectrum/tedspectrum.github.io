@@ -21,7 +21,7 @@ const AppViewDefinition = {
                     ctx.display.currentState.resize(ctx, ctx.display.data);
                 }
                 window.addEventListener('resize', onResize);
-                ctx.core.addStyle(d.id, ctx.getAppTheme(d.content));
+                ctx.core.addStyle(d.id, ctx.cssTemplates.app(d.content));
                 ctx.display.currentState.resize(ctx, ctx.display.data);
                 ctx.theme.transition(8);
             },
@@ -32,6 +32,9 @@ const AppViewDefinition = {
 const DisplayDefinition = {
     initialState: 4,
     data: {
+        isFullscreenActive: false,
+        isFullwindowActive: false,
+        isPageActive: true,
         style: {
             height: ''
         }
@@ -41,9 +44,13 @@ const DisplayDefinition = {
             id: 4,
             onEnter(ctx, d) {
                 ctx.display.currentState.resize(ctx, d);
+                d.isPageActive = true;
             },
             resize(ctx, d) {
                 d.style.height = Math.round(0.75 * ctx.$el.scrollWidth) + 'px';
+            },
+            onLeave(ctx, d) {
+                d.isPageActive = false;
             },
             transitions: [
                 { id: 4, to: 5 },
@@ -57,12 +64,14 @@ const DisplayDefinition = {
                 ctx.core.addFullScreen(ctx.$el.id);
                 ctx.eruda.transition(7);
                 ctx.display.currentState.resize(ctx, d);
+                d.isFullscreenActive = true;
             },
             resize(ctx, d) {
                 d.style.height = window.innerHeight + 'px';
             },
-            onLeave(ctx) {
+            onLeave(ctx, d) {
                 ctx.core.removeFullScreen();
+                d.isFullscreenActive = false;
             },
             transitions: [
                 { id: 0, to: 4 },
@@ -75,12 +84,14 @@ const DisplayDefinition = {
             onEnter(ctx, d) {
                 ctx.core.addFullWindow(ctx.$el.id);
                 ctx.display.currentState.resize(ctx, d);
+                d.isFullwindowActive = true;
             },
             resize(ctx, d) {
                 d.style.height = window.innerHeight + 'px';
             },
-            onLeave(ctx) {
+            onLeave(ctx, d) {
                 ctx.core.removeFullWindow(ctx.$el.id);
+                d.isFullwindowActive = false;
             },
             transitions: [
                 { id: 1, to: 4 },
@@ -118,10 +129,18 @@ const ErudaDefinition = {
 };
 const MainMenuDefinition = {
     initialState: 0,
-    data: null,
+    data: {
+        active: false
+    },
     states: [
         {
             id: 1,
+            onEnter: function (ctx, d) {
+                d.active = true;
+            },
+            onLeave: function (ctx, d) {
+                d.active = false;
+            },
             transitions: [
                 { id: 7, to: 0 }
             ]
@@ -156,7 +175,7 @@ const ThemeDefinition = {
         {
             id: 1,
             onEnter(ctx, d) {
-                ctx.core.addStyle(d.id, ctx.getUserTheme(d.content));
+                ctx.core.addStyle(d.id, ctx.cssTemplates.user(d.content));
             },
             transitions: [
                 { id: 9, to: 0 },

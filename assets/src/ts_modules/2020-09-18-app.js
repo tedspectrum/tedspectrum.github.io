@@ -23,6 +23,10 @@ export const AppVue = Vue.extend({
             },
             appview: new StateMachine(this, AppViewDefinition),
             core: Core,
+            cssTemplates: {
+                app: AppTheme,
+                user: UserTheme
+            },
             display: new StateMachine(this, DisplayDefinition),
             eruda: new StateMachine(this, ErudaDefinition),
             mainmenu: new StateMachine(this, MainMenuDefinition),
@@ -30,12 +34,6 @@ export const AppVue = Vue.extend({
         };
     },
     methods: {
-        getAppTheme: function (content) {
-            return AppTheme(content);
-        },
-        getUserTheme: function (content) {
-            return UserTheme(content);
-        },
         onPanelActivate: function (m, val) {
             val ? m.transition(8) : m.transition(7);
         }
@@ -52,7 +50,7 @@ export const AppVue = Vue.extend({
   <teds-panel
     :component_classes="{ mainmenu: true }"
     :model="mainmenu"
-    :showPanel="mainmenu.isInState(${1})"
+    :showPanel="mainmenu.data.active"
     @panel-activate="onPanelActivate">
     <div class="app-header">
       <h1>{{ content.mainmenu_title }}</h1>
@@ -61,7 +59,7 @@ export const AppVue = Vue.extend({
       {{ (theme.isInState(${1})) ? content.theme_remove : content.theme_add }}
     </button>
     <button
-      :disabled="display.isInState(${5})" 
+      :disabled="display.data.isFullwindowActive" 
       @click="eruda.transition(${9})">
       {{ (eruda.isInState(${1})) ? content.eruda_remove : content.eruda_add }}
     </button>
@@ -78,17 +76,17 @@ export const AppVue = Vue.extend({
       <p>{{ content.app_description }}</p>
       <h2>Display control</h2>
       <button 
-        :disabled="display.isInState(${4})"
+        :disabled="display.data.isPageActive"
         @click="display.transition(${6})">
       {{ content.page_add }}
       </button>
       <button 
-        :disabled="display.isInState(${6})"
+        :disabled="display.data.isFullwindowActive"
         @click="display.transition(${5})">
       {{ content.fullwindow_add }}
       </button>
       <button 
-        :disabled="display.isInState(${5})"
+        :disabled="display.data.isFullscreenActive"
         @click="display.transition(${4})">
       {{ content.fullscreen_add }}
       </button>

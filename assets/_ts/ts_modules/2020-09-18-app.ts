@@ -25,6 +25,10 @@ export const AppVue = Vue.extend({
       },
       appview: new StateMachine(this, AppViewDefinition),
       core: Core,
+      cssTemplates: {
+        app: AppTheme,
+        user: UserTheme
+      },
       display: new StateMachine(this, DisplayDefinition),
       eruda: new StateMachine(this, ErudaDefinition),
       mainmenu: new StateMachine(this, MainMenuDefinition),
@@ -32,12 +36,6 @@ export const AppVue = Vue.extend({
     };
   },
   methods: {
-    getAppTheme: function(content: { [key: string]: any; }): string {
-      return AppTheme(content);
-    },
-    getUserTheme: function(content: { [key: string]: any; }): string {
-      return UserTheme(content);
-    },
     onPanelActivate: function (m: StateMachine, val: boolean) {
       val ? m.transition(Transitions.switchOn) : m.transition(Transitions.switchOff);
     }
@@ -55,7 +53,7 @@ export const AppVue = Vue.extend({
   <teds-panel
     :component_classes="{ mainmenu: true }"
     :model="mainmenu"
-    :showPanel="mainmenu.isInState(${States.on})"
+    :showPanel="mainmenu.data.active"
     @panel-activate="onPanelActivate">
     <div class="app-header">
       <h1>{{ content.mainmenu_title }}</h1>
@@ -64,7 +62,7 @@ export const AppVue = Vue.extend({
       {{ (theme.isInState(${States.on})) ? content.theme_remove : content.theme_add }}
     </button>
     <button
-      :disabled="display.isInState(${States.fullscreen})" 
+      :disabled="display.data.isFullwindowActive" 
       @click="eruda.transition(${Transitions.toggle})">
       {{ (eruda.isInState(${States.on})) ? content.eruda_remove : content.eruda_add }}
     </button>
@@ -81,17 +79,17 @@ export const AppVue = Vue.extend({
       <p>{{ content.app_description }}</p>
       <h2>Display control</h2>
       <button 
-        :disabled="display.isInState(${States.page})"
+        :disabled="display.data.isPageActive"
         @click="display.transition(${Transitions.showPage})">
       {{ content.page_add }}
       </button>
       <button 
-        :disabled="display.isInState(${States.fullwindow})"
+        :disabled="display.data.isFullwindowActive"
         @click="display.transition(${Transitions.showFullwindow})">
       {{ content.fullwindow_add }}
       </button>
       <button 
-        :disabled="display.isInState(${States.fullscreen})"
+        :disabled="display.data.isFullscreenActive"
         @click="display.transition(${Transitions.showFullscreen})">
       {{ content.fullscreen_add }}
       </button>
