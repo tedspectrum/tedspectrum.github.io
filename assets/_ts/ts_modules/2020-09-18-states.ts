@@ -1,5 +1,5 @@
 // state machines
-export const enum States {
+const enum States {
   off,
   on,
   new,
@@ -8,7 +8,7 @@ export const enum States {
   fullscreen,
   fullwindow
 }
-export const enum Transitions {
+const enum Transitions {
   leaveFullscreen,
   leaveFullwindow,
   mount,
@@ -20,7 +20,7 @@ export const enum Transitions {
   switchOn,
   toggle
 }
-export const AppViewDefinition = {
+const AppViewDefinition = {
   initialState: States.new,
   data: {
     id: 'apptheme',
@@ -45,12 +45,13 @@ export const AppViewDefinition = {
         window.addEventListener('resize', onResize);
         ctx.core.addStyle(d.id, ctx.getAppTheme(d.content));
         ctx.display.currentState.resize(ctx, ctx.display.data);
+        ctx.theme.transition(Transitions.switchOn);
       },
       transitions: []
     },
   ]
 }
-export const DisplayDefinition = {
+const DisplayDefinition = {
   initialState: States.page,
   data: {
     style: {
@@ -111,7 +112,7 @@ export const DisplayDefinition = {
     }
   ]
 };
-export const ErudaDefinition = {
+const ErudaDefinition = {
   initialState: States.off,
   data: null,
   states: [
@@ -137,7 +138,7 @@ export const ErudaDefinition = {
     }
   ]
 };
-export const MainMenuDefinition = {
+const MainMenuDefinition = {
   initialState: States.off,
   data: null,
   states: [
@@ -155,13 +156,22 @@ export const MainMenuDefinition = {
     }
   ]
 };
-export const ThemeDefinition = {
+const ThemeDefinition = {
   initialState: States.off, 
   data: {
     id: 'usertheme',
     content: {
-      backgroundColor: 'white',
-      color: 'blue'
+      baseColor: 'white',
+      highlightColor1: 'darkgray',
+      highlightColor2: 'lightgray',
+      mainmenu: {
+        panel: {
+          backgroundColor: 'lightgray'
+        },
+        overlay: {
+          backgroundColor: 'darkgray'
+        }
+      }
     }
   },
   states: [
@@ -187,3 +197,12 @@ export const ThemeDefinition = {
     }
   ]
 };
+export {
+  States,
+  Transitions,
+  AppViewDefinition,
+  DisplayDefinition,
+  ErudaDefinition,
+  MainMenuDefinition,
+  ThemeDefinition
+}

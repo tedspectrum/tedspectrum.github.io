@@ -1,4 +1,4 @@
-export class StateMachine {
+class StateMachine {
     constructor(initialContext, configObject) {
         this.context = {};
         this.data = {};
@@ -43,7 +43,7 @@ export class StateMachine {
         }
     }
 }
-export class Core {
+class Core {
 }
 Core.addEruda = function () {
     const initEruda = function () {
@@ -118,40 +118,53 @@ Core.removeFullScreen = function () {
         document.exitFullscreen();
     }
 };
-export const PanelComponent = {
+const PanelComponent = {
     name: 'teds-panel',
     template: `
-    <div>
+    <div :class="component_classes">
       <transition :name="overlay_transition">
         <div v-show="showPanel && showOverlay" 
-          class="overlay"
           :class="overlay_classes"
           @click="$emit('panel-activate', model, false)"></div>
       </transition>
       <transition :name="panel_transition">
         <div v-show="showPanel" 
-          class="panel" 
           :class="panel_classes">
           <slot></slot>
         </div>
       </transition>
     </div>`,
     props: {
+        component_classes: {
+            type: Object,
+            default: function () {
+                return {};
+            }
+        },
         model: {
             type: Object,
             required: true
         },
         overlay_classes: {
-            type: String,
-            default: ""
+            type: Object,
+            default: function () {
+                return {
+                    "overlay": true
+                };
+            }
         },
         overlay_transition: {
             type: String,
             default: "fadeinout"
         },
         panel_classes: {
-            type: String,
-            default: "panel-fullheightleft"
+            type: Object,
+            default: function () {
+                return {
+                    "panel": true,
+                    "panel-fullheightleft": true
+                };
+            }
         },
         panel_transition: {
             type: String,
@@ -167,3 +180,4 @@ export const PanelComponent = {
         }
     }
 };
+export { Core, StateMachine, PanelComponent };

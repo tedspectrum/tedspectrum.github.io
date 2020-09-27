@@ -47,12 +47,13 @@ export const AppVue = Vue.extend({
     this.appview.transition(Transitions.mount);
   },
   template: /*html*/`
-<div id="postapp" class="app-container panel-container" 
+<div id="postapp" class="panel-container" 
   :style="display.data.style">
   <div v-show="false">
   <!-- cache, give elements ref="" to reference in methods -->
   </div>
-  <teds-panel 
+  <teds-panel
+    :component_classes="{ mainmenu: true }"
     :model="mainmenu"
     :showPanel="mainmenu.isInState(${States.on})"
     @panel-activate="onPanelActivate">
@@ -72,9 +73,9 @@ export const AppVue = Vue.extend({
     <div class="app-header">
       <button
         @click="mainmenu.transition(${Transitions.switchOn})">
-        <svg viewBox="0 0 20 20" fill="currentColor" class="block" height="16px" width="16px"><path fill-rule="evenodd" d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clip-rule="evenodd"></path></svg>
+        <svg viewBox="0 0 20 20" fill="currentColor" class="display-block" height="16px" width="16px"><path fill-rule="evenodd" d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clip-rule="evenodd"></path></svg>
       </button>
-      <h1 class="inline">{{ content.app_title }}</h1>
+      <h1 class="display-inline">{{ content.app_title }}</h1>
     </div>
     <div class="app-body">
       <p>{{ content.app_description }}</p>
@@ -103,38 +104,24 @@ export const AppVue = Vue.extend({
 });
 function AppTheme(content: { [key: string]: any; }): string {
   return/*css*/`
-  .app-container {
-    background-color: lightgray;
-    color: black;
-  }
   .app-content {
-    background-color: lightgray;
     width: 100%;
     height: 100%;
-    overflow: hidden;
   }
   .app-body {
     overflow: hidden;
   }
-  .app-header, .app-footer {
-    background-color: gray;
-    color: white;
-    padding-left: 0.5rem;
-  }
   .body-cloak header, .body-cloak main, .body-cloak footer {
     display: none;
-  }
-  .block {
-    display: block;
-  }
-  .bordered {
-    border: 1px solid black;
   }
   .centered {
     display: grid;
     place-items: center;
   }
-  .inline {
+  .display-block {
+    display: block;
+  }
+  .display-inline {
     display: inline;
   }
   .layout-rows {
@@ -144,12 +131,49 @@ function AppTheme(content: { [key: string]: any; }): string {
   .layout-columns {
     display: grid;
     grid-template-columns: auto 1fr auto;
-  }`
+  }
+  .overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    z-index: 20;
+    opacity: 0.9;
+  }
+  .panel-container {
+    position: relative;
+    overflow: hidden;
+  }
+  .panel {
+    position: absolute;
+    z-index: 1000;
+    overflow: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  .panel-fullheightleft {
+    width: 12em;
+    top: 0;
+    bottom: 0;
+    left: 0;
+  }
+`
 };
 function UserTheme(content: { [key: string]: any; }): string {
   return /*css*/`
   .app-content {
-    color: ${content.color};
-    background-color: ${content.backgroundColor};
+    background-color: ${content.baseColor};
+    color: ${content.highlightColor1};
+  }
+  .app-header, .app-footer {
+    background-color: ${content.highlightColor1};
+    color: ${content.baseColor};
+    padding-left: 0.5rem;
+  }
+  .mainmenu .overlay {
+    background-color: ${content.mainmenu.overlay.backgroundColor};    
+  }
+  .mainmenu .panel {
+    background-color: ${content.mainmenu.panel.backgroundColor};
   }`;
 };

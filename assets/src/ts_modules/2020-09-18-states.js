@@ -1,4 +1,4 @@
-export const AppViewDefinition = {
+const AppViewDefinition = {
     initialState: 2,
     data: {
         id: 'apptheme',
@@ -23,12 +23,13 @@ export const AppViewDefinition = {
                 window.addEventListener('resize', onResize);
                 ctx.core.addStyle(d.id, ctx.getAppTheme(d.content));
                 ctx.display.currentState.resize(ctx, ctx.display.data);
+                ctx.theme.transition(8);
             },
             transitions: []
         },
     ]
 };
-export const DisplayDefinition = {
+const DisplayDefinition = {
     initialState: 4,
     data: {
         style: {
@@ -89,7 +90,7 @@ export const DisplayDefinition = {
         }
     ]
 };
-export const ErudaDefinition = {
+const ErudaDefinition = {
     initialState: 0,
     data: null,
     states: [
@@ -115,7 +116,7 @@ export const ErudaDefinition = {
         }
     ]
 };
-export const MainMenuDefinition = {
+const MainMenuDefinition = {
     initialState: 0,
     data: null,
     states: [
@@ -133,13 +134,22 @@ export const MainMenuDefinition = {
         }
     ]
 };
-export const ThemeDefinition = {
+const ThemeDefinition = {
     initialState: 0,
     data: {
         id: 'usertheme',
         content: {
-            backgroundColor: 'white',
-            color: 'blue'
+            baseColor: 'white',
+            highlightColor1: 'darkgray',
+            highlightColor2: 'lightgray',
+            mainmenu: {
+                panel: {
+                    backgroundColor: 'lightgray'
+                },
+                overlay: {
+                    backgroundColor: 'darkgray'
+                }
+            }
         }
     },
     states: [
@@ -165,3 +175,4 @@ export const ThemeDefinition = {
         }
     ]
 };
+export { AppViewDefinition, DisplayDefinition, ErudaDefinition, MainMenuDefinition, ThemeDefinition };
