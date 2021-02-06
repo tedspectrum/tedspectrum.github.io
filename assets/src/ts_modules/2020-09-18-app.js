@@ -41,7 +41,7 @@ export const AppVue = Vue.extend({
     mounted: function () {
         this.appview.transition(2);
     },
-    template: `
+    template: /*html*/`
 <div id="postapp" class="panel-container" 
   :style="display.data.style">
   <div v-show="false">
@@ -98,7 +98,7 @@ export const AppVue = Vue.extend({
 </div>`
 });
 function AppTheme(content) {
-    return `
+    return /*css*/`
   .app-content {
     width: 100%;
     height: 100%;
@@ -156,7 +156,7 @@ function AppTheme(content) {
 }
 ;
 function UserTheme(content) {
-    return `
+    return /*css*/`
   .app-content {
     background-color: ${content.baseColor};
     color: ${content.highlightColor1};
