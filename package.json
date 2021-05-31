@@ -4,10 +4,10 @@
   "description": "github pages for tedspectrum",
   "main": "index.html",
   "scripts": {
-    "build": "jekyll build",
-    "clean": "jekyll clean",
+    "build": "bundle exec jekyll build",
+    "clean": "bundle exec jekyll clean",
     "lint": "npx eslint \"./assets/src/**.js\" --fix",
-    "serve": "jekyll serve",
+    "serve": "bundle exec jekyll serve",
     "typescript-watch": "tsc -w"
   },
   "repository": {
