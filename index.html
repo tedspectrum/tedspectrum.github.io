@@ -19,28 +19,76 @@
             --teds-eight: rgb(0, 0, 255);
             --teds-nine: rgb(138, 43, 226);
         }
+
+        .teds-spectrum {
+            :nth-child(1) {
+                color: var(--teds-one);
+            }
+
+            :nth-child(2) {
+                color: var(--teds-two);
+            }
+
+            :nth-child(3) {
+                color: var(--teds-three);
+            }
+
+            :nth-child(4) {
+                color: var(--teds-four);
+            }
+
+            :nth-child(5) {
+                color: var(--teds-five);
+            }
+
+            :nth-child(6) {
+                color: var(--teds-six);
+            }
+
+            :nth-child(7) {
+                color: var(--teds-seven);
+            }
+
+            :nth-child(8) {
+                color: var(--teds-eight);
+            }
+
+            :nth-child(9) {
+                color: var(--teds-nine);
+            }
+        }
     </style>
 
 </head>
 
 <body>
     <header class="container-fluid">
-        <h1>Ted<!--
-            --><span style="color: var(--teds-one)">S</span><!--
-            --><span style="color: var(--teds-two)">p</span><!--
-            --><span style="color: var(--teds-three)">e</span><!--
-            --><span style="color: var(--teds-four)">c</span><!--
-            --><span style="color: var(--teds-five)">t</span><!--
-            --><span style="color: var(--teds-six)">r</span><!--
-            --><span style="color: var(--teds-seven)">u</span><!--
-            --><span style="color: var(--teds-eight)">m</span>
+        <h1>Ted<span class="teds-spectrum"><!--
+            --><span>S</span><!--
+            --><span>p</span><!--
+            --><span>e</span><!--
+            --><span>c</span><!--
+            --><span>t</span><!--
+            --><span>r</span><!--
+            --><span>u</span><!--
+            --><span>m</span><!--
+            --><span>.</span></span>
         </h1>
     </header>
     <main class="container-fluid">
-        <h2>A range of interesting things</h2>
+        <h2>A range of interesting things.</h2>
     </main>
     <footer class="container-fluid">
-        <p>&copy; TedSpectrum 2026</p>
+        <p>&copy; Ted<span class="teds-spectrum"><!--
+            --><span>S</span><!--
+            --><span>p</span><!--
+            --><span>e</span><!--
+            --><span>c</span><!--
+            --><span>t</span><!--
+            --><span>r</span><!--
+            --><span>u</span><!--
+            --><span>m</span><!--
+            --></span> 2026</p>
     </footer>
 </body>
 
