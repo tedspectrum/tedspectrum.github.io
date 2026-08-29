@@ -20,42 +20,44 @@
             --teds-nine: rgb(138, 43, 226);
         }
 
-        .teds-spectrum {
-            :nth-child(1) {
-                color: var(--teds-one);
-            }
+        ::highlight(teds-0) {
+            color: var(--teds-zero);
+        }
 
-            :nth-child(2) {
-                color: var(--teds-two);
-            }
+        ::highlight(teds-1) {
+            color: var(--teds-one);
+        }
 
-            :nth-child(3) {
-                color: var(--teds-three);
-            }
+        ::highlight(teds-2) {
+            color: var(--teds-two);
+        }
 
-            :nth-child(4) {
-                color: var(--teds-four);
-            }
+        ::highlight(teds-3) {
+            color: var(--teds-three);
+        }
 
-            :nth-child(5) {
-                color: var(--teds-five);
-            }
+        ::highlight(teds-4) {
+            color: var(--teds-four);
+        }
 
-            :nth-child(6) {
-                color: var(--teds-six);
-            }
+        ::highlight(teds-5) {
+            color: var(--teds-five);
+        }
 
-            :nth-child(7) {
-                color: var(--teds-seven);
-            }
+        ::highlight(teds-6) {
+            color: var(--teds-six);
+        }
 
-            :nth-child(8) {
-                color: var(--teds-eight);
-            }
+        ::highlight(teds-7) {
+            color: var(--teds-seven);
+        }
 
-            :nth-child(9) {
-                color: var(--teds-nine);
-            }
+        ::highlight(teds-8) {
+            color: var(--teds-eight);
+        }
+
+        ::highlight(teds-9) {
+            color: var(--teds-nine);
         }
     </style>
 
@@ -63,33 +65,56 @@
 
 <body>
     <header class="container-fluid">
-        <h1>Ted<span class="teds-spectrum"><!--
-            --><span>S</span><!--
-            --><span>p</span><!--
-            --><span>e</span><!--
-            --><span>c</span><!--
-            --><span>t</span><!--
-            --><span>r</span><!--
-            --><span>u</span><!--
-            --><span>m</span><!--
-            --><span>.</span></span>
+        <h1>Ted<span class="teds-spectrum">Spectrum</span>
         </h1>
     </header>
     <main class="container-fluid">
         <h2>A range of interesting things.</h2>
     </main>
     <footer class="container-fluid">
-        <p>&copy; Ted<span class="teds-spectrum"><!--
-            --><span>S</span><!--
-            --><span>p</span><!--
-            --><span>e</span><!--
-            --><span>c</span><!--
-            --><span>t</span><!--
-            --><span>r</span><!--
-            --><span>u</span><!--
-            --><span>m</span><!--
-            --></span> 2026</p>
+        <p>&copy; Ted<span class="teds-spectrum">Spectrum</span> 2026</p>
     </footer>
+    <script>
+        function createHighlights() {
+            if (!CSS.highlights) return;
+            // Create and register highlights
+            const highlights = [];
+            for (let i = 0; i < 10; i++) {
+                // Create a new highlight for this color.
+                const colorHighlight = new Highlight();
+                highlights.push(colorHighlight);
+                // Register this highlight under a custom name.
+                CSS.highlights.set(`teds-${i}`, colorHighlight);
+            }
+            return highlights;
+        }
+        function addHighlightsToTextNode(textNode, highlights) {
+            const text = textNode.textContent;
+            for (let i = 0; i < text.length; i++) {
+                // Create a new range just for this character.
+                const range = new Range();
+                const highlight = (i + 1) % highlights.length;
+                range.setStart(textNode, i);
+                range.setEnd(textNode, i + 1);
+                // Add the range to the next available highlight,
+                // looping back to the first one once we've reached the 7th.
+                if (highlight in highlights)
+                    highlights[highlight].add(range);
+            }
+        }
+        function addHighlights(element, highlights) {
+            if (!element.hasChildNodes()) return;
+            for (const child of element.childNodes) {
+                if (child.nodeType === Node.TEXT_NODE)
+                    addHighlightsToTextNode(child, highlights);
+            }
+        }
+        const highlights = createHighlights();
+        const elementsToHighlight = document.getElementsByClassName('teds-spectrum');
+        for (const element of elementsToHighlight) {
+            addHighlights(element, highlights);
+        }
+    </script>
 </body>
 
 </html>
